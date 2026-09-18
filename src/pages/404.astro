@@ -1,0 +1,86 @@
+---
+import Base from "../layouts/Base.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+---
+
+<Base
+  title="Página no encontrada — Black Sheep Sport"
+  description="La página que buscas no existe o fue movida."
+  canonical={false}
+  noindex={true}
+>
+  <Header />
+  <main class="not-found">
+    <section class="not-found__content" aria-labelledby="not-found-title">
+      <p class="not-found__label">Error 404</p>
+      <h1 class="not-found__title" id="not-found-title">Página no encontrada</h1>
+      <p class="not-found__text">La página que buscas no existe o fue movida.</p>
+      <a class="not-found__cta" href="/">Volver al inicio</a>
+    </section>
+  </main>
+  <Footer />
+</Base>
+
+<style>
+  .not-found {
+    display: grid;
+    min-height: 50dvh;
+    place-items: center;
+    padding: var(--space-section-block) var(--container-padding);
+  }
+
+  .not-found__content {
+    width: 100%;
+    max-width: var(--measure-prose);
+  }
+
+  .not-found__label {
+    font-family: var(--font-family-display);
+    font-weight: 800;
+    font-size: var(--font-size-sm);
+    letter-spacing: 0.09em;
+    color: var(--color-gray-500);
+    text-transform: uppercase;
+    margin-bottom: var(--space-3);
+  }
+
+  .not-found__title {
+    font-size: var(--font-size-2xl);
+    text-transform: uppercase;
+    margin-bottom: var(--space-4);
+  }
+
+  .not-found__text {
+    max-width: 42ch;
+    color: var(--color-gray-500);
+    margin-bottom: var(--space-6);
+  }
+
+  .not-found__cta {
+    display: inline-block;
+    background: var(--color-ink);
+    border-radius: var(--radius-sm);
+    color: var(--color-accent);
+    font-family: var(--font-family-display);
+    font-weight: 800;
+    font-size: var(--font-size-sm);
+    letter-spacing: 0.02em;
+    padding: var(--space-4) var(--space-5);
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: background 0.18s ease, color 0.18s ease, transform 0.18s ease;
+  }
+
+  .not-found__cta:active {
+    transform: translateY(1px);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .not-found__cta:hover {
+      background: var(--color-accent);
+      color: var(--color-accent-on);
+      transform: translateY(-2px);
+    }
+  }
+</style>

@@ -4,9 +4,17 @@ import "../styles/tokens.css";
 interface Props {
   title: string;
   description?: string;
+  canonical?: boolean;
+  noindex?: boolean;
 }
 
-const { title, description = "Fotografía deportiva en Mérida. Encuentra tus fotos del evento." } = Astro.props;
+const {
+  title,
+  description = "Fotografía deportiva en Mérida. Encuentra tus fotos del evento.",
+  canonical = true,
+  noindex = false,
+} = Astro.props;
+const canonicalUrl = canonical ? new URL(Astro.url.pathname, Astro.site) : undefined;
 ---
 
 <!doctype html>
@@ -15,6 +23,16 @@ const { title, description = "Fotografía deportiva en Mérida. Encuentra tus fo
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+    {canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    {canonicalUrl && <meta property="og:url" content={canonicalUrl} />}
+    <meta property="og:site_name" content="Black Sheep Sport" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" href="/favicon.ico" />
     <meta name="generator" content={Astro.generator} />
