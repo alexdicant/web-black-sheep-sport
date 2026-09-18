@@ -52,10 +52,10 @@ const tiers: PricingTier[] = [
   }
 
   .pricing__row {
-    display: flex;
-    align-items: flex-end;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: end;
     gap: var(--space-3);
-    height: 160px;
     border-bottom: 2px solid var(--color-ink);
   }
 
@@ -82,8 +82,8 @@ const tiers: PricingTier[] = [
   }
 
   .pricing__tier--featured {
-    flex: 1.5;
-    height: 100%;
+    grid-column: 1 / -1;
+    height: auto;
     justify-content: flex-end;
     background: var(--color-accent);
     color: var(--color-accent-on);
@@ -114,6 +114,7 @@ const tiers: PricingTier[] = [
     }
 
     .pricing__row {
+      display: flex;
       height: 230px;
       gap: var(--space-6);
       border-bottom-width: 3px;
@@ -124,7 +125,9 @@ const tiers: PricingTier[] = [
     }
 
     .pricing__tier--featured {
+      grid-column: auto;
       flex: 1.6;
+      height: 100%;
       padding: var(--space-6) var(--space-5) var(--space-7);
     }
   }
