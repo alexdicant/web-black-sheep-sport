@@ -51,10 +51,11 @@ QR del evento
 → sheepsport.com
 → identificar el evento
 → abrir /eventos/<slug>/
-→ seleccionar fotos por código
+→ seleccionar fotografías
 → ver orientación de precio o paquete
 → abrir WhatsApp con los códigos ya escritos
-→ coordinar pago y entrega
+→ coordinar el pago
+→ recibir las fotos finales por WhatsApp como archivos
 ```
 
 La evolución todavía no está fusionada en `main`. No describir la galería propia como desplegada en producción hasta verificar un merge y deploy reales.
@@ -113,10 +114,10 @@ Astro genera **6 páginas estáticas** en el build de la rama feature. El MVP or
 | Galería seleccionable | `src/components/EventGallery.astro` | Componente reutilizable con estado vacío, selección accesible, localStorage, pricing informativo y WhatsApp dinámico. |
 | Página de evento | `src/pages/eventos/happy-wood.astro` | Descubre automáticamente las fotos reales del evento mediante `import.meta.glob()`. |
 | Cómo comprar | `src/components/HowToBuy.astro` | Funcional. Semántica `ol` / `li`; proceso real explicado en 3 pasos. |
-| Precios | `src/components/Pricing.astro` | US$4 / US$7 / US$12. Layout móvil corregido y CTA **“Comprar mis fotos”** conectado a WhatsApp. |
+| Precios | `src/components/Pricing.astro` | US$4 / US$7 / US$12. Layout móvil corregido y CTA **“Buscar mis fotos”** hacia `/#tu-evento`. |
 | Muestra | `src/components/Gallery.astro` | 6 fotos reales. Variantes optimizadas `widths={[400, 675, 800]}`. |
 | FAQ | `src/components/Faq.astro` | 4 preguntas, visibles sin acordeón. Copy alineado con el proceso real. |
-| CTA final | `src/components/FinalCta.astro` | **“Comprar por WhatsApp”**, conectado al WhatsApp real. |
+| CTA final | `src/components/FinalCta.astro` | **“Buscar mis fotos”** hacia `/#tu-evento`; la compra pasa primero por la galería seleccionable. |
 | Footer | `src/components/Footer.astro` | Enlaces a Privacidad, Cookies y Términos; copy “Un servicio de Black Sheep Studio”. |
 | Back to top | `src/components/BackToTop.astro` | Control pequeño con JS vanilla; aparece tras hacer scroll y respeta `prefers-reduced-motion`. |
 | 404 | `src/pages/404.astro` | Página personalizada; en producción se sirve correctamente mediante `.htaccess`. |
@@ -143,26 +144,25 @@ División de:
 **Formato `wa.me`:** `584247438483`  
 **Correo:** `info@sheepsport.com`
 
-### Mensaje prellenado de WhatsApp
+### Mensajes dinámicos de WhatsApp
+
+Los CTA generales de la Home ya no abren WhatsApp directamente: llevan a `/#tu-evento` para que el cliente entre primero a la galería y seleccione sus fotos.
+
+`EventGallery.astro` genera el mensaje en el momento de pulsar **“Comprar seleccionada(s)”**. Los códigos se obtienen de la selección actual; el cliente no tiene que copiarlos ni escribirlos.
+
+Para 1 o 2 fotos:
 
 ```text
-Hola, vi mis fotos de HAPPY WOOD y me encantaron. Quiero comprar estas fotos: [escribe aquí los códigos]. ¿Me ayudas con el proceso de pago?
+Hola, vi mis fotos de <EVENTO> y quiero comprar estas fotos: <CODIGOS>. ¿Me ayudas con el proceso de pago?
 ```
 
-URL actualmente implementada en los CTA de compra:
+Para 3 o más:
 
 ```text
-https://wa.me/584247438483?text=Hola%2C%20vi%20mis%20fotos%20de%20HAPPY%20WOOD%20y%20me%20encantaron.%20Quiero%20comprar%20estas%20fotos%3A%20%5Bescribe%20aqu%C3%AD%20los%20c%C3%B3digos%5D.%20%C2%BFMe%20ayudas%20con%20el%20proceso%20de%20pago%3F
+Hola, vi mis fotos de <EVENTO> y seleccioné estas fotos: <CODIGOS>. Vi que tienen el paquete Todas tus fotos por US$12 por atleta. ¿Me ayudas con la compra?
 ```
 
-Los enlaces abren en nueva pestaña con:
-
-```html
-target="_blank"
-rel="noopener noreferrer"
-```
-
-Este mensaje prellenado corresponde a los CTA generales de la landing. La galería seleccionable de la rama feature genera otro mensaje dinámico con los códigos reales; sus plantillas exactas están documentadas en **Crear un nuevo evento con galería seleccionable → WhatsApp dinámico**.
+La URL usa `https://wa.me/584247438483?text=...` con el mensaje procesado mediante `encodeURIComponent()`. WhatsApp se abre en una pestaña nueva con `noopener noreferrer`.
 
 ### Precios vigentes
 
@@ -186,7 +186,9 @@ La compra se considera confirmada una vez verificado el pago.
 - La galería general se publica dentro de las 24 horas posteriores al evento.
 - La galería inicial contiene imágenes con marca de agua para selección.
 - Cada archivo tiene un código.
-- El cliente envía su nombre y los códigos por WhatsApp.
+- El cliente selecciona las fotografías directamente dentro de la galería del evento.
+- La selección se conserva en el navegador mediante localStorage.
+- Al pulsar **“Comprar seleccionadas”**, la web abre WhatsApp con los códigos seleccionados ya incluidos.
 - Las fotos compradas se entregan editadas, en alta resolución y sin marca de agua.
 - La entrega final se realiza por WhatsApp como archivos.
 - Después de confirmar el pago, la entrega se realiza normalmente al día siguiente.
@@ -194,8 +196,8 @@ La compra se considera confirmada una vez verificado el pago.
 ### Política operativa relevante
 
 - Si una persona solicita retirar una fotografía en la que aparece, Black Sheep Sport puede atender la solicitud por WhatsApp o correo.
-- Si el cliente envía un código equivocado, se revisa la selección y se intenta localizar la foto correcta.
-- No existe reembolso automático únicamente por error de código enviado por el cliente.
+- Si el cliente selecciona por error una fotografía equivocada o existe una discrepancia en los códigos, se revisa la selección y se intenta localizar la foto correcta.
+- No existe reembolso automático por errores atribuibles a una selección equivocada del cliente.
 - La disponibilidad depende de que existan fotografías utilizables del participante.
 
 ---
@@ -222,7 +224,7 @@ La tarjeta conserva el badge **“Activo ahora”**.
 - WhatsApp de compra: `584247438483`.
 - Estado: funcional y probado, todavía sin merge a `main`.
 
-La referencia anterior a `url: "#"` y a una URL pendiente de Google Drive corresponde al MVP original; ya no describe esta rama. Si la galería propia se descarta y se vuelve a Drive, esa sería una decisión nueva, no el comportamiento actual de la feature.
+La referencia anterior a `url: "#"` y a una URL pendiente de Google Drive corresponde al MVP original; ya no describe esta rama. Google Drive no forma parte del flujo comercial propuesto por la feature.
 
 ---
 
@@ -1339,9 +1341,9 @@ En desktop, desde 900px:
 
 Se añadió debajo de los precios el CTA:
 
-**“Comprar mis fotos”**
+**“Buscar mis fotos”**
 
-con el mismo WhatsApp real del CTA final.
+hacia `/#tu-evento`. El CTA no abre WhatsApp directamente: primero lleva al cliente a la tarjeta del evento y desde allí a la galería seleccionable.
 
 ### Galería de muestra en Home
 
@@ -2013,7 +2015,7 @@ No se implementó en esta primera fase SEO. Puede evaluarse después sin bloquea
 ### P0 — decisión de publicación de la feature
 
 1. Revisar y aprobar `feature/event-gallery-selection`.
-2. Decidir explícitamente si la galería propia reemplaza el flujo de Drive.
+2. Aprobar la galería propia como el flujo de compra que sustituirá al MVP original.
 3. Hacer merge únicamente con autorización.
 4. Ejecutar build y desplegar el contenido completo de `dist/`.
 5. Probar en producción:
@@ -2061,10 +2063,10 @@ A fecha **18/09/2026**, el MVP está:
 - con SEO básico on-page y técnico;
 - con performance de imágenes optimizada.
 
-El MVP original de producción quedó documentado con Drive como último tramo pendiente. En la rama feature, ese pendiente se resolvió de otra manera: HAPPY WOOD apunta a su galería propia.
+El MVP original de producción quedó documentado con Drive como contexto histórico. En la rama feature, Google Drive ya no forma parte del flujo propuesto: HAPPY WOOD apunta a su galería propia.
 
 ### Evolución lista en la rama feature
 
 La rama `feature/event-gallery-selection` añade una galería propia funcional para HAPPY WOOD con 162 fotos reales, selección, localStorage, pricing y WhatsApp dinámico. Está probada, pero al verificar este documento todavía no se ha fusionado en `main` ni debe describirse como desplegada en producción.
 
-El siguiente hito ya no es recibir una URL de Google Drive: es decidir si se publica la feature, hacer merge con autorización y desplegar/probar `dist/`.
+El siguiente hito es decidir si se publica la feature, hacer merge con autorización y desplegar/probar `dist/`.
