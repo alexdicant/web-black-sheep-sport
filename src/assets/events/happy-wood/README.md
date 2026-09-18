@@ -9,6 +9,8 @@ El nombre de cada archivo se convierte automáticamente en el código visible y 
 
 Formatos admitidos por la página: `.webp`, `.jpg`, `.jpeg`, `.png` y `.avif`.
 
-Mientras esta carpeta no contenga fotografías, la ruta de prueba usa por referencia seis imágenes reales de `src/assets/photos/`; no las duplica. En cuanto haya al menos una fotografía válida aquí, el fallback deja de utilizarse.
+Si esta carpeta no contiene imágenes en esos formatos, la página del evento muestra el estado "Próximamente" y no renderiza controles de selección o compra.
+
+Para publicar la galería, solo hay que copiar aquí las fotografías exportadas desde Lightroom y ejecutar el siguiente build/deploy. La página las descubre automáticamente: no hay que modificarla ni añadir cada fotografía manualmente.
 
 No añadas otra marca de agua desde la web: los archivos finales ya deben traerla incorporada.

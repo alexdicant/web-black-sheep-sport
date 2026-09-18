@@ -5,12 +5,6 @@ import Header from "../../components/Header.astro";
 import EventGallery from "../../components/EventGallery.astro";
 import Footer from "../../components/Footer.astro";
 import BackToTop from "../../components/BackToTop.astro";
-import sample01 from "../../assets/photos/DSC00134.webp";
-import sample02 from "../../assets/photos/DSC03575.webp";
-import sample03 from "../../assets/photos/DSC06183-Mejorado-NR.webp";
-import sample04 from "../../assets/photos/DSC08303.webp";
-import sample05 from "../../assets/photos/DSC09177.webp";
-import sample06 from "../../assets/photos/DSC09992.webp";
 
 interface ImageModule {
   default: ImageMetadata;
@@ -22,18 +16,9 @@ const eventPhotoModules = import.meta.glob<ImageModule>(
 );
 
 const eventEntries = Object.entries(eventPhotoModules);
-const sampleEntries: Array<[string, ImageModule]> = [
-  ["../../assets/photos/DSC00134.webp", { default: sample01 }],
-  ["../../assets/photos/DSC03575.webp", { default: sample02 }],
-  ["../../assets/photos/DSC06183-Mejorado-NR.webp", { default: sample03 }],
-  ["../../assets/photos/DSC08303.webp", { default: sample04 }],
-  ["../../assets/photos/DSC09177.webp", { default: sample05 }],
-  ["../../assets/photos/DSC09992.webp", { default: sample06 }],
-];
-const selectedEntries = eventEntries.length > 0 ? eventEntries : sampleEntries;
 const naturalOrder = new Intl.Collator("es", { numeric: true, sensitivity: "base" });
 
-const photos = selectedEntries
+const photos = eventEntries
   .map(([path, imageModule]) => {
     const fileName = decodeURIComponent(path.split("/").at(-1) ?? path);
     const code = fileName.replace(/\.[^.]+$/, "");

@@ -26,80 +26,100 @@ const {
   storageKey,
   whatsappNumber,
 } = Astro.props;
+
+const hasPhotos = photos.length > 0;
 ---
 
 <section
   class="event-gallery"
   aria-labelledby="event-gallery-title"
-  data-event-gallery
-  data-event-name={eventName}
-  data-storage-key={storageKey}
-  data-whatsapp-number={whatsappNumber}
-  data-has-selection="false"
+  data-event-gallery={hasPhotos ? "" : undefined}
+  data-event-name={hasPhotos ? eventName : undefined}
+  data-storage-key={hasPhotos ? storageKey : undefined}
+  data-whatsapp-number={hasPhotos ? whatsappNumber : undefined}
+  data-has-selection={hasPhotos ? "false" : undefined}
 >
   <header class="event-gallery__header">
     <h1 class="event-gallery__title" id="event-gallery-title">{eventName}</h1>
     <p class="event-gallery__meta">
       {venue} <span aria-hidden="true">·</span> <time datetime={isoDate}>{date}</time>
     </p>
-    <p class="event-gallery__instruction">Selecciona las fotos que quieras comprar.</p>
-    <p class="event-gallery__hint">Puedes tocar una foto para añadirla o quitarla de tu selección.</p>
+    {
+      hasPhotos && (
+        <>
+          <p class="event-gallery__instruction">Selecciona las fotos que quieras comprar.</p>
+          <p class="event-gallery__hint">Puedes tocar una foto para añadirla o quitarla de tu selección.</p>
+        </>
+      )
+    }
   </header>
 
-  <ul class="event-gallery__grid" aria-label={`Fotografías de ${eventName}`}>
-    {
-      photos.map((photo) => (
-        <li class="event-gallery__item">
-          <button
-            class="photo-choice"
-            type="button"
-            aria-label={`Seleccionar foto ${photo.code}`}
-            aria-pressed="false"
-            data-photo-select
-            data-photo-code={photo.code}
-            data-selected="false"
-          >
-            <span class="photo-choice__media">
-              <Image
-                class="photo-choice__image"
-                src={photo.src}
-                alt={`Foto del evento ${eventName}, código ${photo.code}`}
-                loading="lazy"
-                decoding="async"
-                widths={[200, 400]}
-                sizes="(min-width: 1200px) 15vw, (min-width: 900px) 25vw, (min-width: 640px) 33vw, 50vw"
-              />
-              <span class="photo-choice__check" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none">
-                  <path d="m5 12.5 4 4L19 7" stroke="currentColor" stroke-width="2.5" stroke-linecap="square" stroke-linejoin="miter" />
-                </svg>
-              </span>
-            </span>
-            <span class="photo-choice__code">{photo.code}</span>
-          </button>
-        </li>
-      ))
-    }
-  </ul>
+  {
+    hasPhotos ? (
+      <>
+        <ul class="event-gallery__grid" aria-label={`Fotografías de ${eventName}`}>
+          {photos.map((photo) => (
+            <li class="event-gallery__item">
+              <button
+                class="photo-choice"
+                type="button"
+                aria-label={`Seleccionar foto ${photo.code}`}
+                aria-pressed="false"
+                data-photo-select
+                data-photo-code={photo.code}
+                data-selected="false"
+              >
+                <span class="photo-choice__media">
+                  <Image
+                    class="photo-choice__image"
+                    src={photo.src}
+                    alt={`Foto del evento ${eventName}, código ${photo.code}`}
+                    loading="lazy"
+                    decoding="async"
+                    widths={[200, 400]}
+                    sizes="(min-width: 1200px) 15vw, (min-width: 900px) 25vw, (min-width: 640px) 33vw, 50vw"
+                  />
+                  <span class="photo-choice__check" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none">
+                      <path d="m5 12.5 4 4L19 7" stroke="currentColor" stroke-width="2.5" stroke-linecap="square" stroke-linejoin="miter" />
+                    </svg>
+                  </span>
+                </span>
+                <span class="photo-choice__code">{photo.code}</span>
+              </button>
+            </li>
+          ))}
+        </ul>
 
-  <p class="event-gallery__status" aria-live="polite" aria-atomic="true" data-selection-status></p>
+        <p class="event-gallery__status" aria-live="polite" aria-atomic="true" data-selection-status></p>
 
-  <div class="selection-bar" data-selection-bar hidden>
-    <div class="selection-bar__inner">
-      <div class="selection-bar__summary">
-        <p class="selection-bar__count" aria-live="polite" aria-atomic="true" data-selection-count>
-          0 fotos seleccionadas
+        <div class="selection-bar" data-selection-bar hidden>
+          <div class="selection-bar__inner">
+            <div class="selection-bar__summary">
+              <p class="selection-bar__count" aria-live="polite" aria-atomic="true" data-selection-count>
+                0 fotos seleccionadas
+              </p>
+              <p class="selection-bar__price" data-selection-price></p>
+            </div>
+            <button class="selection-bar__clear" type="button" data-clear-selection>
+              Limpiar selección
+            </button>
+            <button class="selection-bar__buy" type="button" data-buy-selection>
+              Comprar seleccionadas
+            </button>
+          </div>
+        </div>
+      </>
+    ) : (
+      <section class="event-gallery__empty">
+        <p class="event-gallery__empty-label">PRÓXIMAMENTE</p>
+        <h2 class="event-gallery__empty-title">Las fotos estarán disponibles pronto</h2>
+        <p class="event-gallery__empty-text">
+          Estamos preparando la galería de este evento. Cuando las fotos estén listas, aparecerán aquí.
         </p>
-        <p class="selection-bar__price" data-selection-price></p>
-      </div>
-      <button class="selection-bar__clear" type="button" data-clear-selection>
-        Limpiar selección
-      </button>
-      <button class="selection-bar__buy" type="button" data-buy-selection>
-        Comprar seleccionadas
-      </button>
-    </div>
-  </div>
+      </section>
+    )
+  }
 </section>
 
 <script>
@@ -294,6 +314,36 @@ const {
     margin-top: var(--space-1);
     color: var(--color-gray-500);
     font-size: var(--font-size-sm);
+  }
+
+  .event-gallery__empty {
+    max-width: var(--measure-prose);
+    padding-block: clamp(var(--space-6), 5vw, var(--space-8));
+    border-top: 1px solid var(--color-gray-300);
+  }
+
+  .event-gallery__empty-label {
+    color: var(--color-gray-500);
+    font-family: var(--font-family-display);
+    font-size: var(--font-size-xs);
+    font-weight: 800;
+    letter-spacing: 0.04em;
+  }
+
+  .event-gallery__empty-title {
+    margin-top: var(--space-2);
+    font-family: var(--font-family-display);
+    font-size: clamp(var(--font-size-xl), 5vw, var(--font-size-2xl));
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1.05;
+    text-transform: uppercase;
+  }
+
+  .event-gallery__empty-text {
+    max-width: 52ch;
+    margin-top: var(--space-3);
+    color: var(--color-gray-500);
   }
 
   .event-gallery__grid {
