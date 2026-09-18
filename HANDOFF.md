@@ -1,265 +1,1080 @@
 # Handoff — Black Sheep Sport (landing)
 
-Este documento es la fuente de verdad del proyecto para quien continúe el trabajo sin contexto previo de cómo se construyó. Todo lo que dice acá fue verificado contra el código en el momento de escribirlo, no reconstruido de memoria. Si algo cambia en el código después de esta fecha, el código manda, no este documento.
+> **Estado actualizado:** 18 de septiembre de 2026  
+> **Producción:** https://sheepsport.com/  
+> **Rama principal:** `main`
+>
+> Este documento es la fuente de verdad operativa del proyecto para quien continúe el trabajo sin contexto previo. Resume el producto, el estado real del código, decisiones de diseño, SEO, analítica, despliegue, datos comerciales y pendientes. Si algo cambia posteriormente, **el código y producción mandan sobre este documento**.
 
 ---
 
 ## 1. Qué es este proyecto
 
-**Black Sheep Sport** es una división de Black Sheep Studio. Fotografían participantes de eventos deportivos (running, ciclismo, CrossFit) en Mérida, Venezuela, y les venden sus fotos directamente. Esta web es de una sola página: el puente entre un código QR impreso y la compra.
+**Black Sheep Sport** es una división de **Black Sheep Studio** dedicada a fotografía deportiva en Mérida, Venezuela.
 
-**A quién se le vende:** al atleta que participó, no al organizador del evento ni a un cliente corporativo. No hay ciclo de ventas, no hay "contactar a un representante" — es venta directa, atleta a atleta.
+El negocio fotografía participantes de eventos deportivos —por ejemplo running, ciclismo, CrossFit y competencias similares— y vende las imágenes directamente al atleta. La web no es un portafolio tradicional ni una tienda con carrito: es el puente entre el QR del evento, la galería y la compra.
 
-**Quién visita y en qué contexto:** alguien que acaba de competir. Escanea un QR impreso (tarjeta o franela que reparte el fotógrafo) durante o justo después del evento. Está de pie, cansado, con el celular en la mano, probablemente con datos móviles lentos. No conoce la marca. No está "explorando" ni comparando servicios — busca específicamente sus fotos de ese día.
+### Público principal
 
-**Qué tiene que entender en 30 segundos**, en este orden:
-1. Dónde están las fotos de su evento.
-2. Cómo funciona el proceso de compra.
-3. Cuánto cuesta.
+El visitante típico es un atleta que acaba de competir:
 
-Si la página no responde estas tres preguntas rápido, falla su único propósito. Éxito = el visitante llega a la galería de Google Drive de su evento y cierra la compra por WhatsApp, sin fricción.
+- llega desde un QR impreso o desde un enlace directo;
+- está usando principalmente el teléfono;
+- puede estar conectado por datos móviles;
+- no necesariamente conoce la marca;
+- quiere encontrar sus fotos con el menor número de pasos posible.
 
-**Posicionamiento:** la fotografía es la prueba, no el copy. La página existe para entregar las fotos rápido, no para venderle una marca al atleta. Todo el texto es corto, directo, sin tono publicitario — la emoción la aporta la foto del atleta en plena competencia, no el copy.
+### Preguntas que la landing debe responder rápido
 
-Fuente completa: `PRODUCT.md` en la raíz del repo.
+1. ¿Dónde están mis fotos?
+2. ¿Cómo las compro?
+3. ¿Cuánto cuestan?
+
+### Funnel operativo
+
+```text
+QR del evento
+→ sheepsport.com
+→ identificar el evento
+→ abrir galería de Google Drive
+→ localizar fotos por código
+→ enviar nombre + códigos por WhatsApp
+→ coordinar pago
+→ recibir fotos finales por WhatsApp como archivos
+```
+
+El éxito de la landing se mide principalmente por dos acciones:
+
+1. que el atleta abra la galería de su evento;
+2. que avance a WhatsApp para cerrar la compra.
+
+La fotografía es el producto y la principal prueba visual. El copy se mantiene corto, directo y funcional.
+
+Fuente de producto complementaria: `PRODUCT.md`.
 
 ---
 
-## 2. Estado actual
+## 2. Estado actual del MVP
 
-Se añadieron las páginas `/privacidad` y `/cookies`, se ampliaron los términos en `/terminos` y el footer enlaza las tres páginas legales. Google Analytics 4 está activo con el Measurement ID `G-T78YKQN3QZ`; Search Console sigue pendiente. Este MVP no incluye banner de cookies.
+El MVP está **publicado y probado online** en:
 
-El sitio tiene **4 rutas públicas indexables**: `/` (landing completa), `/terminos` (política de compra/entrega), `/privacidad` y `/cookies`. También incluye `src/pages/404.astro`, que genera `404.html` para errores y se marca como `noindex, nofollow`. Todas las secciones descritas abajo están construidas, con datos de ejemplo/placeholder donde falta información real (ver sección 8).
+**https://sheepsport.com/**
 
-| Sección | Archivo | Estado |
+El sitio ya tiene cerrados los bloques visuales, legales, SEO básico, analítica base, Search Console, 404 personalizado, OG social, favicons y flujo hacia WhatsApp.
+
+### Único pendiente funcional importante
+
+La **URL real de Google Drive del evento HAPPY WOOD** todavía no se ha recibido. En `Events.astro`, el CTA **“Ver mi galería”** conserva temporalmente `url: "#"`.
+
+Todo lo demás necesario para operar el MVP está implementado.
+
+### Rutas públicas
+
+| Ruta | Estado |
+|---|---|
+| `/` | Home / landing principal |
+| `/terminos/` | Términos y condiciones |
+| `/privacidad/` | Política de privacidad |
+| `/cookies/` | Política de cookies |
+| `404.html` | Página de error personalizada, `noindex, nofollow` |
+
+Astro genera **5 páginas estáticas** en el build.
+
+### Estado por componente
+
+| Sección | Archivo | Estado actual |
 |---|---|---|
-| Header (wordmark, ubicación, CTA "Buscar mis fotos") | `src/components/Header.astro` | Funcional. CTA visible solo desde 900px; lleva a `/#tu-evento`. En móvil solo wordmark + "Mérida". |
-| Hero (foto + titular + kicker) | `src/components/Hero.astro` | Funcional. Foto real (`DSC06482-Mejorado-NR.webp`), no placeholder. |
-| Eventos | `src/components/Events.astro` | Funcional, con **1 evento** de ejemplo en el array (ver sección 8). |
-| Cómo comprar (3 pasos) | `src/components/HowToBuy.astro` | Funcional, copy revisado y semántica `ol` / `li`. |
-| Precios (3 tiers) | `src/components/Pricing.astro` | Funcional: US$4 una foto, US$7 dos fotos, US$12 todas tus fotos. En móvil, las dos primeras opciones ocupan la primera fila y el tier destacado ocupa toda la segunda. |
-| Muestra (galería de 6 fotos) | `src/components/Gallery.astro` | Funcional, 6 fotos reales, siempre visibles (móvil y escritorio), con `widths={[400, 675, 800]}`. |
-| Preguntas frecuentes | `src/components/Faq.astro` | Funcional, 4 preguntas con copy revisado. Sin acordeón — todo el texto siempre visible. |
-| CTA final (WhatsApp) | `src/components/FinalCta.astro` | CTA "Comprar por WhatsApp"; el link (`href`) sigue siendo un placeholder `#` hasta recibir el número real (ver sección 7). |
-| Footer | `src/components/Footer.astro` | Funcional, enlaza a `/terminos`. |
-| Página de Términos | `src/pages/terminos.astro` | Funcional, copy revisado. |
-| Página 404 | `src/pages/404.astro` | Funcional, reutiliza Header/Footer y tokens existentes; no tiene canonical y no se indexa. |
-
-**Performance posterior:** la auditoría de imágenes posterior registró **390,912 B** de transferencia de página completa en 390px DPR3, 430px DPR3 y 1440px DPR2. Las tres mediciones quedan bajo el presupuesto de 500 KB de `PRODUCT.md`. La galería mantiene lazy loading; probar el flujo completo en teléfono físico y red real sigue siendo recomendable antes del despliegue.
-
-**Qué se verificó y a qué anchos:** hay mediciones de transferencia posteriores a 390px DPR3, 430px DPR3 y 1440px DPR2. El único breakpoint de layout es `900px`; aun así, falta una prueba manual del funnel en teléfono físico y QR real antes de publicar.
-
-Dos pasadas de calidad ya corridas y documentadas, ambas en la raíz del repo:
-- `CRITIQUE-LANDING.md` — revisión de diseño (dual-agent), heurísticas de Nielsen, personas, AI-slop check.
-- `AUDIT-LANDING.md` — auditoría técnica (accesibilidad, performance, theming, responsive, anti-patrones). Score final: 18/20.
-
-Ambos documentos tienen fecha de esta sesión de trabajo — si el código cambia después, quedan desactualizados y hay que volver a correr `/impeccable critique landing` y `/impeccable audit landing`.
+| Header | `src/components/Header.astro` | Funcional. Wordmark + ubicación. CTA desktop **“Buscar mis fotos”** hacia `/#tu-evento`. |
+| Hero | `src/components/Hero.astro` | Funcional. Foto real. H1: **“ASÍ SE VE DAR TODO”**. Encuadre móvil corregido para evitar que el copy cubra el rostro. |
+| Eventos | `src/components/Events.astro` | Evento real **HAPPY WOOD**, lugar **Be Happy**, fecha **19 de septiembre de 2026**. CTA de Drive aún pendiente de URL real. |
+| Cómo comprar | `src/components/HowToBuy.astro` | Funcional. Semántica `ol` / `li`; proceso real explicado en 3 pasos. |
+| Precios | `src/components/Pricing.astro` | US$4 / US$7 / US$12. Layout móvil corregido y CTA **“Comprar mis fotos”** conectado a WhatsApp. |
+| Muestra | `src/components/Gallery.astro` | 6 fotos reales. Variantes optimizadas `widths={[400, 675, 800]}`. |
+| FAQ | `src/components/Faq.astro` | 4 preguntas, visibles sin acordeón. Copy alineado con el proceso real. |
+| CTA final | `src/components/FinalCta.astro` | **“Comprar por WhatsApp”**, conectado al WhatsApp real. |
+| Footer | `src/components/Footer.astro` | Enlaces a Privacidad, Cookies y Términos; copy “Un servicio de Black Sheep Studio”. |
+| Back to top | `src/components/BackToTop.astro` | Control pequeño con JS vanilla; aparece tras hacer scroll y respeta `prefers-reduced-motion`. |
+| 404 | `src/pages/404.astro` | Página personalizada; en producción se sirve correctamente mediante `.htaccess`. |
 
 ---
 
-## 3. Stack y decisiones técnicas cerradas
+## 3. Datos comerciales reales
 
-- **Astro puro (`astro@^7.3.3`), sin framework de UI (React/Vue/Svelte).** Por qué: la página es estática, sin interactividad compleja — no hay estado que justifique un framework de componentes. Astro compila a HTML puro, minimiza el JS que llega al navegador. El único JS que corre en el cliente hoy es cero — no hay `<script>` de cliente en ningún componente.
-- **CSS propio con custom properties (`src/styles/tokens.css`), sin Tailwind, sin librería de UI.** Por qué: `PRODUCT.md` lo pide explícito ("sin librerías de UI"). El sistema de diseño es pequeño y a medida (una paleta de 2 colores + escala de grises, una escala tipográfica, una escala de espaciado) — un framework de utilidades no aporta nada que los custom properties no den ya, y agregar Tailwind sumaría peso de build sin necesidad real.
-- **`astro:assets` con `<Image>` para todas las fotos**, nunca `<img>` plano ni rutas a `public/`. Por qué: genera automáticamente las variantes de ancho (`widths`) y sirve la que corresponde según `sizes`, además de optimizar formato/compresión en build. La galería usa explícitamente `widths={[400, 675, 800]}` y las mediciones posteriores se mantienen bajo el presupuesto de 500 KB.
-- **Fuentes autoalojadas en woff2** (`public/fonts/archivo-expanded-latin.woff2`, `public/fonts/instrument-sans-latin.woff2`), declaradas en `src/layouts/Base.astro` con `@font-face` + `<link rel="preload">`. Por qué: `PRODUCT.md` prohíbe explícitamente depender de Google Fonts por `@import`/`<link>` externo — una fuente autoalojada no depende de una request externa que puede fallar o ser lenta en la conexión móvil del usuario objetivo, y con `font-display: swap` el texto nunca queda invisible esperando la fuente.
-- **Un solo breakpoint, en `900px`.** Por qué: `PRODUCT.md` pide "mobile-first estricto (casi 100% del tráfico)". No hay tablet real en el público objetivo (alguien mirando su celular en un evento deportivo), así que no se diseñó un estado intermedio — es móvil o escritorio, sin punto medio.
-- **Deploy estático: se sube el contenido de `dist/` a SiteGround por hosting compartido.** Dominio: **sheepsport.com**, configurado en `astro.config.mjs` mediante `site`. `npm run build` genera `dist/` listo para subir tal cual — no hace falta build en el servidor.
+### Marca
 
-### SEO técnico básico
+**Black Sheep Sport**
 
-- `Base.astro` genera canonical absoluto para las rutas indexables mediante `Astro.url.pathname` y `Astro.site`: `https://sheepsport.com/` y `https://sheepsport.com/terminos/`.
-- El layout genera `og:title`, `og:description`, `og:type`, `og:url`, `og:site_name` y metadatos Twitter equivalentes a partir del `title` y `description` de cada página. **No hay `og:image`** hasta contar con un asset definitivo de 1200×630.
-- `public/robots.txt` permite rastreo y apunta a `https://sheepsport.com/sitemap.xml`.
-- `public/sitemap.xml` es estático y deliberadamente solo lista `/` y `/terminos`.
+División de:
+
+**Black Sheep Studio**
+
+### Ubicación operativa
+
+**Mérida, Venezuela**
+
+### Contacto
+
+**WhatsApp:** +58 424-7438483  
+**Formato `wa.me`:** `584247438483`  
+**Correo:** `info@sheepsport.com`
+
+### Mensaje prellenado de WhatsApp
+
+```text
+Hola, vi mis fotos de HAPPY WOOD y me encantaron. Quiero comprar estas fotos: [escribe aquí los códigos]. ¿Me ayudas con el proceso de pago?
+```
+
+URL actualmente implementada en los CTA de compra:
+
+```text
+https://wa.me/584247438483?text=Hola%2C%20vi%20mis%20fotos%20de%20HAPPY%20WOOD%20y%20me%20encantaron.%20Quiero%20comprar%20estas%20fotos%3A%20%5Bescribe%20aqu%C3%AD%20los%20c%C3%B3digos%5D.%20%C2%BFMe%20ayudas%20con%20el%20proceso%20de%20pago%3F
+```
+
+Los enlaces abren en nueva pestaña con:
+
+```html
+target="_blank"
+rel="noopener noreferrer"
+```
+
+### Precios vigentes
+
+| Producto | Precio |
+|---|---:|
+| 1 foto | US$4 |
+| 2 fotos | US$7 |
+| Todas tus fotos | US$12 |
+
+**“Todas tus fotos”** significa todas las fotografías disponibles y utilizables del atleta en la galería. Cada atleta se compra por separado.
+
+### Métodos de pago
+
+- Pago móvil.
+- Binance.
+
+La compra se considera confirmada una vez verificado el pago.
+
+### Entrega
+
+- La galería general se publica dentro de las 24 horas posteriores al evento.
+- La galería inicial contiene imágenes con marca de agua para selección.
+- Cada archivo tiene un código.
+- El cliente envía su nombre y los códigos por WhatsApp.
+- Las fotos compradas se entregan editadas, en alta resolución y sin marca de agua.
+- La entrega final se realiza por WhatsApp como archivos.
+- Después de confirmar el pago, la entrega se realiza normalmente al día siguiente.
+
+### Política operativa relevante
+
+- Si una persona solicita retirar una fotografía en la que aparece, Black Sheep Sport puede atender la solicitud por WhatsApp o correo.
+- Si el cliente envía un código equivocado, se revisa la selección y se intenta localizar la foto correcta.
+- No existe reembolso automático únicamente por error de código enviado por el cliente.
+- La disponibilidad depende de que existan fotografías utilizables del participante.
 
 ---
 
-## 4. Sistema de diseño
+## 4. Evento activo
 
-Los tokens de color viven en `src/styles/tokens.css`. Hay una excepción deliberada: el gradiente de legibilidad del Hero usa `rgba(13, 15, 12, 0.92)` en `Hero.astro`.
+El primer evento real cargado es:
+
+**Nombre:** HAPPY WOOD  
+**Lugar:** Be Happy  
+**Fecha visible:** 19 de septiembre de 2026  
+**Fecha ISO:** `2026-09-19`  
+**Estado:** activo
+
+La tarjeta conserva el badge **“Activo ahora”**.
+
+### Pendiente del evento
+
+Falta únicamente la URL definitiva de Google Drive:
+
+```ts
+url: "#"
+```
+
+en `src/components/Events.astro`.
+
+Cuando llegue la URL real:
+
+1. reemplazar el `#`;
+2. abrir la galería en nueva pestaña;
+3. mantener `rel="noopener noreferrer"`;
+4. probar el flujo completo desde teléfono;
+5. actualizar este documento.
+
+---
+
+## 5. Stack y arquitectura
+
+### Framework
+
+- **Astro `^7.3.3`**
+- Sin React, Vue ni Svelte.
+- Sitio completamente estático.
+- Build final en `dist/`.
+
+### CSS
+
+- CSS propio.
+- Custom properties en `src/styles/tokens.css`.
+- Sin Tailwind.
+- Sin librerías de UI.
+
+### Imágenes
+
+Las imágenes de contenido utilizan `astro:assets` y `<Image>` para generar variantes optimizadas.
+
+La galería usa:
+
+```ts
+widths={[400, 675, 800]}
+```
+
+Esto fue una optimización deliberada frente al set anterior `[400, 800, 1200]`.
+
+### Fuentes
+
+Autoalojadas en `public/fonts/`:
+
+- Archivo Expanded
+- Instrument Sans
+
+No se cargan Google Fonts externamente.
+
+### JavaScript cliente
+
+El proyecto **ya no es cero-JS**.
+
+Actualmente existe JS por dos razones deliberadas:
+
+1. `BackToTop.astro`: JS vanilla muy pequeño para mostrar/ocultar el botón y ejecutar scroll suave.
+2. Google Analytics 4: `gtag.js` + configuración inline global.
+
+No existe framework de frontend ni bundle de aplicación.
+
+### Breakpoint principal
+
+El breakpoint de layout principal sigue siendo:
+
+```css
+@media (min-width: 900px)
+```
+
+El enfoque permanece mobile-first.
+
+### Deploy
+
+Deploy estático manual en SiteGround:
+
+```bash
+npm run build
+```
+
+Luego se sube **el contenido de `dist/`** al directorio público de `sheepsport.com`.
+
+No hay CI/CD ni build en servidor.
+
+---
+
+## 6. Diseño actual y decisiones cerradas
 
 ### Paleta
 
-| Token | Hex | Uso |
+| Token | Valor | Uso |
 |---|---|---|
-| `--color-accent` | `#cdff3a` | Volt. Único color de marca. |
-| `--color-accent-on` | `#0d0f0c` | Texto sobre el acento — siempre este valor, siempre oscuro. |
-| `--color-ink` | `#0d0f0c` | Negro tintado frío (no `#000` puro). Texto principal, fondos oscuros. |
-| `--color-ink-inverse` | `#f2f4f3` | Texto sobre secciones de fondo oscuro. (Mismo valor hex que `--color-gray-100`, con nombre semántico distinto.) |
-| `--color-surface` | `#ffffff` | Fondo base. |
-| `--color-gray-100` | `#f2f4f3` | Fondo sutil (sección Precios en escritorio). |
-| `--color-gray-200` | `#dfe3e1` | Solo bordes, nunca texto. |
-| `--color-gray-300` | `#b7bebb` | Texto secundario **sobre fondo oscuro únicamente** (subtítulo del CTA final). |
-| `--color-gray-400` | `#7c847f` | Un solo uso: los números 01/02/03 de Cómo Comprar. Ver nota de contraste abajo. |
-| `--color-gray-500` | `#454b47` | Texto secundario sobre fondo claro — el más usado del sistema, 13 apariciones. |
+| `--color-accent` | `#cdff3a` | Volt, color de marca |
+| `--color-accent-on` | `#0d0f0c` | Texto sobre volt |
+| `--color-ink` | `#0d0f0c` | Negro tintado frío |
+| `--color-ink-inverse` | `#f2f4f3` | Texto sobre oscuro |
+| `--color-surface` | `#ffffff` | Fondo base |
+| `--color-gray-100` | `#f2f4f3` | Fondo sutil |
+| `--color-gray-200` | `#dfe3e1` | Bordes |
+| `--color-gray-300` | `#b7bebb` | Texto secundario sobre oscuro |
+| `--color-gray-400` | `#7c847f` | Números visuales 01/02/03 |
+| `--color-gray-500` | `#454b47` | Texto secundario sobre claro |
 
-### Contraste real medido (fórmula WCAG, verificado con script, no estimado)
+### Regla del volt
 
-| Combinación | Ratio | Dónde |
-|---|---|---|
-| `--color-ink` sobre `--color-surface` | 19.25:1 | Texto principal en toda la página |
-| `--color-ink` sobre `--color-gray-100` | 17.43:1 | Texto en la sección Precios (escritorio) |
-| `--color-ink` sobre `--color-accent` | 16.47:1 | Badges, precio destacado |
-| `--color-accent` sobre `--color-ink` | 16.47:1 | Botones y CTAs |
-| `--color-ink-inverse` sobre `--color-ink` | 17.43:1 | Overlay del hero en móvil, titular del CTA final |
-| `--color-gray-300` sobre `--color-ink` | 10.17:1 | Subtítulo del CTA final |
-| `--color-gray-500` sobre `--color-surface` | 8.93:1 | Texto secundario — la combinación más común del sitio |
-| `--color-gray-500` sobre `--color-gray-100` | 8.09:1 | Texto secundario en la sección Precios (escritorio) |
-| `--color-gray-400` sobre `--color-surface` | **3.84:1** | Números 01/02/03 de Cómo Comprar — pasan AA para texto grande (3:1); se muestran en tamaño `2xl` y peso 800. |
+El volt `#CDFF3A`:
 
-Todo lo demás del sistema pasa AA con margen amplio.
-
-### La regla del volt — inviolable
-
-**Volt (`#CDFF3A`) nunca es texto directamente sobre blanco o sobre cualquier fondo claro.** Sus únicos dos usos permitidos son:
-1. Como **relleno sólido**, con texto oscuro (`--color-accent-on` / `--color-ink`) encima.
-2. Como **texto sobre un fondo oscuro** (`--color-ink` o más oscuro).
-
-Esta regla viene de `PRODUCT.md` y `DESIGN.md` y está verificada en el código actual: cero instancias de volt como texto sobre superficie clara.
-
-### Tipografía
-
-- **Display:** `"Archivo Expanded", "Archivo", sans-serif`. Variable font, `@font-face` carga el rango `font-weight: 400 900`, `font-stretch: 125%` (eje wdth fijo en 125, no interactivo). Usado en titulares, kickers, badges, precios, números — siempre `font-weight: 800` en el código actual excepto los `<h1>/<h2>/<h3>` base que heredan `700` de `Base.astro`.
-- **Cuerpo:** `"Instrument Sans", sans-serif`. `@font-face` carga `font-weight: 400 500` únicamente (no hay pesos más pesados de esta familia en el archivo woff2 autoalojado).
-- Escala de tamaño (`--font-size-*`): `xs` 13px, `sm` 15px, `base` 16px (estos 3 son fijos, no fluidos) · `lg` clamp 18–22px, `xl` clamp 22–30px, `2xl` clamp 28–40px, `3xl` clamp 36–56px, `4xl` clamp 42–72px (estos 5 son fluidos con `clamp()`, escalan con el viewport sin salto en el breakpoint de 900px).
-
-### Espaciado
-
-Escala de 8px, tokens `--space-1` a `--space-9`: 4px, 8px, 12px, 16px, 24px, 32px, 48px, 64px, 96px.
-
-Además, dos tokens fluidos que no pertenecen a la escala de 8px porque escalan con el viewport en vez de saltar en el breakpoint:
-- `--container-padding`: `clamp(1rem, -0.46rem + 4.7vw, 3.75rem)` → 16px en móvil, 60px en escritorio, transición continua.
-- `--space-section-block`: `clamp(2rem, 0.7rem + 4.2vw, 4rem)` → 32px a 64px, mismo criterio. Es el padding vertical de cada sección.
-- `--measure-prose`: `65ch`, fijo. Tope de ancho para texto de prosa (respuestas de FAQ, descripciones de pasos, subtítulo del CTA final) — independiente del contenedor, que es ancho para fotos/rejilla pero no para texto corrido.
+1. puede usarse como relleno con texto oscuro;
+2. puede usarse como texto sobre fondo oscuro;
+3. **no** debe usarse como texto sobre blanco o fondos claros.
 
 ### Radios
 
-Un solo token: `--radius-sm: 2px`. Se usa en todos los botones y badges del sitio. No hay ningún otro valor de `border-radius` en el código.
+Un único radio:
 
-### Tokens declarados y sin usar (a propósito)
-
-- `--font-size-lg` — 0 usos. Extremo de la escala tipográfica, se conserva para que la escala esté completa si una sección futura lo necesita.
-- `--space-9` (96px) — 0 usos. Extremo de la escala de espaciado, misma razón.
-
-Ninguno de los dos pesa nada en el CSS final (son variables declaradas, no reglas aplicadas) — no hay costo real en conservarlos.
-
----
-
-## 5. Decisiones de diseño cerradas
-
-Lo siguiente **no se cambia sin permiso explícito**, aunque una revisión de diseño o accesibilidad lo señale:
-
-- **La regla del volt** (sección 4): relleno con texto oscuro, o texto sobre oscuro. Nunca texto volt sobre blanco.
-- **`--color-ink: #0d0f0c`**, negro tintado a propósito. No es un descuido ni hay que "corregirlo" a `#000` puro.
-- **`--radius-sm: 2px`** en todo el sitio. Lenguaje visual cuadrado, deliberado. Los botones nunca son píldora (`border-radius: 999px` o similar).
-- **Instrument Sans como fuente de cuerpo.** Ya tiene un ignore registrado en `.impeccable/config.json` (regla `overused-font`) con la razón explícita: "display face carries brand identity; body face is intentionally neutral."
-- **6 fotos en la sección Muestra, siempre visibles en escritorio, en una sola fila de 6 columnas.** No volver a la versión de 3 fotos grandes ni a ningún otro conteo.
-- **Un solo evento activo en la sección Eventos**, ocupando la mitad izquierda de una rejilla de 2 columnas, con la columna derecha vacía. Es el estado esperado con un solo evento activo, no un bug — la rejilla (`grid-template-columns: repeat(2, 1fr)` en `Events.astro`) ya está preparada para llenarse sola cuando el array `events` tenga 2 o más elementos, sin tocar CSS.
-- **Sin testimonios, sin cifras de trayectoria, sin logos de clientes.** No hay material real todavía — no agregar contenido inventado para llenar ese vacío.
-- **Animación mínima**, solo hover states (inversión de color en botones, `translateY(-2px)` corto, `scale(1.045)` en fotos de Muestra) y `:focus-visible`. Nada de scroll-driven, nada de librerías de animación, nada de GSAP.
-- **Dos altos fijos en píxeles, ambos deliberados** (detalle completo en sección 6):
-  - `Hero.astro`: `410px` en escritorio (`.hero__frame` y `.hero__image`).
-  - `Pricing.astro`: `160px` en móvil / `230px` en escritorio (`.pricing__row`).
-
----
-
-## 6. Trampas y deuda conocida
-
-**Los dos altos fijos en píxeles no son tokens y no deberían serlo.** `Hero.astro` (`.hero__frame`, `.hero__image`, ambos a `410px` en el media query de `900px`) y `Pricing.astro` (`.pricing__row`, `160px`/`230px`). La razón técnica, documentada en un comentario dentro de `Hero.astro`: **`height: 100%` en un hijo de CSS Grid no resuelve contra el alto de la fila** si la fila no tiene un alto explícito en unidades absolutas — es el mismo problema que antes daba `flex-basis` mal calculado con `flex: 1 1 0` en vez de un valor explícito. La solución que funcionó fue fijar el alto en px en ambos lados (contenedor e imagen) en vez de depender de porcentaje. **Consecuencia real:** el valor `410px` del Hero depende del recorte actual de la foto (`object-position: 40% 35%` en escritorio) — si se cambia la foto del hero por una con otra proporción o composición, hay que volver a ajustar tanto el alto como el `object-position` a mano, mirando el resultado en el navegador. No es un valor que se pueda tocar a ciegas.
-
-**Los GIF de 49 bytes en Gallery ya no existen — se puede ignorar esa preocupación.** En una iteración anterior, `Gallery.astro` mostraba 3 fotos grandes en escritorio y ocultaba 3 más con un truco de `<picture><source media>` apuntando a un GIF transparente de 1×1 para evitar la descarga de la foto real en pantallas grandes. Ese enfoque se **reemplazó por completo** cuando la decisión de diseño cambió a "6 fotos siempre visibles" (sección 5) — hoy `Gallery.astro` no tiene ningún `<picture>`, ningún GIF, ningún truco de carga condicional. Se menciona acá solo para que quede registrado que si alguien encuentra referencias viejas a esto en `CRITIQUE-LANDING.md` o en commits anteriores, ya no aplica al código actual.
-
-**El proceso de compra, FAQ y Términos ya fueron revisados.** Una revisión editorial adicional de marca puede hacerse si se desea, pero no se debe revertir ni alterar ese copy sin una decisión de producto.
-
-Además del color del overlay del Hero, hay valores de layout hardcodeados fuera del sistema de tokens, todos deliberados y comentados donde corresponde: los dos altos fijos ya mencionados y el `object-position` de cada foto (valores de porcentaje ajustados a mano mirando el recorte real, no calculables).
-
----
-
-## 7. Qué falta, ordenado por prioridad
-
-### Bloquea la publicación
-
-1. **Número de WhatsApp real.** `FinalCta.astro` tiene `const whatsappUrl = "#"` con un comentario `// Placeholder: todavía no tenemos el número de WhatsApp definitivo.` — hay que reemplazarlo por `https://wa.me/<número>`.
-2. **URL real de la galería de Google Drive del evento activo.** `Events.astro`, el campo `url: "#"` del único evento en el array.
-3. **Nombre y fecha reales del evento piloto.** `Events.astro` tiene `"CrossFit Open Mérida"` / `"14 de septiembre, 2026"` como datos de ejemplo — confirmar si es el evento real con el que se lanza o si hay que reemplazarlo.
-4. **Foto final del hero.** La foto actual (`DSC06482-Mejorado-NR.webp`) es real, no un placeholder — pero confirmar si es la elegida para el lanzamiento o si se va a reemplazar por otra.
-5. **Deploy a SiteGround**, dominio `sheepsport.com`. No hay ningún script ni configuración de despliegue en el repo — es un paso manual: `npm run build` y subir el contenido de `dist/`.
-6. **Prueba en un teléfono real con datos móviles**, no solo en el navegador de escritorio. Ninguna de las pruebas hechas hasta ahora fue en un dispositivo físico ni con throttling de red real (ver sección 2, límite del entorno de pruebas).
-
-### No bloquea (se puede publicar sin esto y arreglarlo después)
-
-- Una revisión editorial adicional de marca, si se desea.
-- Los tres eventos de medición del funnel para Google Analytics 4 — **no está definido cuáles son los tres eventos.** La etiqueta base está activa, pero estos eventos no están implementados; hay que definirlos antes de añadirlos, no asumir cuáles son.
-- Prueba manual en teléfono físico, QR real y conexión móvil antes de publicar.
-
----
-
-## 8. Datos que faltan
-
-| Dato | Archivo | Ubicación exacta |
-|---|---|---|
-| Número de WhatsApp | `src/components/FinalCta.astro` | `const whatsappUrl = "#";` (línea 4) |
-| URL de galería de Drive del evento activo | `src/components/Events.astro` | campo `url: "#"` dentro del array `events` (línea 15) |
-| Confirmar nombre/fecha del evento piloto | `src/components/Events.astro` | `name: "CrossFit Open Mérida"` (línea 12), `date`/`isoDate` (líneas 13–14) |
-| Confirmar foto del hero | `src/components/Hero.astro` | `import heroPhoto from "../assets/photos/DSC06482-Mejorado-NR.webp"` (línea 3) |
-| Confirmar las 6 fotos de Muestra | `src/components/Gallery.astro` | array `photos` (líneas 10–17) |
-| Definir los 3 eventos de medición de GA4 | — (no implementado, no decidido en ningún documento) | — |
-
----
-
-## 9. Cómo trabajar en este repo
-
-### Comandos
-
-```sh
-npm install          # una vez
-npm run dev           # servidor de desarrollo en localhost:4321
-astro dev --background  # variante recomendada por AGENTS.md: corre en background
-astro dev stop         # detiene el servidor en background
-astro dev status       # chequea si sigue corriendo
-npm run build          # genera dist/
-npm run preview        # sirve dist/ localmente para probar el build de producción
+```css
+--radius-sm: 2px;
 ```
 
-### Estructura de carpetas
+El lenguaje visual debe mantenerse cuadrado; no convertir botones en píldoras.
 
+### Tipografía
+
+**Display**
+
+```text
+"Archivo Expanded", "Archivo", sans-serif
 ```
+
+Usada en títulos, badges, precios y elementos de identidad.
+
+**Body**
+
+```text
+"Instrument Sans", sans-serif
+```
+
+El header dejó de utilizar `ui-monospace`; la ubicación usa la fuente de cuerpo para mantener coherencia tipográfica.
+
+### Hero
+
+Foto actual:
+
+```text
+DSC06482-Mejorado-NR.webp
+```
+
+Encuadre actual:
+
+- móvil: `object-position: 40% 55%`;
+- escritorio: `object-position: 40% 35%`.
+
+El ajuste móvil se hizo específicamente para que el copy no cubra el rostro.
+
+No cambiar estos valores a ciegas si se reemplaza la foto.
+
+### Precios
+
+En móvil:
+
+- grid de 2 columnas;
+- 1 foto y 2 fotos ocupan la primera fila;
+- **“Todas tus fotos”** ocupa toda la segunda fila;
+- no debe existir scroll horizontal.
+
+En desktop, desde 900px:
+
+- se restaura layout horizontal;
+- alto de las opciones: `230px`.
+
+Se añadió debajo de los precios el CTA:
+
+**“Comprar mis fotos”**
+
+con el mismo WhatsApp real del CTA final.
+
+### Galería
+
+- 6 fotos.
+- Siempre visibles.
+- No volver al experimento anterior de GIF transparente / carga condicional.
+- Hover de zoom únicamente en dispositivos con hover real / pointer fino.
+
+### Interacciones móviles
+
+La pasada de accesibilidad/móvil añadió:
+
+- `touch-action: manipulation` en enlaces y botones;
+- targets táctiles ampliados donde era necesario;
+- hover limitado a `(hover: hover) and (pointer: fine)`;
+- estados `:active` discretos;
+- `HowToBuy` convertido a `ol` / `li`;
+- wordmark del Header con área táctil real de ~44px;
+- enlaces legales del Footer con hit area ampliada.
+
+### Footer
+
+Los enlaces:
+
+- Privacidad
+- Cookies
+- Términos
+
+usan un tamaño visual reducido:
+
+```css
+--font-size-xs
+```
+
+aprox. `0.8125rem`, conservando el área táctil mediante pseudo-elemento.
+
+---
+
+## 7. Performance
+
+### Resultado posterior a la optimización de galería
+
+La auditoría posterior registró aproximadamente:
+
+**390,912 B**
+
+de transferencia total de página en:
+
+- 390px DPR3;
+- 430px DPR3;
+- 1440px DPR2.
+
+La versión anterior llegaba a:
+
+**525,529 B**
+
+en escenarios de alta densidad.
+
+La optimización de las variantes de galería produjo un ahorro aproximado de:
+
+**134,617 B (~25.6%)**
+
+### Nota
+
+Estas cifras corresponden al presupuesto de assets estáticos medido durante la auditoría de imágenes. La carga externa de Google Analytics se añadió posteriormente y no debe confundirse con ese presupuesto de imágenes/assets propios.
+
+### Imagen Open Graph
+
+Asset definitivo:
+
+```text
+public/og-black-sheep-sport.png
+```
+
+Dimensiones:
+
+```text
+1200 × 630 px
+```
+
+Peso final:
+
+```text
+471,316 bytes
+```
+
+El PNG original recibido pesaba 2,107,500 bytes y fue reducido aproximadamente 77.64% sin cambiar la composición.
+
+---
+
+## 8. SEO técnico y metadata
+
+### Home
+
+**Title definitivo**
+
+```text
+Black Sheep Sport | Fotografía deportiva en Mérida
+```
+
+**Meta description definitiva**
+
+```text
+Fotografía deportiva profesional en Mérida, Venezuela. Encuentra las fotos de tu evento, elige tus favoritas y coordina la compra por WhatsApp.
+```
+
+**H1**
+
+```text
+ASÍ SE VE DAR TODO
+```
+
+El H1 se mantiene como mensaje de marca. El contexto semántico lo aportan title, description, kicker y contenido visible.
+
+### Nombre oficial del sitio
+
+```text
+Black Sheep Sport
+```
+
+`og:site_name` utiliza exactamente ese nombre.
+
+### Open Graph / Twitter
+
+`Base.astro` genera:
+
+- `og:title`
+- `og:description`
+- `og:type`
+- `og:url`
+- `og:site_name`
+- `og:image`
+- `og:image:width`
+- `og:image:height`
+- metadata equivalente para Twitter
+
+Imagen social definitiva:
+
+```text
+https://sheepsport.com/og-black-sheep-sport.png
+```
+
+### Canonicals
+
+Política final:
+
+```text
+https://sheepsport.com/
+https://sheepsport.com/terminos/
+https://sheepsport.com/privacidad/
+https://sheepsport.com/cookies/
+```
+
+### Trailing slash
+
+`astro.config.mjs`:
+
+```js
+trailingSlash: "always"
+```
+
+Esto se alineó con el comportamiento real del hosting.
+
+### Sitemap
+
+Archivo:
+
+```text
+public/sitemap.xml
+```
+
+URLs:
+
+```text
+https://sheepsport.com/
+https://sheepsport.com/terminos/
+https://sheepsport.com/privacidad/
+https://sheepsport.com/cookies/
+```
+
+No se incluyen `lastmod` inventados.
+
+### robots.txt
+
+`public/robots.txt` permite rastreo y apunta al sitemap.
+
+### Search Console
+
+**Configurado, verificado y probado.**
+
+El sitemap ya fue enviado y aceptado correctamente.
+
+No queda una tarea pendiente de Search Console para el lanzamiento del MVP.
+
+### HTTP / HTTPS / www
+
+`public/.htaccess` consolida las variantes hacia:
+
+```text
+https://sheepsport.com/
+```
+
+Reglas actuales:
+
+```apache
+RewriteEngine On
+
+RewriteCond %{HTTPS} !=on [OR]
+RewriteCond %{HTTP_HOST} ^www\.sheepsport\.com$ [NC]
+RewriteRule ^ https://sheepsport.com%{REQUEST_URI} [R=301,L]
+```
+
+La ruta solicitada se conserva.
+
+---
+
+## 9. Google Analytics
+
+Google Analytics 4 está activo globalmente desde `src/layouts/Base.astro`.
+
+### Measurement ID
+
+```text
+G-T78YKQN3QZ
+```
+
+Se utiliza el snippet oficial de `gtag.js`.
+
+### Estado
+
+- GA4 activo.
+- Verificado online.
+- No se utiliza Google Tag Manager.
+- No se instalaron paquetes de Analytics.
+- No existe banner de cookies en este MVP.
+- La Política de privacidad y la Política de cookies fueron actualizadas para reflejar que GA4 está activo.
+
+### Eventos personalizados
+
+Todavía no se implementaron eventos personalizados.
+
+Los dos eventos más útiles previstos son:
+
+```text
+gallery_open
+whatsapp_click
+```
+
+No son bloqueantes para operar el MVP.
+
+Cuando se implementen, conviene evaluar si deben marcarse como **key events** en GA4.
+
+---
+
+## 10. Páginas legales
+
+### `/terminos/`
+
+Título visible:
+
+**Términos y condiciones**
+
+Incluye:
+
+- selección mediante códigos;
+- marca de agua;
+- precios;
+- definición de “Todas tus fotos”;
+- pago;
+- entrega digital;
+- tiempos;
+- disponibilidad de fotografías;
+- errores de códigos;
+- retiro de imágenes;
+- uso personal;
+- terceros;
+- cambios futuros.
+
+### `/privacidad/`
+
+Incluye:
+
+- responsable y alcance;
+- información que puede tratarse;
+- finalidades;
+- fotografías de eventos;
+- servicios de terceros;
+- Google Analytics 4;
+- conservación;
+- derechos y solicitudes;
+- cambios.
+
+Canales de contacto:
+
+- WhatsApp +58 424-7438483
+- `info@sheepsport.com`
+
+### `/cookies/`
+
+Incluye:
+
+- explicación básica de cookies;
+- estado actual;
+- terceros;
+- uso de Google Analytics 4;
+- control desde navegador;
+- contacto;
+- actualizaciones.
+
+No existe banner de cookies ni panel de preferencias en el MVP actual.
+
+Esta ausencia es una decisión de producto actual; no introducir uno automáticamente sin una decisión explícita.
+
+---
+
+## 11. 404 personalizado
+
+Página:
+
+```text
+src/pages/404.astro
+```
+
+Genera:
+
+```text
+dist/404.html
+```
+
+Configuración del servidor:
+
+```text
+public/.htaccess
+```
+
+Directiva:
+
+```apache
+ErrorDocument 404 /404.html
+```
+
+Se probó online después del deploy: SiteGround ya muestra el 404 personalizado en lugar de su error genérico.
+
+La página:
+
+- no tiene canonical;
+- usa `noindex, nofollow`;
+- reutiliza Header/Footer y el sistema visual existente.
+
+No sustituir esto por redirecciones 301/302 hacia `/404`.
+
+---
+
+## 12. Favicons e identidad técnica
+
+Assets actuales:
+
+```text
+public/favicon.webp
+public/favicon.png
+```
+
+Ambos son:
+
+```text
+512 × 512 px
+```
+
+Se eliminaron los antiguos:
+
+```text
+public/favicon.svg
+public/favicon.ico
+```
+
+`Base.astro` declara:
+
+```html
+<link rel="icon" type="image/webp" sizes="512x512" href="/favicon.webp" />
+<link rel="icon" type="image/png" sizes="512x512" href="/favicon.png" />
+<link rel="apple-touch-icon" sizes="512x512" href="/favicon.png" />
+```
+
+Para el MVP no se consideró necesario regenerar un `.ico`.
+
+---
+
+## 13. Back to top
+
+Componente:
+
+```text
+src/components/BackToTop.astro
+```
+
+Comportamiento:
+
+- oculto inicialmente;
+- aparece aproximadamente desde `scrollY >= 500`;
+- listener de scroll pasivo;
+- scroll suave mediante `window.scrollTo`;
+- si `prefers-reduced-motion` está activo, evita la animación;
+- target táctil de 44 × 44 px;
+- SVG inline;
+- hover solo en dispositivos con hover real;
+- feedback `:active`;
+- sin dependencias externas.
+
+El JS inline original se mantuvo extremadamente pequeño (~348 B en la medición realizada al implementarlo).
+
+No se muestra en el 404.
+
+---
+
+## 14. Despliegue y pruebas realizadas
+
+### Producción
+
+```text
+https://sheepsport.com/
+```
+
+### Ya probado
+
+- deploy online;
+- Home;
+- páginas legales;
+- 404 personalizado;
+- CTA de WhatsApp;
+- mensaje prellenado;
+- responsive móvil;
+- Hero móvil;
+- CTA posterior a precios;
+- OG final;
+- GA4 en producción;
+- Search Console;
+- sitemap enviado y aceptado;
+- flujo QR → landing probado.
+
+### Pendiente para prueba completamente end-to-end
+
+El último tramo:
+
+```text
+Landing → Google Drive
+```
+
+no puede cerrarse hasta disponer de la URL real del Drive de HAPPY WOOD.
+
+En cuanto se agregue:
+
+```text
+QR → Home → HAPPY WOOD → Drive → códigos → WhatsApp
+```
+
+debe probarse una vez más desde un teléfono con datos móviles.
+
+---
+
+## 15. Archivos y configuración clave
+
+### Estructura principal
+
+```text
 src/
-  components/    # las 9 secciones de la landing, un componente .astro por sección
-  layouts/       # Base.astro — el único layout, con el <head>, fuentes y reset global
-  pages/         # index.astro, terminos.astro y 404.astro
-  styles/        # tokens.css — todo el sistema de diseño, un solo archivo
-  assets/photos/ # 18 fotos fuente (.webp), solo 7 están importadas por algún componente
+  components/
+    Header.astro
+    Hero.astro
+    Events.astro
+    HowToBuy.astro
+    Pricing.astro
+    Gallery.astro
+    Faq.astro
+    FinalCta.astro
+    Footer.astro
+    BackToTop.astro
+
+  layouts/
+    Base.astro
+
+  pages/
+    index.astro
+    terminos.astro
+    privacidad.astro
+    cookies.astro
+    404.astro
+
+  styles/
+    tokens.css
+
+  assets/photos/
+    ...
+
 public/
-  fonts/         # los dos woff2 autoalojados
-  favicon.ico, favicon.svg, robots.txt, sitemap.xml
-design/
-  reference/     # black-sheep-sport-landing.html — SOLO REFERENCIA VISUAL, no se toca ni se
-                 # importa desde ningún lado. Es un export de una herramienta de diseño con
-                 # imágenes en base64 embebidas; ignorado por git (.gitignore) y excluido del
-                 # build. Sirve para comparar contra el diseño aprobado, nada más.
-  export/        # export previo, mismo trato: solo referencia, ignorado por git
-.impeccable/      # config de la skill Impeccable (ver abajo)
+  fonts/
+  favicon.webp
+  favicon.png
+  og-black-sheep-sport.png
+  robots.txt
+  sitemap.xml
+  .htaccess
 ```
 
-### Convención de commits
+### Otros documentos relevantes
 
-Mensajes cortos, en inglés, formato `tipo: descripción` (`feat:`, `fix:`, `chore:`, `docs:`). Ejemplos reales del historial: `feat: implement landing sections, tokens and fonts`, `fix: align hero with container padding and correct image framing`, `chore: remove duplicate assets and exploration artifacts`.
+```text
+PRODUCT.md
+README.md
+HANDOFF.md
+CRITIQUE-LANDING.md
+AUDIT-LANDING.md
+AUDITORIA-PROYECTO.md
+```
 
-### Impeccable
-
-El proyecto tiene la skill **Impeccable** instalada (herramienta de diseño/calidad usada durante la construcción). Comandos relevantes si se sigue usando: `/impeccable critique <target>` (revisión de diseño), `/impeccable audit <target>` (auditoría técnica), `/impeccable detect <path>` (linter de anti-patrones de diseño). `.impeccable/config.json` tiene un ignore registrado para la regla `overused-font` sobre Instrument Sans (ver sección 5) — no borrarlo, es una decisión ya tomada, no un descuido de configuración.
+Las auditorías históricas describen estados anteriores del proyecto. Si contradicen este documento o el código actual, usar el código actual como referencia.
 
 ---
 
-## 10. Historial de decisiones descartadas
+## 16. Comandos de trabajo
 
-Para que nadie las reintente pensando que no se consideraron:
+```bash
+npm install
+npm run dev
+npm run build
+npm run preview
+```
 
-- **HTML plano sin proceso de build.** Se descartó a favor de Astro por la necesidad de `astro:assets` (variantes de ancho automáticas por foto) y de un sistema de componentes reusable — mantener 9 secciones repetidas en HTML plano sin compartir nada habría sido inviable de mantener.
-- **Imágenes en base64 incrustadas en un solo archivo HTML.** Es el formato del export de referencia en `design/reference/` — explícitamente rechazado como técnica de producción. El proyecto usa `astro:assets` + `<Image>` para todo.
-- **Tailwind por CDN (`<script src="cdn.tailwindcss.com">`).** Descartado junto con Tailwind en general (sección 3) — además, la variante CDN específicamente compila en el navegador del visitante, lo peor posible para el presupuesto de performance de este proyecto.
-- **Testimonios de relleno / cifras de trayectoria inventadas.** Explícitamente prohibido en `PRODUCT.md` — no hay material real todavía, y agregar contenido inventado para parecer más establecido contradice la honestidad de marca que pide el proyecto.
-- **Hero tipo SaaS: foto en una card, debajo o al lado del bloque de texto, con sombra o borde.** Descartado a favor de la foto a sangre completa (a pantalla completa en móvil, ocupando la mitad del ancho sin marco en escritorio) — la foto es el producto, no una ilustración de apoyo dentro de una tarjeta.
-- **Tratamiento visual "apagado" (gris, sin hover) con `aria-disabled="true"` para los CTA mientras `href="#"` sigue como placeholder.** Se consideró y se descartó explícitamente: es código que existe solo para un estado temporal, fácil de olvidar quitar, y el riesgo de publicar con los dos botones principales del funnel visiblemente "rotos" en gris es peor que el problema que resuelve. La solución acordada es cargar las URLs reales (sección 7), no disfrazar el estado placeholder.
+Si el proyecto conserva los helpers documentados originalmente para Astro en background:
+
+```bash
+astro dev --background
+astro dev stop
+astro dev status
+```
+
+### Deploy manual
+
+```bash
+npm run build
+```
+
+Subir **el contenido de `dist/`**, no la carpeta contenedora, al directorio público del dominio.
+
+Después del deploy comprobar:
+
+```text
+https://sheepsport.com/
+https://sheepsport.com/terminos/
+https://sheepsport.com/privacidad/
+https://sheepsport.com/cookies/
+https://sheepsport.com/sitemap.xml
+https://sheepsport.com/robots.txt
+https://sheepsport.com/una-url-que-no-existe
+```
+
+---
+
+## 17. Convención de commits
+
+Formato habitual:
+
+```text
+tipo: descripción
+```
+
+Tipos usados:
+
+```text
+feat:
+fix:
+perf:
+docs:
+copy:
+seo:
+chore:
+```
+
+Ejemplos recientes:
+
+```text
+feat: connect WhatsApp purchase CTA
+perf: optimize gallery image variants
+feat: add legal pages and policies
+feat: add Google Analytics tracking
+fix: use custom 404 on SiteGround
+feat: update social sharing image
+seo: improve metadata and canonical URLs
+seo: prioritize brand in home title
+```
+
+Los commits los realiza el usuario; Codex no debe hacer commits salvo instrucción explícita.
+
+---
+
+## 18. Impeccable y auditorías
+
+El proyecto tiene configuración de **Impeccable** en:
+
+```text
+.impeccable/
+```
+
+Se utilizó durante la construcción para crítica visual y auditoría técnica.
+
+Documentos históricos:
+
+- `CRITIQUE-LANDING.md`
+- `AUDIT-LANDING.md`
+
+También existe una auditoría SEO posterior que detectó y llevó a corregir:
+
+- title demasiado genérico;
+- meta description demasiado corta;
+- HTTP sin consolidación;
+- `www` sin consolidación;
+- trailing slash inconsistente.
+
+Esos puntos ya están resueltos en el estado actual.
+
+No reejecutar o “corregir” decisiones de diseño cerradas automáticamente sin revisar primero este documento y `PRODUCT.md`.
+
+---
+
+## 19. Decisiones descartadas que no deben reaparecer por defecto
+
+### HTML plano sin build
+
+Descartado. Astro se mantiene por componentes + optimización de imágenes.
+
+### Tailwind / CDN Tailwind
+
+Descartado. El proyecto usa CSS propio.
+
+### Base64 para imágenes de producción
+
+Descartado. El export de referencia no es una estrategia de producción.
+
+### Testimonios o métricas inventadas
+
+Prohibido. No hay que rellenar la landing con prueba social ficticia.
+
+### Hero SaaS dentro de card
+
+Descartado. La fotografía debe sentirse como el producto, no como una ilustración secundaria.
+
+### Deshabilitar visualmente los CTA placeholder
+
+Descartado. El único placeholder restante es la URL de Drive y debe sustituirse por la URL real, no esconderse con estados grises artificiales.
+
+### Banner de cookies
+
+No forma parte del MVP actual. No añadirlo automáticamente.
+
+### Schema avanzado
+
+No se implementó en esta primera fase SEO. Puede evaluarse después sin bloquear el MVP.
+
+---
+
+## 20. Pendientes actuales, en orden real de prioridad
+
+### P0 — pendiente funcional
+
+1. **Recibir URL real de Google Drive de HAPPY WOOD.**
+2. Reemplazar `url: "#"` en `src/components/Events.astro`.
+3. Probar el CTA “Ver mi galería” en producción.
+4. Hacer una pasada end-to-end:
+   `QR → Home → HAPPY WOOD → Drive → códigos → WhatsApp`.
+
+### P1 — útil, no bloqueante
+
+1. Eventos GA4:
+   - `gallery_open`
+   - `whatsapp_click`
+2. Evaluar esos eventos como key events.
+3. Actualizar este HANDOFF cuando el Drive quede conectado.
+
+### P2 — mejoras futuras
+
+- Evaluar schema (`Organization`, `LocalBusiness` u otro que corresponda).
+- Auditoría específica de `alt` text.
+- Páginas individuales por evento si el negocio empieza a captar búsquedas orgánicas de cada competencia.
+- Automatizar deploy si el volumen de cambios aumenta.
+- Revisar consentimiento/cookies si cambia la operación, jurisdicción o stack de tracking.
+
+---
+
+## 21. Estado de cierre del MVP
+
+A fecha **18/09/2026**, el MVP está:
+
+- diseñado;
+- desarrollado;
+- responsive;
+- publicado;
+- probado en producción;
+- conectado a WhatsApp;
+- con precios reales;
+- con evento real;
+- con páginas legales;
+- con correo oficial;
+- con GA4;
+- con Search Console;
+- con sitemap;
+- con robots;
+- con 404 personalizado;
+- con favicon;
+- con imagen Open Graph definitiva;
+- con SEO básico on-page y técnico;
+- con performance de imágenes optimizada.
+
+**Único pendiente para cerrar completamente el funnel comercial:** conectar la galería real de Google Drive de **HAPPY WOOD**.
