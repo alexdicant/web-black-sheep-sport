@@ -1,0 +1,2 @@
+# Use Astro's custom 404 page for missing resources
+ErrorDocument 404 /404.html
