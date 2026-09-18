@@ -5,14 +5,14 @@ interface Props {
   title: string;
   description?: string;
   canonical?: boolean;
-  noindex?: boolean;
+  robots?: "noindex, follow" | "noindex, nofollow";
 }
 
 const {
   title,
   description = "Fotografía deportiva en Mérida. Encuentra tus fotos del evento.",
   canonical = true,
-  noindex = false,
+  robots,
 } = Astro.props;
 const canonicalUrl = canonical ? new URL(Astro.url.pathname, Astro.site) : undefined;
 const ogImageUrl = new URL("/og-black-sheep-sport.png", Astro.site);
@@ -24,7 +24,7 @@ const ogImageUrl = new URL("/og-black-sheep-sport.png", Astro.site);
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
-    {noindex && <meta name="robots" content="noindex, nofollow" />}
+    {robots && <meta name="robots" content={robots} />}
     {canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />

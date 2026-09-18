@@ -558,7 +558,7 @@ photos.sort((a, b) => naturalOrder.compare(a.code, b.code));
 <Base
   title="REEMPLAZAR NOMBRE | Black Sheep Sport"
   description="Galería de fotografías de REEMPLAZAR NOMBRE. Encuentra y selecciona tus fotos del evento."
-  noindex={true}
+  robots="noindex, follow"
 >
   <Header />
   <main>
@@ -653,12 +653,12 @@ HAPPY WOOD usa actualmente:
 Title: HAPPY WOOD | Black Sheep Sport
 Description: Galería de fotografías de HAPPY WOOD. Encuentra y selecciona tus fotos del evento.
 Canonical: https://sheepsport.com/eventos/happy-wood/
-Robots: noindex, nofollow
+Robots: noindex, follow
 ```
 
 Detalles de implementación:
 
-- la página pasa `noindex={true}` a `Base`;
+- la página pasa `robots="noindex, follow"` a `Base`;
 - no pasa la prop `canonical`, por lo que se conserva su default `true`;
 - `Base.astro` genera el canonical con `new URL(Astro.url.pathname, Astro.site)`;
 - `astro.config.mjs` define `site: "https://sheepsport.com"` y `trailingSlash: "always"`.
@@ -666,7 +666,7 @@ Detalles de implementación:
 Al crear otro evento:
 
 - adaptar title y description al nombre real;
-- mantener `noindex={true}` como política por defecto actual hasta que exista otra decisión SEO explícita;
+- mantener `robots="noindex, follow"` para las galerías hasta que exista otra decisión SEO explícita;
 - verificar que la ruta genere un canonical del dominio `https://sheepsport.com` y con slash final;
 - no añadir automáticamente la ruta al sitemap: el sitemap actual no incluye galerías de eventos.
 
@@ -1027,7 +1027,7 @@ Comprobar:
 - [ ] WhatsApp usa el evento correcto y `584247438483`;
 - [ ] WhatsApp de 3+ no presupone que las fotos son de una sola persona;
 - [ ] el canonical tiene dominio correcto y slash final;
-- [ ] la página conserva `noindex, nofollow` salvo decisión SEO expresa;
+- [ ] la página conserva `noindex, follow` salvo decisión SEO expresa;
 - [ ] no se añadió la ruta al sitemap sin autorización;
 - [ ] móvil mantiene 2 columnas;
 - [ ] no existe overflow horizontal;
@@ -1113,7 +1113,7 @@ Cantidad esperada de fotos:
 Convención de filenames:
 WhatsApp confirmado:
 Precios confirmados:
-Política SEO confirmada (default: noindex):
+Política SEO confirmada (galerías: `noindex, follow`; 404: `noindex, nofollow`):
 
 ARCHIVOS A CREAR
 
@@ -1556,12 +1556,16 @@ URLs:
 
 ```text
 https://sheepsport.com/
-https://sheepsport.com/terminos/
-https://sheepsport.com/privacidad/
-https://sheepsport.com/cookies/
 ```
 
 No se incluyen `lastmod` inventados.
+
+Política de indexación:
+
+- INDEXABLE: Home.
+- NOINDEX, FOLLOW: galerías de eventos, términos, privacidad y cookies.
+- NOINDEX, NOFOLLOW: 404.
+- El sitemap solo debe incluir URLs indexables.
 
 ### robots.txt
 
