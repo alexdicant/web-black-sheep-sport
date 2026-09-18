@@ -100,9 +100,10 @@ La galería fue probada físicamente y el flujo funciona. Esta funcionalidad sig
 | `/privacidad/` | Política de privacidad |
 | `/cookies/` | Política de cookies |
 | `/eventos/happy-wood/` | Galería propia de HAPPY WOOD; solo existe en la rama feature hasta su merge |
+| `/eventos/fogueo-be-fit/` | Galería propia de Fogueo Be Fit; evento pasado, creada con 0 fotografías y estado “Próximamente” |
 | `404.html` | Página de error personalizada, `noindex, nofollow` |
 
-Astro genera **6 páginas estáticas** en el build de la rama feature. El MVP original de `main` generaba 5 antes de incorporar la ruta del evento.
+Astro genera **7 páginas estáticas** en el build de la rama feature. El MVP original de `main` generaba 5 antes de incorporar las rutas de eventos.
 
 ### Estado por componente
 
@@ -110,7 +111,7 @@ Astro genera **6 páginas estáticas** en el build de la rama feature. El MVP or
 |---|---|---|
 | Header | `src/components/Header.astro` | Funcional. Wordmark + ubicación. CTA desktop **“Buscar mis fotos”** hacia `/#tu-evento`. |
 | Hero | `src/components/Hero.astro` | Funcional. Foto real. H1: **“ASÍ SE VE DAR TODO”**. Encuadre móvil corregido para evitar que el copy cubra el rostro. |
-| Eventos | `src/components/Events.astro` | Evento real **HAPPY WOOD**, lugar **Be Happy**, fecha **19 de septiembre de 2026**. En la rama feature, el CTA apunta a `/eventos/happy-wood/`. |
+| Eventos | `src/components/Events.astro` | **HAPPY WOOD** permanece activo y **Fogueo Be Fit** figura como evento pasado. Ambos CTA apuntan a sus galerías propias. |
 | Galería seleccionable | `src/components/EventGallery.astro` | Componente reutilizable con estado vacío, selección accesible, localStorage, pricing informativo y WhatsApp dinámico. |
 | Página de evento | `src/pages/eventos/happy-wood.astro` | Descubre automáticamente las fotos reales del evento mediante `import.meta.glob()`. |
 | Cómo comprar | `src/components/HowToBuy.astro` | Funcional. Semántica `ol` / `li`; proceso real explicado en 3 pasos. |
@@ -225,6 +226,21 @@ La tarjeta conserva el badge **“Activo ahora”**.
 - Estado: funcional y probado, todavía sin merge a `main`.
 
 La referencia anterior a `url: "#"` y a una URL pendiente de Google Drive corresponde al MVP original; ya no describe esta rama. Google Drive no forma parte del flujo comercial propuesto por la feature.
+
+### Evento pasado: Fogueo Be Fit
+
+- **Nombre:** Fogueo Be Fit.
+- **Lugar:** Be Fit Mérida.
+- **Fecha visible:** 16 de octubre de 2025.
+- **Fecha ISO:** `2025-10-16`.
+- **Slug:** `fogueo-be-fit`.
+- **Estado:** evento pasado; no muestra el badge “Activo ahora” en Home.
+- **Página creada:** `src/pages/eventos/fogueo-be-fit.astro`.
+- **URL:** `/eventos/fogueo-be-fit/`.
+- **Galería propia:** usa `EventGallery.astro` y la carpeta `src/assets/events/fogueo-be-fit/`.
+- **Fotografías actuales:** 0; la página muestra automáticamente “Próximamente”.
+- **Pendiente:** copiar en su carpeta el lote preparado de imágenes y ejecutar build/deploy.
+- **Key de selección:** `black-sheep-selection-fogueo-be-fit`.
 
 ---
 
@@ -480,13 +496,15 @@ No copiar mecánicamente valores de HAPPY WOOD. En la página actual están hard
 
 La estructura real que debe conservarse es:
 
-1. imports de `ImageMetadata`, `Base`, `Header`, `EventGallery`, `Footer` y `BackToTop`;
-2. interface local `ImageModule` con `default: ImageMetadata`;
-3. glob eager de la carpeta específica;
-4. transformación de path a `{ src, code }`;
-5. orden natural;
+1. imports de `Base`, `Header`, `EventGallery`, `Footer`, `BackToTop` y la utilidad `buildEventPhotos`;
+2. tipo compartido `EventImageModule` importado desde `src/utils/eventPhotos.ts`;
+3. glob eager y literal de la carpeta específica;
+4. constante con el nombre real del evento;
+5. llamada a `buildEventPhotos()`, que valida filenames, detecta duplicados y aplica el orden natural;
 6. `Base` con metadata;
 7. `Header`, `<main>`, `EventGallery`, `Footer` y `BackToTop`.
+
+La validación reusable vive en `src/utils/eventPhotos.ts` y debe seguir siendo compartida por todas las páginas. No volver a copiar su regex, límite, detección de duplicados ni orden natural dentro de cada evento. El `import.meta.glob()` sí permanece en cada página como string literal porque Vite necesita conocer el patrón durante el build.
 
 #### Template completo listo para copiar
 
@@ -494,65 +512,20 @@ El siguiente archivo reproduce la estructura real. Sustituir **todos** los valor
 
 ```astro
 ---
-import type { ImageMetadata } from "astro";
 import Base from "../../layouts/Base.astro";
 import Header from "../../components/Header.astro";
 import EventGallery from "../../components/EventGallery.astro";
 import Footer from "../../components/Footer.astro";
 import BackToTop from "../../components/BackToTop.astro";
+import { buildEventPhotos, type EventImageModule } from "../../utils/eventPhotos";
 
-interface ImageModule {
-  default: ImageMetadata;
-}
-
-const eventPhotoModules = import.meta.glob<ImageModule>(
+const eventPhotoModules = import.meta.glob<EventImageModule>(
   "../../assets/events/REEMPLAZAR-SLUG/*.{webp,jpg,jpeg,png,avif}",
   { eager: true },
 );
 
-const eventEntries = Object.entries(eventPhotoModules);
-const naturalOrder = new Intl.Collator("es", { numeric: true, sensitivity: "base" });
-const eventName = "REEMPLAZAR NOMBRE";
-const photoCodePattern = /^[A-Za-z0-9_-]+$/;
-const maxPhotoCodeLength = 40;
-
-const getPhotoCode = (fileName: string) => {
-  const code = fileName.replace(/\.[^.]+$/, "");
-
-  if (!photoCodePattern.test(code) || code.length > maxPhotoCodeLength) {
-    throw new Error(
-      `Invalid photo code in ${eventName}: "${fileName}". ` +
-        "Photo filenames may only produce codes containing letters (A-Z, a-z), numbers, '_' and '-', with a maximum length of 40 characters.",
-    );
-  }
-
-  return code;
-};
-
-const photos = eventEntries.map(([path, imageModule]) => {
-  const fileName = path.split("/").at(-1) ?? path;
-  const code = getPhotoCode(fileName);
-
-  return { src: imageModule.default, code, fileName };
-});
-
-const seenCodes = new Map<string, string>();
-
-for (const photo of photos) {
-  const normalizedCode = photo.code.toLowerCase();
-  const previousFileName = seenCodes.get(normalizedCode);
-
-  if (previousFileName) {
-    throw new Error(
-      `Duplicate photo code in ${eventName}: "${previousFileName}" and "${photo.fileName}" produce the same code when compared case-insensitively. ` +
-        "Photo codes must be unique after removing the extension.",
-    );
-  }
-
-  seenCodes.set(normalizedCode, photo.fileName);
-}
-
-photos.sort((a, b) => naturalOrder.compare(a.code, b.code));
+const EVENT_NAME = "REEMPLAZAR NOMBRE";
+const photos = buildEventPhotos(eventPhotoModules, EVENT_NAME);
 ---
 
 <Base
@@ -584,7 +557,7 @@ Antes de dar el archivo por terminado, buscar `REEMPLAZAR` dentro de él. El res
 HAPPY WOOD usa:
 
 ```ts
-const eventPhotoModules = import.meta.glob<ImageModule>(
+const eventPhotoModules = import.meta.glob<EventImageModule>(
   "../../assets/events/happy-wood/*.{webp,jpg,jpeg,png,avif}",
   { eager: true },
 );
@@ -593,7 +566,7 @@ const eventPhotoModules = import.meta.glob<ImageModule>(
 Para otro evento, cambiar solo el segmento de carpeta:
 
 ```ts
-const eventPhotoModules = import.meta.glob<ImageModule>(
+const eventPhotoModules = import.meta.glob<EventImageModule>(
   "../../assets/events/<slug>/*.{webp,jpg,jpeg,png,avif}",
   { eager: true },
 );
@@ -604,15 +577,15 @@ El glob se resuelve durante el build:
 - descubre los assets compatibles en esa carpeta;
 - busca solo archivos directamente dentro de la carpeta porque usa `*`, no subcarpetas recursivas;
 - los importa de forma eager como `ImageMetadata`;
-- `Object.entries()` produce las entradas usadas para el array;
-- la transformación extrae el filename y el código;
+- `buildEventPhotos()` transforma las entradas, extrae el filename y el código;
+- la misma utilidad valida los códigos, rechaza duplicados case-insensitive y aplica orden natural;
 - el resultado se pasa a `EventGallery` como `photos`.
 
 No crear un array manual de filenames. Si se cambia la carpeta o la lista de extensiones permitidas, el patrón de esa página debe actualizarse para coincidir exactamente.
 
 #### Orden natural obligatorio
 
-La página usa:
+La utilidad compartida `src/utils/eventPhotos.ts` usa:
 
 ```ts
 const naturalOrder = new Intl.Collator("es", {
@@ -643,7 +616,7 @@ DSC10
 DSC2
 ```
 
-No sustituir este orden por `.sort()` sin comparador.
+No sustituir este orden por `.sort()` sin comparador ni reimplementarlo dentro de una página de evento.
 
 #### Metadata y SEO actual de una galería
 
@@ -1866,6 +1839,7 @@ src/
   pages/
     index.astro
     eventos/
+      fogueo-be-fit.astro
       happy-wood.astro
     terminos.astro
     privacidad.astro
@@ -1879,9 +1853,15 @@ src/
     ...
 
   assets/events/
+    fogueo-be-fit/
+      README.md
+      0 fotos; lote preparado pendiente
     happy-wood/
       README.md
       162 fotos reales
+
+  utils/
+    eventPhotos.ts
 
 public/
   fonts/

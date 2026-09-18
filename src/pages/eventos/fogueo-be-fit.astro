@@ -7,28 +7,28 @@ import BackToTop from "../../components/BackToTop.astro";
 import { buildEventPhotos, type EventImageModule } from "../../utils/eventPhotos";
 
 const eventPhotoModules = import.meta.glob<EventImageModule>(
-  "../../assets/events/happy-wood/*.{webp,jpg,jpeg,png,avif}",
+  "../../assets/events/fogueo-be-fit/*.{webp,jpg,jpeg,png,avif}",
   { eager: true },
 );
 
-const EVENT_NAME = "HAPPY WOOD";
+const EVENT_NAME = "Fogueo Be Fit";
 const photos = buildEventPhotos(eventPhotoModules, EVENT_NAME);
 ---
 
 <Base
-  title="HAPPY WOOD | Black Sheep Sport"
-  description="Galería de fotografías de HAPPY WOOD. Encuentra y selecciona tus fotos del evento."
+  title="Fogueo Be Fit | Black Sheep Sport"
+  description="Galería de fotografías de Fogueo Be Fit. Encuentra y selecciona tus fotos del evento."
   robots="noindex, follow"
 >
   <Header />
   <main>
     <EventGallery
-      eventName="HAPPY WOOD"
-      venue="Be Happy"
-      date="19 de septiembre de 2026"
-      isoDate="2026-09-19"
+      eventName="Fogueo Be Fit"
+      venue="Be Fit Mérida"
+      date="16 de octubre de 2025"
+      isoDate="2025-10-16"
       photos={photos}
-      storageKey="black-sheep-selection-happy-wood"
+      storageKey="black-sheep-selection-fogueo-be-fit"
       whatsappNumber="584247438483"
     />
   </main>
