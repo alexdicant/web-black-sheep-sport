@@ -38,8 +38,9 @@ const ogImageUrl = new URL("/og-black-sheep-sport.webp", Astro.site);
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImageUrl} />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="icon" href="/favicon.ico" />
+    <link rel="icon" type="image/webp" sizes="512x512" href="/favicon.webp" />
+    <link rel="icon" type="image/png" sizes="512x512" href="/favicon.png" />
+    <link rel="apple-touch-icon" sizes="512x512" href="/favicon.png" />
     <meta name="generator" content={Astro.generator} />
 
     <link
