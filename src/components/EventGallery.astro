@@ -320,18 +320,26 @@ const {
     width: 30px;
     height: 30px;
     place-items: center;
-    border: 2px solid var(--color-accent);
+    border: 1px solid var(--color-gray-400);
     border-radius: var(--radius-sm);
-    background: var(--color-ink);
+    background: rgba(255, 255, 255, 0.62);
+    box-shadow: 0 1px 3px rgba(13, 15, 12, 0.2);
     color: var(--color-accent);
-    opacity: 0;
-    transform: scale(0.8);
-    transition: opacity 140ms ease, transform 140ms cubic-bezier(0.23, 1, 0.32, 1);
+    transform: scale(0.9);
+    transition:
+      border-color 140ms ease,
+      background-color 140ms ease,
+      transform 140ms cubic-bezier(0.23, 1, 0.32, 1);
   }
 
   .photo-choice__check svg {
     width: 18px;
     height: 18px;
+    opacity: 0;
+    transform: scale(0.75);
+    transition:
+      opacity 120ms ease,
+      transform 140ms cubic-bezier(0.23, 1, 0.32, 1);
   }
 
   .photo-choice__code {
@@ -353,6 +361,12 @@ const {
   }
 
   .photo-choice[data-selected="true"] .photo-choice__check {
+    border-color: var(--color-accent);
+    background: var(--color-ink);
+    transform: scale(1);
+  }
+
+  .photo-choice[data-selected="true"] .photo-choice__check svg {
     opacity: 1;
     transform: scale(1);
   }
