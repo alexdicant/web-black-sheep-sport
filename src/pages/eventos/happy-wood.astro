@@ -17,15 +17,47 @@ const eventPhotoModules = import.meta.glob<ImageModule>(
 
 const eventEntries = Object.entries(eventPhotoModules);
 const naturalOrder = new Intl.Collator("es", { numeric: true, sensitivity: "base" });
+const EVENT_NAME = "HAPPY WOOD";
+const PHOTO_CODE_PATTERN = /^[A-Za-z0-9_-]+$/;
+const MAX_PHOTO_CODE_LENGTH = 40;
 
-const photos = eventEntries
-  .map(([path, imageModule]) => {
-    const fileName = decodeURIComponent(path.split("/").at(-1) ?? path);
-    const code = fileName.replace(/\.[^.]+$/, "");
+const getPhotoCode = (fileName: string) => {
+  const code = fileName.replace(/\.[^.]+$/, "");
 
-    return { src: imageModule.default, code };
-  })
-  .sort((a, b) => naturalOrder.compare(a.code, b.code));
+  if (!PHOTO_CODE_PATTERN.test(code) || code.length > MAX_PHOTO_CODE_LENGTH) {
+    throw new Error(
+      `Invalid photo code in ${EVENT_NAME}: "${fileName}". ` +
+        "Photo filenames may only produce codes containing letters (A-Z, a-z), numbers, '_' and '-', with a maximum length of 40 characters.",
+    );
+  }
+
+  return code;
+};
+
+const photos = eventEntries.map(([path, imageModule]) => {
+  const fileName = path.split("/").at(-1) ?? path;
+  const code = getPhotoCode(fileName);
+
+  return { src: imageModule.default, code, fileName };
+});
+
+const seenCodes = new Map<string, string>();
+
+for (const photo of photos) {
+  const normalizedCode = photo.code.toLowerCase();
+  const previousFileName = seenCodes.get(normalizedCode);
+
+  if (previousFileName) {
+    throw new Error(
+      `Duplicate photo code in ${EVENT_NAME}: "${previousFileName}" and "${photo.fileName}" produce the same code when compared case-insensitively. ` +
+        "Photo codes must be unique after removing the extension.",
+    );
+  }
+
+  seenCodes.set(normalizedCode, photo.fileName);
+}
+
+photos.sort((a, b) => naturalOrder.compare(a.code, b.code));
 ---
 
 <Base

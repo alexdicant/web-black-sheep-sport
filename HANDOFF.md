@@ -349,6 +349,8 @@ La carpeta puede existir sin fotografías. Siguiendo la convención actual, debe
 - dónde copiar las previews finales;
 - formatos soportados;
 - que el filename se convierte en código;
+- que el código solo admite `^[A-Za-z0-9_-]+$`, máximo 40 caracteres y unicidad case-insensitive;
+- que el build falla si un filename contiene espacios, tildes, símbolos, caracteres especiales, es demasiado largo o produce un código duplicado;
 - que la página muestra “Próximamente” si no hay imágenes compatibles;
 - que no se añade otra marca de agua desde la web;
 - que no hay que editar un array manual para publicar fotos.
@@ -409,16 +411,17 @@ Código enviado a WhatsApp: DSC07521
 La página del evento:
 
 1. obtiene el último segmento del path;
-2. aplica `decodeURIComponent()`;
-3. elimina únicamente la extensión mediante `/\.[^.]+$/`;
-4. conserva el resto del nombre;
-5. lo asigna a `photo.code`.
+2. elimina únicamente la extensión mediante `/\.[^.]+$/`;
+3. valida el código con `^[A-Za-z0-9_-]+$` y un máximo de 40 caracteres;
+4. rechaza el lote si el código es inválido;
+5. rechaza el lote si otro filename produce el mismo código sin distinguir mayúsculas/minúsculas;
+6. lo asigna a `photo.code`.
 
 Usar nombres:
 
 - con basename único dentro del evento, independientemente de la extensión;
-- cortos y legibles;
-- sin espacios cuando sea posible;
+- de hasta 40 caracteres;
+- compuestos únicamente por letras sin tilde, números, `_` y `-`;
 - sin signos extraños;
 - estables después de publicar.
 
@@ -509,15 +512,47 @@ const eventPhotoModules = import.meta.glob<ImageModule>(
 
 const eventEntries = Object.entries(eventPhotoModules);
 const naturalOrder = new Intl.Collator("es", { numeric: true, sensitivity: "base" });
+const eventName = "REEMPLAZAR NOMBRE";
+const photoCodePattern = /^[A-Za-z0-9_-]+$/;
+const maxPhotoCodeLength = 40;
 
-const photos = eventEntries
-  .map(([path, imageModule]) => {
-    const fileName = decodeURIComponent(path.split("/").at(-1) ?? path);
-    const code = fileName.replace(/\.[^.]+$/, "");
+const getPhotoCode = (fileName: string) => {
+  const code = fileName.replace(/\.[^.]+$/, "");
 
-    return { src: imageModule.default, code };
-  })
-  .sort((a, b) => naturalOrder.compare(a.code, b.code));
+  if (!photoCodePattern.test(code) || code.length > maxPhotoCodeLength) {
+    throw new Error(
+      `Invalid photo code in ${eventName}: "${fileName}". ` +
+        "Photo filenames may only produce codes containing letters (A-Z, a-z), numbers, '_' and '-', with a maximum length of 40 characters.",
+    );
+  }
+
+  return code;
+};
+
+const photos = eventEntries.map(([path, imageModule]) => {
+  const fileName = path.split("/").at(-1) ?? path;
+  const code = getPhotoCode(fileName);
+
+  return { src: imageModule.default, code, fileName };
+});
+
+const seenCodes = new Map<string, string>();
+
+for (const photo of photos) {
+  const normalizedCode = photo.code.toLowerCase();
+  const previousFileName = seenCodes.get(normalizedCode);
+
+  if (previousFileName) {
+    throw new Error(
+      `Duplicate photo code in ${eventName}: "${previousFileName}" and "${photo.fileName}" produce the same code when compared case-insensitively. ` +
+        "Photo codes must be unique after removing the extension.",
+    );
+  }
+
+  seenCodes.set(normalizedCode, photo.fileName);
+}
+
+photos.sort((a, b) => naturalOrder.compare(a.code, b.code));
 ---
 
 <Base
