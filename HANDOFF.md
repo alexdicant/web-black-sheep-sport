@@ -3,6 +3,7 @@
 > **Estado actualizado:** 18 de septiembre de 2026  
 > **Producción:** https://sheepsport.com/  
 > **Rama principal:** `main`
+> **Rama de evolución en curso:** `feature/event-gallery-selection` (5 commits por delante de `main`, todavía sin merge al verificar este documento)
 >
 > Este documento es la fuente de verdad operativa del proyecto para quien continúe el trabajo sin contexto previo. Resume el producto, el estado real del código, decisiones de diseño, SEO, analítica, despliegue, datos comerciales y pendientes. Si algo cambia posteriormente, **el código y producción mandan sobre este documento**.
 
@@ -30,7 +31,7 @@ El visitante típico es un atleta que acaba de competir:
 2. ¿Cómo las compro?
 3. ¿Cuánto cuestan?
 
-### Funnel operativo
+### Funnel operativo original del MVP en producción
 
 ```text
 QR del evento
@@ -42,6 +43,21 @@ QR del evento
 → coordinar pago
 → recibir fotos finales por WhatsApp como archivos
 ```
+
+Este flujo con Google Drive describe el MVP original que sigue siendo el contexto histórico de producción. En la rama `feature/event-gallery-selection` existe una evolución funcional que reemplaza el paso de Drive para HAPPY WOOD por una galería propia:
+
+```text
+QR del evento
+→ sheepsport.com
+→ identificar el evento
+→ abrir /eventos/<slug>/
+→ seleccionar fotos por código
+→ ver orientación de precio o paquete
+→ abrir WhatsApp con los códigos ya escritos
+→ coordinar pago y entrega
+```
+
+La evolución todavía no está fusionada en `main`. No describir la galería propia como desplegada en producción hasta verificar un merge y deploy reales.
 
 El éxito de la landing se mide principalmente por dos acciones:
 
@@ -62,11 +78,17 @@ El MVP está **publicado y probado online** en:
 
 El sitio ya tiene cerrados los bloques visuales, legales, SEO básico, analítica base, Search Console, 404 personalizado, OG social, favicons y flujo hacia WhatsApp.
 
-### Único pendiente funcional importante
+### Evolución en la rama feature
 
-La **URL real de Google Drive del evento HAPPY WOOD** todavía no se ha recibido. En `Events.astro`, el CTA **“Ver mi galería”** conserva temporalmente `url: "#"`.
+En `feature/event-gallery-selection`, HAPPY WOOD ya no usa un placeholder de Google Drive:
 
-Todo lo demás necesario para operar el MVP está implementado.
+- `Events.astro` enlaza a `/eventos/happy-wood/`;
+- existe una página Astro propia para el evento;
+- la carpeta del evento contiene 162 fotografías reales;
+- la galería seleccionable, localStorage, pricing orientativo y WhatsApp dinámico funcionan;
+- existe un estado vacío reutilizable para crear páginas antes de recibir las fotos.
+
+La galería fue probada físicamente y el flujo funciona. Esta funcionalidad sigue aislada en la rama feature y no debe darse por publicada en `main` hasta hacer merge y deploy con autorización explícita.
 
 ### Rutas públicas
 
@@ -76,9 +98,10 @@ Todo lo demás necesario para operar el MVP está implementado.
 | `/terminos/` | Términos y condiciones |
 | `/privacidad/` | Política de privacidad |
 | `/cookies/` | Política de cookies |
+| `/eventos/happy-wood/` | Galería propia de HAPPY WOOD; solo existe en la rama feature hasta su merge |
 | `404.html` | Página de error personalizada, `noindex, nofollow` |
 
-Astro genera **5 páginas estáticas** en el build.
+Astro genera **6 páginas estáticas** en el build de la rama feature. El MVP original de `main` generaba 5 antes de incorporar la ruta del evento.
 
 ### Estado por componente
 
@@ -86,7 +109,9 @@ Astro genera **5 páginas estáticas** en el build.
 |---|---|---|
 | Header | `src/components/Header.astro` | Funcional. Wordmark + ubicación. CTA desktop **“Buscar mis fotos”** hacia `/#tu-evento`. |
 | Hero | `src/components/Hero.astro` | Funcional. Foto real. H1: **“ASÍ SE VE DAR TODO”**. Encuadre móvil corregido para evitar que el copy cubra el rostro. |
-| Eventos | `src/components/Events.astro` | Evento real **HAPPY WOOD**, lugar **Be Happy**, fecha **19 de septiembre de 2026**. CTA de Drive aún pendiente de URL real. |
+| Eventos | `src/components/Events.astro` | Evento real **HAPPY WOOD**, lugar **Be Happy**, fecha **19 de septiembre de 2026**. En la rama feature, el CTA apunta a `/eventos/happy-wood/`. |
+| Galería seleccionable | `src/components/EventGallery.astro` | Componente reutilizable con estado vacío, selección accesible, localStorage, pricing informativo y WhatsApp dinámico. |
+| Página de evento | `src/pages/eventos/happy-wood.astro` | Descubre automáticamente las fotos reales del evento mediante `import.meta.glob()`. |
 | Cómo comprar | `src/components/HowToBuy.astro` | Funcional. Semántica `ol` / `li`; proceso real explicado en 3 pasos. |
 | Precios | `src/components/Pricing.astro` | US$4 / US$7 / US$12. Layout móvil corregido y CTA **“Comprar mis fotos”** conectado a WhatsApp. |
 | Muestra | `src/components/Gallery.astro` | 6 fotos reales. Variantes optimizadas `widths={[400, 675, 800]}`. |
@@ -137,6 +162,8 @@ target="_blank"
 rel="noopener noreferrer"
 ```
 
+Este mensaje prellenado corresponde a los CTA generales de la landing. La galería seleccionable de la rama feature genera otro mensaje dinámico con los códigos reales; sus plantillas exactas están documentadas en **Crear un nuevo evento con galería seleccionable → WhatsApp dinámico**.
+
 ### Precios vigentes
 
 | Producto | Precio |
@@ -185,23 +212,965 @@ El primer evento real cargado es:
 
 La tarjeta conserva el badge **“Activo ahora”**.
 
-### Pendiente del evento
+### Estado en la rama `feature/event-gallery-selection`
 
-Falta únicamente la URL definitiva de Google Drive:
+- URL desde Home: `/eventos/happy-wood/`.
+- Página: `src/pages/eventos/happy-wood.astro`.
+- Carpeta: `src/assets/events/happy-wood/`.
+- Fotografías reales detectadas: 162.
+- Key de selección: `black-sheep-selection-happy-wood`.
+- WhatsApp de compra: `584247438483`.
+- Estado: funcional y probado, todavía sin merge a `main`.
 
-```ts
-url: "#"
+La referencia anterior a `url: "#"` y a una URL pendiente de Google Drive corresponde al MVP original; ya no describe esta rama. Si la galería propia se descarta y se vuelve a Drive, esa sería una decisión nueva, no el comportamiento actual de la feature.
+
+---
+
+## Crear un nuevo evento con galería seleccionable
+
+Esta sección es el procedimiento operativo para una IA o desarrollador que llegue al repositorio sin contexto. Describe exclusivamente la implementación existente en `feature/event-gallery-selection`; no propone un CMS, una colección de contenido ni una arquitectura futura.
+
+### Estado y principio operativo
+
+Cada evento con galería propia tiene actualmente:
+
+1. una entrada/tarjeta declarada en `src/components/Events.astro`;
+2. una ruta Astro propia bajo `/eventos/`;
+3. una carpeta de imágenes propia bajo `src/assets/events/`;
+4. un `import.meta.glob()` específico en la página del evento;
+5. el componente compartido `src/components/EventGallery.astro`;
+6. un estado vacío automático cuando `photos.length === 0`;
+7. selección persistente mediante una key de localStorage exclusiva;
+8. un enlace de WhatsApp generado en el navegador con los códigos seleccionados.
+
+El flujo operativo intencional es:
+
+```text
+crear evento y ruta
+→ publicar la página aunque la carpeta todavía no tenga fotos
+→ mostrar “Próximamente”
+→ recibir el export de Lightroom
+→ copiar las fotos a la carpeta del evento
+→ ejecutar build/deploy
+→ mostrar automáticamente la galería seleccionable
 ```
 
-en `src/components/Events.astro`.
+No se declara cada fotografía manualmente. Añadir fotos no debe exigir modificar la página si la ruta, la carpeta y el glob ya se crearon correctamente.
 
-Cuando llegue la URL real:
+### Antes de empezar: datos obligatorios
 
-1. reemplazar el `#`;
-2. abrir la galería en nueva pestaña;
-3. mantener `rel="noopener noreferrer"`;
-4. probar el flujo completo desde teléfono;
-5. actualizar este documento.
+No crear el evento con valores supuestos. Obtener o confirmar este checklist:
+
+- [ ] nombre público exacto del evento;
+- [ ] slug definitivo;
+- [ ] lugar visible;
+- [ ] fecha visible en español;
+- [ ] fecha ISO en formato `YYYY-MM-DD`;
+- [ ] si el evento lleva el badge `Activo ahora`;
+- [ ] carpeta de imágenes que corresponde al slug;
+- [ ] convención real de nombres/códigos de los archivos;
+- [ ] si se mantiene el WhatsApp global actual;
+- [ ] si los precios continúan vigentes;
+- [ ] cantidad esperada de fotos, cuando ya exista un export;
+- [ ] decisión SEO expresa si se pretende algo distinto de `noindex`.
+
+Valores globales actuales que no deben cambiarse sin autorización:
+
+| Dato | Valor actual |
+|---|---|
+| WhatsApp visible | `+58 424-7438483` |
+| Número para `wa.me` | `584247438483` |
+| 1 foto | `US$4` |
+| 2 fotos | `US$7` |
+| Todas tus fotos | `US$12 por atleta` |
+
+El paquete “Todas tus fotos” es por atleta. La galería no identifica personas y no sabe si varias fotos seleccionadas pertenecen al mismo atleta.
+
+### Convención obligatoria de slug
+
+El slug debe usar:
+
+- minúsculas;
+- palabras separadas por guiones;
+- ningún espacio;
+- ninguna tilde;
+- ningún carácter especial.
+
+Ejemplo real:
+
+| Concepto | Valor |
+|---|---|
+| Nombre | `HAPPY WOOD` |
+| Slug | `happy-wood` |
+| URL | `/eventos/happy-wood/` |
+| Carpeta | `src/assets/events/happy-wood/` |
+| Página | `src/pages/eventos/happy-wood.astro` |
+
+Ejemplos adicionales:
+
+```text
+Copa Mérida 2026 → copa-merida-2026
+Reto Los Andes → reto-los-andes
+Gran Fondo El Páramo → gran-fondo-el-paramo
+```
+
+El mismo slug debe usarse sin variaciones en la carpeta, el nombre de la página, la URL de Home y la key de localStorage.
+
+#### El slug se vuelve inmutable al publicar
+
+Considerar el slug definitivo desde el primer deploy público. Cambiarlo después altera simultáneamente:
+
+- la URL pública del evento;
+- el nombre de la página Astro;
+- la carpeta de fotografías;
+- el enlace declarado en `Events.astro`;
+- la key `black-sheep-selection-<slug>`.
+
+El sistema actual no crea redirecciones ni migra `localStorage` automáticamente. Un cambio posterior puede romper enlaces compartidos y dejar inaccesible la selección guardada bajo la key anterior. No cambiar un slug publicado sin autorización y sin un plan explícito de migración y redirección.
+
+### Paso 1 — Crear la carpeta del evento
+
+Crear:
+
+```text
+src/assets/events/<slug>/
+```
+
+Ejemplo:
+
+```text
+src/assets/events/copa-merida-2026/
+```
+
+La carpeta puede existir sin fotografías. Siguiendo la convención actual, debe incluir un `README.md` específico del evento que explique:
+
+- dónde copiar las previews finales;
+- formatos soportados;
+- que el filename se convierte en código;
+- que la página muestra “Próximamente” si no hay imágenes compatibles;
+- que no se añade otra marca de agua desde la web;
+- que no hay que editar un array manual para publicar fotos.
+
+El README no interfiere con el glob porque el patrón solo coincide con extensiones de imagen.
+
+Reglas obligatorias:
+
+- no copiar fotos de otro evento como fallback;
+- no reutilizar imágenes ajenas “para que no se vea vacío”;
+- no importar fotos desde `src/assets/photos/` en una página de evento;
+- una carpeta sin imágenes compatibles debe dejar `photos` vacío y activar el estado “Próximamente”.
+
+#### Export actual desde Lightroom
+
+Las previews de selección llegan preparadas antes de copiarse al repositorio:
+
+- ya tienen marca de agua;
+- ya están optimizadas para navegar y seleccionar;
+- las verticales normalmente miden `267×400`;
+- las horizontales normalmente miden `400×267`;
+- el formato real probado en HAPPY WOOD es `.jpg`.
+
+El glob actual admite exactamente estas extensiones en minúsculas:
+
+```text
+.webp
+.jpg
+.jpeg
+.png
+.avif
+```
+
+El patrón actual no incluye GIF ni extensiones en mayúsculas como `.JPG`. Si el export usa otra extensión o capitalización, no asumir que Astro la detectará: corregir el export con autorización o actualizar explícitamente el glob.
+
+La web no debe:
+
+- añadir una segunda marca de agua;
+- reescalar manualmente una por una las fotos fuente;
+- renombrar archivos automáticamente sin autorización;
+- eliminar o modificar los originales recibidos.
+
+`EventGallery.astro` usa `<Image>` de Astro con `widths={[200, 400]}`, `loading="lazy"`, `decoding="async"` y `object-fit: contain`. La generación de variantes ocurre durante el build.
+
+#### Filenames: código comercial e identidad de selección
+
+El filename no es un detalle interno: es el código que ve el cliente y que llega a WhatsApp.
+
+Ejemplo:
+
+```text
+Archivo: DSC07521.jpg
+Código visible: DSC07521
+Identificador de selección: DSC07521
+Código enviado a WhatsApp: DSC07521
+```
+
+La página del evento:
+
+1. obtiene el último segmento del path;
+2. aplica `decodeURIComponent()`;
+3. elimina únicamente la extensión mediante `/\.[^.]+$/`;
+4. conserva el resto del nombre;
+5. lo asigna a `photo.code`.
+
+Usar nombres:
+
+- con basename único dentro del evento, independientemente de la extensión;
+- cortos y legibles;
+- sin espacios cuando sea posible;
+- sin signos extraños;
+- estables después de publicar.
+
+Evitar nombres como:
+
+```text
+foto final nueva 2.jpg
+IMG prueba!!.jpg
+seleccion definitiva (3).jpg
+```
+
+Preferir códigos consistentes como:
+
+```text
+DSC07521.jpg
+HW-001.webp
+CME-014.jpg
+```
+
+La unicidad debe evaluarse después de eliminar la extensión. Este par es inválido aunque el filesystem considere que son dos archivos distintos:
+
+```text
+DSC001.jpg  → código DSC001
+DSC001.webp → código DSC001
+```
+
+Ambos botones terminarían compartiendo el mismo identificador lógico en el `Set`: seleccionar uno podría marcar los dos y WhatsApp recibiría un único código ambiguo. Evitar también variantes que solo cambien mayúsculas y minúsculas.
+
+Cambiar un filename después de publicar cambia el código visible. También puede invalidar una selección guardada: al restaurar localStorage, el componente conserva únicamente códigos que todavía existen en la galería actual.
+
+### Paso 2 — Crear la página del evento
+
+Usar como template real:
+
+```text
+src/pages/eventos/happy-wood.astro
+```
+
+Crear:
+
+```text
+src/pages/eventos/<slug>.astro
+```
+
+No copiar mecánicamente valores de HAPPY WOOD. En la página actual están hardcodeados estos datos específicos y todos deben revisarse:
+
+- segmento `happy-wood` dentro del patrón del glob;
+- `title="HAPPY WOOD | Black Sheep Sport"`;
+- description con `HAPPY WOOD`;
+- `eventName="HAPPY WOOD"`;
+- `venue="Be Happy"`;
+- `date="19 de septiembre de 2026"`;
+- `isoDate="2026-09-19"`;
+- `storageKey="black-sheep-selection-happy-wood"`;
+- `whatsappNumber="584247438483"` si el evento fuera autorizado a usar otro número.
+
+La estructura real que debe conservarse es:
+
+1. imports de `ImageMetadata`, `Base`, `Header`, `EventGallery`, `Footer` y `BackToTop`;
+2. interface local `ImageModule` con `default: ImageMetadata`;
+3. glob eager de la carpeta específica;
+4. transformación de path a `{ src, code }`;
+5. orden natural;
+6. `Base` con metadata;
+7. `Header`, `<main>`, `EventGallery`, `Footer` y `BackToTop`.
+
+#### Template completo listo para copiar
+
+El siguiente archivo reproduce la estructura real. Sustituir **todos** los valores `REEMPLAZAR...` antes de ejecutar el build. El path de `import.meta.glob()` debe permanecer como string literal: Vite no admite construir este patrón con una variable dinámica.
+
+```astro
+---
+import type { ImageMetadata } from "astro";
+import Base from "../../layouts/Base.astro";
+import Header from "../../components/Header.astro";
+import EventGallery from "../../components/EventGallery.astro";
+import Footer from "../../components/Footer.astro";
+import BackToTop from "../../components/BackToTop.astro";
+
+interface ImageModule {
+  default: ImageMetadata;
+}
+
+const eventPhotoModules = import.meta.glob<ImageModule>(
+  "../../assets/events/REEMPLAZAR-SLUG/*.{webp,jpg,jpeg,png,avif}",
+  { eager: true },
+);
+
+const eventEntries = Object.entries(eventPhotoModules);
+const naturalOrder = new Intl.Collator("es", { numeric: true, sensitivity: "base" });
+
+const photos = eventEntries
+  .map(([path, imageModule]) => {
+    const fileName = decodeURIComponent(path.split("/").at(-1) ?? path);
+    const code = fileName.replace(/\.[^.]+$/, "");
+
+    return { src: imageModule.default, code };
+  })
+  .sort((a, b) => naturalOrder.compare(a.code, b.code));
+---
+
+<Base
+  title="REEMPLAZAR NOMBRE | Black Sheep Sport"
+  description="Galería de fotografías de REEMPLAZAR NOMBRE. Encuentra y selecciona tus fotos del evento."
+  noindex={true}
+>
+  <Header />
+  <main>
+    <EventGallery
+      eventName="REEMPLAZAR NOMBRE"
+      venue="REEMPLAZAR LUGAR"
+      date="REEMPLAZAR FECHA VISIBLE"
+      isoDate="REEMPLAZAR-FECHA-ISO"
+      photos={photos}
+      storageKey="black-sheep-selection-REEMPLAZAR-SLUG"
+      whatsappNumber="584247438483"
+    />
+  </main>
+  <Footer />
+  <BackToTop />
+</Base>
+```
+
+Antes de dar el archivo por terminado, buscar `REEMPLAZAR` dentro de él. El resultado debe ser cero. No convertir el glob en una plantilla dinámica compartida durante el alta rutinaria.
+
+#### Patrón exacto de `import.meta.glob()`
+
+HAPPY WOOD usa:
+
+```ts
+const eventPhotoModules = import.meta.glob<ImageModule>(
+  "../../assets/events/happy-wood/*.{webp,jpg,jpeg,png,avif}",
+  { eager: true },
+);
+```
+
+Para otro evento, cambiar solo el segmento de carpeta:
+
+```ts
+const eventPhotoModules = import.meta.glob<ImageModule>(
+  "../../assets/events/<slug>/*.{webp,jpg,jpeg,png,avif}",
+  { eager: true },
+);
+```
+
+El glob se resuelve durante el build:
+
+- descubre los assets compatibles en esa carpeta;
+- busca solo archivos directamente dentro de la carpeta porque usa `*`, no subcarpetas recursivas;
+- los importa de forma eager como `ImageMetadata`;
+- `Object.entries()` produce las entradas usadas para el array;
+- la transformación extrae el filename y el código;
+- el resultado se pasa a `EventGallery` como `photos`.
+
+No crear un array manual de filenames. Si se cambia la carpeta o la lista de extensiones permitidas, el patrón de esa página debe actualizarse para coincidir exactamente.
+
+#### Orden natural obligatorio
+
+La página usa:
+
+```ts
+const naturalOrder = new Intl.Collator("es", {
+  numeric: true,
+  sensitivity: "base",
+});
+```
+
+y finalmente:
+
+```ts
+.sort((a, b) => naturalOrder.compare(a.code, b.code));
+```
+
+Esto produce:
+
+```text
+DSC1
+DSC2
+DSC10
+```
+
+en lugar del orden lexicográfico incorrecto:
+
+```text
+DSC1
+DSC10
+DSC2
+```
+
+No sustituir este orden por `.sort()` sin comparador.
+
+#### Metadata y SEO actual de una galería
+
+HAPPY WOOD usa actualmente:
+
+```text
+Title: HAPPY WOOD | Black Sheep Sport
+Description: Galería de fotografías de HAPPY WOOD. Encuentra y selecciona tus fotos del evento.
+Canonical: https://sheepsport.com/eventos/happy-wood/
+Robots: noindex, nofollow
+```
+
+Detalles de implementación:
+
+- la página pasa `noindex={true}` a `Base`;
+- no pasa la prop `canonical`, por lo que se conserva su default `true`;
+- `Base.astro` genera el canonical con `new URL(Astro.url.pathname, Astro.site)`;
+- `astro.config.mjs` define `site: "https://sheepsport.com"` y `trailingSlash: "always"`.
+
+Al crear otro evento:
+
+- adaptar title y description al nombre real;
+- mantener `noindex={true}` como política por defecto actual hasta que exista otra decisión SEO explícita;
+- verificar que la ruta genere un canonical del dominio `https://sheepsport.com` y con slash final;
+- no añadir automáticamente la ruta al sitemap: el sitemap actual no incluye galerías de eventos.
+
+No hardcodear manualmente otro canonical si el comportamiento de `Base` ya produce la URL correcta.
+
+### Paso 3 — Reutilizar `EventGallery.astro`
+
+No duplicar el componente ni copiar su script dentro de cada página. La API real actual tiene siete props obligatorias:
+
+| Prop | Tipo | Responsabilidad |
+|---|---|---|
+| `eventName` | `string` | Nombre visible, alt text y nombre insertado en WhatsApp. |
+| `venue` | `string` | Lugar visible del evento. |
+| `date` | `string` | Fecha visible. |
+| `isoDate` | `string` | Valor semántico del elemento `<time>`. |
+| `photos` | `EventPhoto[]` | Array de `{ src: ImageMetadata, code: string }`. |
+| `storageKey` | `string` | Key exclusiva de localStorage para ese evento. |
+| `whatsappNumber` | `string` | Número sin `+`, espacios ni guiones para construir `wa.me`. |
+
+Ejemplo de uso adaptado:
+
+```astro
+<EventGallery
+  eventName="NOMBRE REAL"
+  venue="LUGAR REAL"
+  date="FECHA VISIBLE"
+  isoDate="YYYY-MM-DD"
+  photos={photos}
+  storageKey="black-sheep-selection-<slug>"
+  whatsappNumber="584247438483"
+/>
+```
+
+No dejar `HAPPY WOOD`, `Be Happy`, su fecha ni su storage key en una página nueva.
+
+#### Limitaciones hardcodeadas actuales del componente
+
+El nombre del evento, lugar, fecha, key y número de WhatsApp llegan por props; no están fijados a HAPPY WOOD dentro del JavaScript.
+
+Sí están hardcodeados dentro de `EventGallery.astro` y se aplican a todos los eventos:
+
+- `US$4` para una foto;
+- `US$7` para dos fotos;
+- `US$12` para el paquete “Todas tus fotos”;
+- umbral informativo de 3 fotos;
+- copy de selección;
+- copy del estado vacío;
+- plantillas de mensaje de WhatsApp.
+
+Antes de crear un evento, confirmar que esos precios y textos siguen vigentes. No convertirlos en props ni refactorizarlos durante una alta rutinaria sin autorización.
+
+#### Estado vacío automático
+
+`EventGallery.astro` calcula:
+
+```ts
+const hasPhotos = photos.length > 0;
+```
+
+Cuando `photos.length === 0`, muestra exactamente:
+
+```text
+PRÓXIMAMENTE
+
+Las fotos estarán disponibles pronto
+
+Estamos preparando la galería de este evento. Cuando las fotos estén listas, aparecerán aquí.
+```
+
+En ese estado no se renderizan:
+
+- instrucciones de selección;
+- grid;
+- botones de fotografías;
+- región de estado de selección;
+- barra inferior;
+- contador;
+- “Limpiar selección”;
+- CTA de compra.
+
+Además, el atributo `data-event-gallery` se omite, por lo que el script de selección no inicializa ninguna galería. Esto permite publicar la página antes del evento sin fotografías ajenas ni errores JS.
+
+No volver a introducir un fallback con fotos de `src/assets/photos/` ni de otro evento.
+
+#### Selección y accesibilidad
+
+Con fotos disponibles:
+
+- cada foto es un `<button type="button">`;
+- usa `aria-pressed="false|true"`;
+- el `aria-label` cambia entre “Seleccionar foto…” y “Quitar foto… de la selección”;
+- el estado visual seleccionado usa borde volt, fondo volt y check volt sobre ink;
+- el indicador inactivo conserva una base tenue de `30×30px`;
+- esa base usa blanco con opacidad `0.62`, borde gris y sombra pequeña;
+- el check SVG permanece oculto hasta seleccionar;
+- funciona con mouse, touch y teclado por semántica nativa de botón;
+- existe `:focus-visible` global en `Base.astro`;
+- las actualizaciones usan regiones `aria-live` sin añadir anuncios por fotografía innecesarios;
+- `prefers-reduced-motion` desactiva los transforms relevantes.
+
+No aumentar la prominencia del indicador inactivo: es una pista discreta que no debe competir con la fotografía.
+
+#### localStorage: key exclusiva por evento
+
+HAPPY WOOD usa:
+
+```text
+black-sheep-selection-happy-wood
+```
+
+Convención obligatoria para nuevas páginas:
+
+```text
+black-sheep-selection-<slug>
+```
+
+Ejemplos:
+
+```text
+black-sheep-selection-happy-wood
+black-sheep-selection-copa-merida-2026
+black-sheep-selection-reto-los-andes
+```
+
+Nunca reutilizar la misma key entre dos eventos. Hacerlo mezclaría selecciones de galerías distintas si comparten códigos.
+
+Comportamiento actual:
+
+- guarda un array JSON de códigos en el orden de la galería;
+- elimina la key cuando la selección queda vacía;
+- captura errores si el navegador bloquea localStorage;
+- al cargar, analiza el valor guardado;
+- restaura únicamente strings presentes en `availableCodes`;
+- ignora códigos correspondientes a archivos eliminados o renombrados;
+- reconstruye `aria-pressed`, contador, pricing y barra después de restaurar.
+
+#### Pricing informativo dentro de la galería
+
+| Selección | Barra inferior |
+|---:|---|
+| 0 | Barra oculta. |
+| 1 | `1 foto seleccionada` + `US$4` + `Comprar seleccionada`. |
+| 2 | `2 fotos seleccionadas` + `US$7` + `Comprar seleccionadas`. |
+| 3 o más | `<N> fotos seleccionadas` + `Paquete disponible: Todas tus fotos · US$12 por atleta`. |
+
+Para 3 o más, el texto no es un total calculado. No mostrar “Total: US$12” ni afirmar que las fotos marcadas cuestan US$12. El paquete es por atleta y una selección puede mezclar personas.
+
+No implementar reconocimiento facial, agrupación de personas ni inferencias desde filenames.
+
+#### WhatsApp dinámico
+
+Número actual:
+
+```text
+584247438483
+```
+
+Para 1 o 2 fotos, la plantilla actual es:
+
+```text
+Hola, vi mis fotos de <EVENTO> y quiero comprar estas fotos: <CODIGOS>. ¿Me ayudas con el proceso de pago?
+```
+
+Para 3 o más:
+
+```text
+Hola, vi mis fotos de <EVENTO> y seleccioné estas fotos: <CODIGOS>. Vi que tienen el paquete Todas tus fotos por US$12 por atleta. ¿Me ayudas con la compra?
+```
+
+Los códigos se obtienen en ese momento desde el `Set` de selección y se ordenan según el orden de los botones de la galería. No se hardcodean combinaciones.
+
+El nombre `<EVENTO>` sale de la prop `eventName`. Al crear una página, verificar que esa prop contiene el nombre real para no enviar accidentalmente `HAPPY WOOD`.
+
+La URL se construye así:
+
+```ts
+https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}
+```
+
+Se abre en nueva pestaña mediante un enlace temporal con `target="_blank"` y `rel="noopener noreferrer"`. No construir URLs con texto sin codificar ni eliminar `encodeURIComponent()`.
+
+### Paso 4 — Añadir el evento a Home
+
+Modificar únicamente el array `events` de:
+
+```text
+src/components/Events.astro
+```
+
+La interface real tiene exactamente estos campos:
+
+```ts
+interface EventItem {
+  name: string;
+  date: string;
+  isoDate: string;
+  location: string;
+  url: string;
+  isActive: boolean;
+}
+```
+
+Ejemplo para una galería propia:
+
+```ts
+{
+  name: "NOMBRE REAL",
+  date: "FECHA VISIBLE",
+  isoDate: "YYYY-MM-DD",
+  location: "LUGAR REAL",
+  url: "/eventos/<slug>/",
+  isActive: true,
+}
+```
+
+Comportamiento actual de `isActive`:
+
+- `true` muestra el badge `Activo ahora`;
+- `false` oculta únicamente ese badge;
+- la tarjeta, metadata y CTA siguen renderizándose en ambos casos;
+- no existe un estado deshabilitado ni una lógica automática basada en la fecha.
+
+Por tanto, “evento futuro” no significa que el CTA desaparezca. Si su página existe con carpeta vacía, el CTA puede llevar al estado “Próximamente”.
+
+Para una galería propia, `url` debe ser `/eventos/<slug>/`, no Google Drive. `Events.astro` usa actualmente un enlace normal sin `target="_blank"`; la navegación ocurre en la misma pestaña.
+
+No modificar tarjetas ajenas ni la Home fuera de la entrada necesaria.
+
+### Componentes globales obligatorios en la página
+
+Cada página de evento debe reutilizar:
+
+- `Base.astro` para documento, fuentes, metadata, GA4, canonical y estilos globales;
+- `Header.astro` para wordmark, ubicación y navegación hacia `/#tu-evento`;
+- `Footer.astro` para identidad y enlaces legales;
+- `BackToTop.astro` para recorridos largos.
+
+No crear versiones duplicadas. El componente de galería ya desplaza `BackToTop` cuando la barra inferior está activa y respeta safe areas.
+
+### Paso 5 — Publicar las fotografías
+
+Cuando el fotógrafo entregue las previews:
+
+1. verificar que provienen del evento correcto;
+2. verificar que ya tienen marca de agua;
+3. revisar dimensiones y orientación;
+4. revisar filenames, unicidad y estabilidad de códigos;
+5. copiar los archivos a `src/assets/events/<slug>/`;
+6. no editar manualmente el array `photos`;
+7. ejecutar `npm run build`;
+8. comprobar la cantidad detectada;
+9. probar selección, pricing y WhatsApp;
+10. desplegar el contenido completo de `dist/`.
+
+Si la página y el glob ya existen, publicar fotos no requiere modificar código.
+
+#### Qué ocurre al reemplazar, añadir o eliminar archivos
+
+- Reemplazar una foto manteniendo exactamente el mismo filename conserva el código comercial y permite que una selección guardada siga apuntando a ese código.
+- Eliminar un archivo hace que desaparezca en el siguiente build; su código guardado se descarta al restaurar porque no existe en `availableCodes`.
+- Cambiar el filename cambia el código visible y el identificador; la selección anterior con el nombre viejo se ignora.
+- Añadir una foto compatible hace que aparezca automáticamente en el siguiente build y en su posición natural.
+- Cambiar únicamente mayúsculas/minúsculas puede producir diferencias según filesystem y deploy; evitarlo después de publicar.
+
+### Build y QA obligatorio por evento
+
+Ejecutar siempre:
+
+```bash
+npm run build
+```
+
+#### Comandos de verificación operativa
+
+Sustituir el valor de `EVENT_SLUG` antes de ejecutar estos comandos:
+
+```bash
+EVENT_SLUG="copa-merida-2026"
+```
+
+Contar únicamente imágenes compatibles con el glob actual:
+
+```bash
+rg --files "src/assets/events/$EVENT_SLUG" \
+  | rg '\.(webp|jpg|jpeg|png|avif)$' \
+  | wc -l
+```
+
+Detectar basenames duplicados aunque tengan extensiones diferentes. El comando no debe devolver ninguna línea:
+
+```bash
+rg --files "src/assets/events/$EVENT_SLUG" \
+  | rg '\.(webp|jpg|jpeg|png|avif)$' \
+  | sed -E 's#^.*/##; s/\.[^.]+$//' \
+  | sort \
+  | uniq -d
+```
+
+Confirmar que Astro generó la ruta esperada:
+
+```bash
+ls -l "dist/eventos/$EVENT_SLUG/index.html"
+```
+
+Contar las fotografías renderizadas en el HTML generado:
+
+```bash
+rg -o '<button class="photo-choice"' "dist/eventos/$EVENT_SLUG/index.html" \
+  | wc -l
+```
+
+Comprobar metadata crítica del archivo generado:
+
+```bash
+rg -o '<link rel="canonical"[^>]+>|<meta name="robots"[^>]+>' \
+  "dist/eventos/$EVENT_SLUG/index.html"
+```
+
+Buscar placeholders sin sustituir y valores de HAPPY WOOD copiados por accidente. Ambos comandos deben terminar sin coincidencias para otro evento:
+
+```bash
+rg -n 'REEMPLAZAR' "src/pages/eventos/$EVENT_SLUG.astro"
+rg -n 'HAPPY WOOD|happy-wood|Be Happy|2026-09-19' \
+  "src/pages/eventos/$EVENT_SLUG.astro"
+```
+
+Revisar el alcance final y la integridad del diff:
+
+```bash
+git status --short
+git diff --name-only
+git diff --check
+```
+
+Los archivos esperados para un alta normal son la nueva página, la nueva carpeta con su README y las fotos suministradas, y la entrada correspondiente en `Events.astro`. Investigar cualquier archivo adicional antes de continuar.
+
+Comprobar:
+
+- [ ] se genera `dist/eventos/<slug>/index.html`;
+- [ ] no hay errores de assets;
+- [ ] la cantidad renderizada coincide con la cantidad esperada;
+- [ ] carpeta vacía muestra “PRÓXIMAMENTE”;
+- [ ] carpeta vacía no muestra grid, selección ni barra de compra;
+- [ ] carpeta con fotos elimina automáticamente el estado vacío;
+- [ ] los códigos coinciden exactamente con filenames sin extensión;
+- [ ] el orden es natural (`1`, `2`, `10`);
+- [ ] fotos verticales usan su proporción sin deformación;
+- [ ] fotos horizontales usan su proporción sin crop agresivo;
+- [ ] selección y deselección funcionan;
+- [ ] `aria-pressed` cambia correctamente;
+- [ ] teclado, mouse y touch funcionan;
+- [ ] recargar restaura la selección del evento;
+- [ ] “Limpiar selección” elimina la key;
+- [ ] 1 foto muestra `US$4`;
+- [ ] 2 fotos muestran `US$7`;
+- [ ] 3 o más muestran el paquete disponible por atleta, no un total;
+- [ ] WhatsApp contiene solo los códigos seleccionados;
+- [ ] WhatsApp usa el evento correcto y `584247438483`;
+- [ ] WhatsApp de 3+ no presupone que las fotos son de una sola persona;
+- [ ] el canonical tiene dominio correcto y slash final;
+- [ ] la página conserva `noindex, nofollow` salvo decisión SEO expresa;
+- [ ] no se añadió la ruta al sitemap sin autorización;
+- [ ] móvil mantiene 2 columnas;
+- [ ] no existe overflow horizontal;
+- [ ] la barra inferior respeta safe area;
+- [ ] la barra no tapa la última fila;
+- [ ] se puede llegar y ver por completo el último grupo de fotos.
+
+#### Prueba obligatoria en teléfono
+
+Un build correcto no basta para publicar un evento real. Antes del deploy definitivo:
+
+1. abrir la URL en un teléfono físico;
+2. usar conexión móvil si es posible;
+3. recorrer la galería de principio a fin;
+4. revisar mezcla de verticales y horizontales;
+5. seleccionar una foto y comprobar `US$4`;
+6. seleccionar dos y comprobar `US$7`;
+7. seleccionar tres o más y leer la aclaración “por atleta”;
+8. recargar y confirmar restauración;
+9. deseleccionar de 3 a 2 y confirmar regreso a `US$7`;
+10. limpiar la selección;
+11. abrir WhatsApp y revisar evento, códigos, precio y número;
+12. comprobar barra sticky, safe area y última fila.
+
+Registrar cualquier problema objetivo antes de desplegar. No rediseñar la galería durante esta prueba.
+
+### Deploy actual
+
+El proyecto es Astro estático:
+
+```text
+npm run build
+→ genera dist/
+→ subir el contenido de dist/ a SiteGround
+```
+
+No subir únicamente `src/assets/events/<slug>/` ni una subcarpeta aislada de `dist/`. Astro transforma nombres y genera assets optimizados; el deploy actual requiere el resultado completo del build.
+
+Después del deploy, repetir al menos la prueba de ruta, selección y WhatsApp sobre la URL pública.
+
+### Qué no debe hacer una IA al crear un evento
+
+**NO:**
+
+- declarar manualmente decenas o cientos de fotos;
+- crear un array manual de filenames;
+- copiar fotos de otro evento como fallback;
+- usar una misma key de localStorage para eventos distintos;
+- cambiar precios sin autorización;
+- cambiar WhatsApp sin autorización;
+- interpretar 3+ fotos como un total de US$12;
+- inferir qué fotos pertenecen a una persona;
+- añadir reconocimiento facial;
+- añadir backend, base de datos, login o cuentas;
+- añadir React, Vue, Svelte u otro framework;
+- instalar dependencias para dar de alta un evento;
+- crear carrito, checkout o cálculo de impuestos;
+- tocar GA4 o Search Console;
+- tocar políticas, robots, `.htaccess` o SEO global;
+- añadir la galería al sitemap sin una decisión SEO;
+- modificar Home fuera de la tarjeta necesaria;
+- renombrar fotografías automáticamente;
+- eliminar la marca de agua de las previews;
+- generar una segunda marca de agua en la web;
+- hacer refactors no relacionados durante el alta.
+
+### Plantilla operativa reutilizable para una IA
+
+Copiar y completar este bloque antes de empezar:
+
+```text
+DATOS DEL NUEVO EVENTO
+
+Nombre exacto:
+Lugar:
+Fecha visible:
+Fecha ISO (YYYY-MM-DD):
+Slug:
+Slug confirmado como definitivo antes del primer deploy (sí/no):
+URL esperada: /eventos/<slug>/
+Activo ahora (sí/no):
+Cantidad esperada de fotos:
+Convención de filenames:
+WhatsApp confirmado:
+Precios confirmados:
+Política SEO confirmada (default: noindex):
+
+ARCHIVOS A CREAR
+
+[ ] src/assets/events/<slug>/
+[ ] src/assets/events/<slug>/README.md
+[ ] src/pages/eventos/<slug>.astro
+
+ARCHIVOS A MODIFICAR
+
+[ ] src/components/Events.astro — añadir entrada al array events
+[ ] HANDOFF.md — registrar el evento solo si se solicita actualizar documentación
+
+NO MODIFICAR SIN AUTORIZACIÓN
+
+[ ] EventGallery.astro (los precios y mensajes son compartidos)
+[ ] Base.astro
+[ ] Header.astro
+[ ] Footer.astro
+[ ] BackToTop.astro
+[ ] Pricing.astro
+[ ] GA4 / Search Console / sitemap / robots / políticas / .htaccess
+
+VALIDACIÓN DE CARPETA VACÍA
+
+[ ] build correcto
+[ ] ruta generada
+[ ] nombre, lugar y fecha correctos
+[ ] muestra “PRÓXIMAMENTE”
+[ ] no muestra fotos de otro evento
+[ ] no muestra controles de selección o compra
+
+VALIDACIÓN CON FOTOS
+
+[ ] cantidad detectada correcta
+[ ] formatos dentro del glob actual
+[ ] códigos derivados de filenames
+[ ] basenames/códigos únicos incluso entre extensiones diferentes
+[ ] orden natural
+[ ] verticales y horizontales correctas
+[ ] selección/deselección
+[ ] aria-pressed y teclado
+[ ] key black-sheep-selection-<slug>
+[ ] restauración y limpieza de localStorage
+[ ] pricing 1 / 2 / 3+
+[ ] WhatsApp con evento, códigos y número correctos
+[ ] canonical y noindex correctos
+[ ] prueba móvil física completa
+[ ] npm run build final
+[ ] deploy completo de dist/
+[ ] prueba sobre producción
+```
+
+### EJEMPLO — NO ES UN EVENTO REAL
+
+Este bloque es únicamente una demostración técnica. No añadirlo a `Events.astro` ni crear sus archivos salvo que el usuario confirme que el evento existe.
+
+```text
+Nombre: Reto Los Andes
+Lugar: Ejemplo únicamente
+Fecha visible: 27 de septiembre de 2026
+Fecha ISO: 2026-09-27
+Slug: reto-los-andes
+Activo: false
+
+Carpeta:
+src/assets/events/reto-los-andes/
+
+Página:
+src/pages/eventos/reto-los-andes.astro
+
+URL:
+https://sheepsport.com/eventos/reto-los-andes/
+
+LocalStorage:
+black-sheep-selection-reto-los-andes
+
+Filename de ejemplo:
+RLA-001.jpg
+
+Código visible y enviado a WhatsApp:
+RLA-001
+
+Entrada conceptual en Events.astro:
+{
+  name: "Reto Los Andes",
+  date: "27 de septiembre de 2026",
+  isoDate: "2026-09-27",
+  location: "Ejemplo únicamente",
+  url: "/eventos/reto-los-andes/",
+  isActive: false,
+}
+```
+
+Con la carpeta vacía, esa URL mostraría “Próximamente”. Al copiar `RLA-001.jpg` y ejecutar el siguiente build, mostraría una foto con código `RLA-001` sin editar el array de la página.
 
 ---
 
@@ -225,13 +1194,19 @@ Cuando llegue la URL real:
 
 Las imágenes de contenido utilizan `astro:assets` y `<Image>` para generar variantes optimizadas.
 
-La galería usa:
+La galería de muestra de Home (`Gallery.astro`) usa:
 
 ```ts
 widths={[400, 675, 800]}
 ```
 
 Esto fue una optimización deliberada frente al set anterior `[400, 800, 1200]`.
+
+La galería seleccionable de eventos (`EventGallery.astro`) usa un set distinto, adecuado a las previews pequeñas de Lightroom:
+
+```ts
+widths={[200, 400]}
+```
 
 ### Fuentes
 
@@ -246,10 +1221,11 @@ No se cargan Google Fonts externamente.
 
 El proyecto **ya no es cero-JS**.
 
-Actualmente existe JS por dos razones deliberadas:
+Actualmente existe JS por tres razones deliberadas:
 
 1. `BackToTop.astro`: JS vanilla muy pequeño para mostrar/ocultar el botón y ejecutar scroll suave.
-2. Google Analytics 4: `gtag.js` + configuración inline global.
+2. `EventGallery.astro`: JS vanilla para selección, localStorage, pricing y WhatsApp dinámico.
+3. Google Analytics 4: `gtag.js` + configuración inline global.
 
 No existe framework de frontend ni bundle de aplicación.
 
@@ -367,12 +1343,14 @@ Se añadió debajo de los precios el CTA:
 
 con el mismo WhatsApp real del CTA final.
 
-### Galería
+### Galería de muestra en Home
 
 - 6 fotos.
 - Siempre visibles.
 - No volver al experimento anterior de GIF transparente / carga condicional.
 - Hover de zoom únicamente en dispositivos con hover real / pointer fino.
+
+No confundir `Gallery.astro`, que es una muestra editorial de la landing, con `EventGallery.astro`, que contiene las fotos seleccionables de cada evento. La galería de HAPPY WOOD tiene 162 fotos reales en la rama feature y usa lazy loading, códigos por filename y barra de compra.
 
 ### Interacciones móviles
 
@@ -805,23 +1783,20 @@ https://sheepsport.com/
 - sitemap enviado y aceptado;
 - flujo QR → landing probado.
 
-### Pendiente para prueba completamente end-to-end
+### Pruebas de la rama de galería propia
 
-El último tramo:
+En `feature/event-gallery-selection` se verificaron:
 
-```text
-Landing → Google Drive
-```
+- 162 fotos reales de HAPPY WOOD;
+- estado vacío sin fallback;
+- selección y deselección;
+- restauración y limpieza de localStorage;
+- pricing de 1, 2 y 3+ fotos;
+- WhatsApp dinámico con códigos reales;
+- build estático de `/eventos/happy-wood/`;
+- prueba física de la galería.
 
-no puede cerrarse hasta disponer de la URL real del Drive de HAPPY WOOD.
-
-En cuanto se agregue:
-
-```text
-QR → Home → HAPPY WOOD → Drive → códigos → WhatsApp
-```
-
-debe probarse una vez más desde un teléfono con datos móviles.
+Sigue pendiente una decisión explícita de merge y un deploy de esta feature. Después de desplegarla, repetir en producción el flujo `QR → Home → HAPPY WOOD → galería propia → selección → WhatsApp`, preferiblemente desde un teléfono con datos móviles.
 
 ---
 
@@ -838,6 +1813,7 @@ src/
     HowToBuy.astro
     Pricing.astro
     Gallery.astro
+    EventGallery.astro
     Faq.astro
     FinalCta.astro
     Footer.astro
@@ -848,6 +1824,8 @@ src/
 
   pages/
     index.astro
+    eventos/
+      happy-wood.astro
     terminos.astro
     privacidad.astro
     cookies.astro
@@ -858,6 +1836,11 @@ src/
 
   assets/photos/
     ...
+
+  assets/events/
+    happy-wood/
+      README.md
+      162 fotos reales
 
 public/
   fonts/
@@ -1013,7 +1996,7 @@ Descartado. La fotografía debe sentirse como el producto, no como una ilustraci
 
 ### Deshabilitar visualmente los CTA placeholder
 
-Descartado. El único placeholder restante es la URL de Drive y debe sustituirse por la URL real, no esconderse con estados grises artificiales.
+Descartado en el MVP original. En la rama feature ya no existe el placeholder `url: "#"` para HAPPY WOOD: el CTA apunta a `/eventos/happy-wood/`. Para eventos futuros sin fotos, el CTA puede permanecer operativo y llevar al estado vacío “Próximamente”.
 
 ### Banner de cookies
 
@@ -1027,13 +2010,14 @@ No se implementó en esta primera fase SEO. Puede evaluarse después sin bloquea
 
 ## 20. Pendientes actuales, en orden real de prioridad
 
-### P0 — pendiente funcional
+### P0 — decisión de publicación de la feature
 
-1. **Recibir URL real de Google Drive de HAPPY WOOD.**
-2. Reemplazar `url: "#"` en `src/components/Events.astro`.
-3. Probar el CTA “Ver mi galería” en producción.
-4. Hacer una pasada end-to-end:
-   `QR → Home → HAPPY WOOD → Drive → códigos → WhatsApp`.
+1. Revisar y aprobar `feature/event-gallery-selection`.
+2. Decidir explícitamente si la galería propia reemplaza el flujo de Drive.
+3. Hacer merge únicamente con autorización.
+4. Ejecutar build y desplegar el contenido completo de `dist/`.
+5. Probar en producción:
+   `QR → Home → HAPPY WOOD → galería propia → selección → WhatsApp`.
 
 ### P1 — útil, no bloqueante
 
@@ -1041,13 +2025,13 @@ No se implementó en esta primera fase SEO. Puede evaluarse después sin bloquea
    - `gallery_open`
    - `whatsapp_click`
 2. Evaluar esos eventos como key events.
-3. Actualizar este HANDOFF cuando el Drive quede conectado.
+3. Actualizar este HANDOFF después del merge/deploy para separar con claridad qué quedó en producción.
 
 ### P2 — mejoras futuras
 
 - Evaluar schema (`Organization`, `LocalBusiness` u otro que corresponda).
 - Auditoría específica de `alt` text.
-- Páginas individuales por evento si el negocio empieza a captar búsquedas orgánicas de cada competencia.
+- Decidir si las páginas individuales de evento deben pasar de `noindex` a indexables e incorporarse al sitemap.
 - Automatizar deploy si el volumen de cambios aumenta.
 - Revisar consentimiento/cookies si cambia la operación, jurisdicción o stack de tracking.
 
@@ -1077,4 +2061,10 @@ A fecha **18/09/2026**, el MVP está:
 - con SEO básico on-page y técnico;
 - con performance de imágenes optimizada.
 
-**Único pendiente para cerrar completamente el funnel comercial:** conectar la galería real de Google Drive de **HAPPY WOOD**.
+El MVP original de producción quedó documentado con Drive como último tramo pendiente. En la rama feature, ese pendiente se resolvió de otra manera: HAPPY WOOD apunta a su galería propia.
+
+### Evolución lista en la rama feature
+
+La rama `feature/event-gallery-selection` añade una galería propia funcional para HAPPY WOOD con 162 fotos reales, selección, localStorage, pricing y WhatsApp dinámico. Está probada, pero al verificar este documento todavía no se ha fusionado en `main` ni debe describirse como desplegada en producción.
+
+El siguiente hito ya no es recibir una URL de Google Drive: es decidir si se publica la feature, hacer merge con autorización y desplegar/probar `dist/`.
