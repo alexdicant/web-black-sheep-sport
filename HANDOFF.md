@@ -68,7 +68,7 @@ Ambos documentos tienen fecha de esta sesión de trabajo — si el código cambi
 
 ### SEO técnico básico
 
-- `Base.astro` genera canonical absoluto para las rutas indexables mediante `Astro.url.pathname` y `Astro.site`: `https://sheepsport.com/` y `https://sheepsport.com/terminos`.
+- `Base.astro` genera canonical absoluto para las rutas indexables mediante `Astro.url.pathname` y `Astro.site`: `https://sheepsport.com/` y `https://sheepsport.com/terminos/`.
 - El layout genera `og:title`, `og:description`, `og:type`, `og:url`, `og:site_name` y metadatos Twitter equivalentes a partir del `title` y `description` de cada página. **No hay `og:image`** hasta contar con un asset definitivo de 1200×630.
 - `public/robots.txt` permite rastreo y apunta a `https://sheepsport.com/sitemap.xml`.
 - `public/sitemap.xml` es estático y deliberadamente solo lista `/` y `/terminos`.

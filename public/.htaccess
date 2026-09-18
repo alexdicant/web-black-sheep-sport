@@ -1,2 +1,9 @@
+RewriteEngine On
+
+# Canonicalize HTTP and www requests to HTTPS without www.
+RewriteCond %{HTTPS} !=on [OR]
+RewriteCond %{HTTP_HOST} ^www\.sheepsport\.com$ [NC]
+RewriteRule ^ https://sheepsport.com%{REQUEST_URI} [R=301,L]
+
 # Use Astro's custom 404 page for missing resources
 ErrorDocument 404 /404.html
