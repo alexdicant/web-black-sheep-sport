@@ -38,6 +38,11 @@ import BackToTop from "../components/BackToTop.astro";
         </section>
 
         <section>
+          <h2>Contacto</h2>
+          <p>Para dudas sobre esta política, escríbenos a <a href="mailto:info@sheepsport.com">info@sheepsport.com</a>.</p>
+        </section>
+
+        <section>
           <h2>Actualizaciones</h2>
           <p>Esta política podrá actualizarse conforme evolucione el servicio.</p>
         </section>
@@ -87,6 +92,12 @@ import BackToTop from "../components/BackToTop.astro";
     color: var(--color-gray-500);
     font-size: var(--font-size-sm);
     line-height: var(--line-height-base);
+  }
+
+  .legal__body a {
+    font-weight: 700;
+    text-decoration: underline;
+    text-underline-offset: 0.16em;
   }
 
   .legal__updated {

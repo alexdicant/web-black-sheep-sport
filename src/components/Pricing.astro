@@ -10,6 +10,9 @@ const tiers: PricingTier[] = [
   { label: "2 fotos", price: "US$7", isFeatured: false },
   { label: "Todas tus fotos", price: "US$12", isFeatured: true },
 ];
+
+const whatsappUrl =
+  "https://wa.me/584247438483?text=Hola%2C%20vi%20mis%20fotos%20de%20HAPPY%20WOOD%20y%20me%20encantaron.%20Quiero%20comprar%20estas%20fotos%3A%20%5Bescribe%20aqu%C3%AD%20los%20c%C3%B3digos%5D.%20%C2%BFMe%20ayudas%20con%20el%20proceso%20de%20pago%3F";
 ---
 
 <section class="pricing" aria-labelledby="pricing-title">
@@ -26,6 +29,10 @@ const tiers: PricingTier[] = [
           </div>
         ))
       }
+    </div>
+
+    <div class="pricing__cta-wrap">
+      <a class="pricing__cta" href={whatsappUrl} target="_blank" rel="noopener noreferrer">Comprar mis fotos</a>
     </div>
   </div>
 </section>
@@ -108,6 +115,39 @@ const tiers: PricingTier[] = [
     font-size: var(--font-size-4xl);
   }
 
+  .pricing__cta-wrap {
+    display: flex;
+    justify-content: center;
+    margin-top: var(--space-6);
+  }
+
+  .pricing__cta {
+    display: inline-block;
+    padding: var(--space-4) var(--space-5);
+    border-radius: var(--radius-sm);
+    background: var(--color-accent);
+    color: var(--color-accent-on);
+    font-family: var(--font-family-display);
+    font-size: var(--font-size-sm);
+    font-weight: 800;
+    letter-spacing: 0.02em;
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: background 0.18s ease, transform 0.18s ease;
+  }
+
+  .pricing__cta:active {
+    transform: translateY(1px);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .pricing__cta:hover {
+      background: var(--color-ink);
+      color: var(--color-accent);
+      transform: translateY(-2px);
+    }
+  }
+
   @media (min-width: 900px) {
     .pricing {
       background: var(--color-gray-100);
@@ -129,6 +169,10 @@ const tiers: PricingTier[] = [
       flex: 1.6;
       height: 100%;
       padding: var(--space-6) var(--space-5) var(--space-7);
+    }
+
+    .pricing__cta {
+      padding-inline: var(--space-6);
     }
   }
 </style>
