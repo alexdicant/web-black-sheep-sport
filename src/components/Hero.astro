@@ -95,6 +95,12 @@ import heroPhoto from "../assets/photos/DSC06482-Mejorado-NR.webp";
       grid-template-columns: 1fr 1fr;
       gap: var(--container-padding);
       aspect-ratio: auto;
+      /* Alto fijo deliberado, no token. height:100% en un hijo de grid no
+         resuelve contra el alto de la fila (mismo problema que dio flex
+         antes de pasar a flex-basis explícito). El valor depende del
+         recorte actual de la foto del hero: si se cambia la foto o su
+         proporción, este número hay que revisarlo a mano. Segundo alto
+         fijo del proyecto — el primero es .pricing__row en Pricing.astro. */
       height: 410px;
       background: var(--color-surface);
     }
@@ -103,6 +109,7 @@ import heroPhoto from "../assets/photos/DSC06482-Mejorado-NR.webp";
       position: static;
       order: 2;
       width: 100%;
+      /* Ídem: fijo por la misma razón, tiene que igualar el alto de .hero__frame. */
       height: 410px;
       object-position: 40% 35%;
     }
@@ -118,7 +125,7 @@ import heroPhoto from "../assets/photos/DSC06482-Mejorado-NR.webp";
     }
 
     .hero__subtitle {
-      color: var(--color-gray-400);
+      color: var(--color-gray-500);
     }
 
     .hero__kicker {
