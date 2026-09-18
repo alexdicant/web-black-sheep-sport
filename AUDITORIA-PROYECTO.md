@@ -147,3 +147,12 @@ Orden recomendado al tomar decisiones:
 
 `PRODUCT.md` conserva una sección `## Register` que la versión actual de `impeccable` ya no utiliza. Puede eliminarse en la próxima actualización documental; no afecta al sitio ni al build.
 
+---
+
+## Estado posterior / actualización
+
+Esta auditoría conserva sus hallazgos y mediciones como evidencia del estado auditado. Después de ella se corrigieron los precios a US$4 / US$7 / US$12; se revisaron el proceso de compra, FAQ y Términos; y `Cómo comprar` pasó a usar `ol` / `li`.
+
+También se incorporaron targets táctiles y feedback móvil (`touch-action: manipulation`, estados `:active` y hover limitado a puntero fino), y Gallery quedó con `widths={[400, 675, 800]}`. Una medición posterior registró 390,912 B de transferencia de página completa en 390px DPR3, 430px DPR3 y 1440px DPR2, por debajo de 500 KB.
+
+El cierre técnico posterior añadió `site: "https://sheepsport.com"`, canonicales absolutos en las rutas indexables, metadata Open Graph/Twitter sin `og:image`, `404.html` no indexable, `robots.txt`, `sitemap.xml` y un README operativo. `og:image` sigue pendiente de un asset definitivo. Los placeholders de Drive y WhatsApp, el evento piloto, la confirmación de fotografías, el despliegue y la prueba con QR físico continúan pendientes.

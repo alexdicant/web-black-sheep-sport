@@ -1,43 +1,53 @@
-# Astro Starter Kit: Minimal
+# Black Sheep Sport
+
+Landing estática de Black Sheep Sport, división de Black Sheep Studio, para que atletas encuentren las fotos de sus eventos y completen la compra por WhatsApp.
+
+## Flujo
+
+QR → landing → evento → galería en Google Drive → selección por códigos → WhatsApp → pago → entrega
+
+## Stack
+
+- Astro
+- CSS propio
+- `astro:assets`
+- Cero JavaScript cliente
+- Fuentes WOFF2 autoalojadas
+- Deploy estático
+
+## Requisitos
+
+- Node.js `>=22.12.0`
+
+## Comandos
 
 ```sh
-npm create astro@latest -- --template minimal
+npm install
+npm run dev
+npm run build
+npm run preview
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
-
-## 🚀 Project Structure
-
-Inside of your Astro project, you'll see the following folders and files:
+## Estructura
 
 ```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
+src/
+  assets/photos/  # fotografías fuente
+  components/     # secciones de la landing
+  layouts/        # Base.astro y metadatos globales
+  pages/          # /, /terminos y 404
+  styles/         # tokens CSS
+public/           # fuentes, favicon, robots.txt y sitemap.xml
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+## Deploy
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+Ejecuta `npm run build` y publica el contenido generado en `dist/`. El hosting previsto es SiteGround y el dominio definitivo es `sheepsport.com`.
 
-Any static assets, like images, can be placed in the `public/` directory.
+## Pendiente para lanzamiento
 
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+- URL real de Drive del evento.
+- Número real de WhatsApp.
+- Nombre y fecha definitivos del evento piloto.
+- Confirmación final de fotografías, si sigue pendiente.
+- Imagen OG definitiva (por ahora no se publica `og:image`).

@@ -27,24 +27,25 @@ Fuente completa: `PRODUCT.md` en la raíz del repo.
 
 ## 2. Estado actual
 
-El sitio tiene **2 páginas**: `/` (landing completa) y `/terminos` (política de compra/entrega). Todas las secciones descritas abajo están construidas, con datos de ejemplo/placeholder donde falta información real (ver sección 8).
+El sitio tiene **2 rutas públicas indexables**: `/` (landing completa) y `/terminos` (política de compra/entrega). También incluye `src/pages/404.astro`, que genera `404.html` para errores y se marca como `noindex, nofollow`. Todas las secciones descritas abajo están construidas, con datos de ejemplo/placeholder donde falta información real (ver sección 8).
 
 | Sección | Archivo | Estado |
 |---|---|---|
-| Header (wordmark, ubicación, CTA "Escríbenos") | `src/components/Header.astro` | Funcional. CTA visible solo desde 900px; en móvil solo wordmark + "Mérida". |
+| Header (wordmark, ubicación, CTA "Buscar mis fotos") | `src/components/Header.astro` | Funcional. CTA visible solo desde 900px; lleva a `/#tu-evento`. En móvil solo wordmark + "Mérida". |
 | Hero (foto + titular + kicker) | `src/components/Hero.astro` | Funcional. Foto real (`DSC06482-Mejorado-NR.webp`), no placeholder. |
 | Eventos | `src/components/Events.astro` | Funcional, con **1 evento** de ejemplo en el array (ver sección 8). |
-| Cómo comprar (3 pasos) | `src/components/HowToBuy.astro` | Funcional, copy final. |
-| Precios (3 tiers) | `src/components/Pricing.astro` | Funcional, precios de ejemplo (US$4 / US$6 / US$10, ver sección 8). |
-| Muestra (galería de 6 fotos) | `src/components/Gallery.astro` | Funcional, 6 fotos reales, siempre visibles (móvil y escritorio). |
-| Preguntas frecuentes | `src/components/Faq.astro` | Funcional, 4 preguntas, copy final. Sin acordeón — todo el texto siempre visible. |
-| CTA final (WhatsApp) | `src/components/FinalCta.astro` | Funcional visualmente. El link (`href`) es un placeholder `#` (ver sección 7). |
+| Cómo comprar (3 pasos) | `src/components/HowToBuy.astro` | Funcional, copy revisado y semántica `ol` / `li`. |
+| Precios (3 tiers) | `src/components/Pricing.astro` | Funcional: US$4 una foto, US$7 dos fotos, US$12 todas tus fotos. En móvil, las dos primeras opciones ocupan la primera fila y el tier destacado ocupa toda la segunda. |
+| Muestra (galería de 6 fotos) | `src/components/Gallery.astro` | Funcional, 6 fotos reales, siempre visibles (móvil y escritorio), con `widths={[400, 675, 800]}`. |
+| Preguntas frecuentes | `src/components/Faq.astro` | Funcional, 4 preguntas con copy revisado. Sin acordeón — todo el texto siempre visible. |
+| CTA final (WhatsApp) | `src/components/FinalCta.astro` | CTA "Comprar por WhatsApp"; el link (`href`) sigue siendo un placeholder `#` hasta recibir el número real (ver sección 7). |
 | Footer | `src/components/Footer.astro` | Funcional, enlaza a `/terminos`. |
-| Página de Términos | `src/pages/terminos.astro` | Funcional, copy final (ver sección 8 para lo que falta confirmar). |
+| Página de Términos | `src/pages/terminos.astro` | Funcional, copy revisado. |
+| Página 404 | `src/pages/404.astro` | Funcional, reutiliza Header/Footer y tokens existentes; no tiene canonical y no se indexa. |
 
-**Peso del build:** `dist/` completo pesa **768 KB** (2 páginas, todas las variantes de ancho de cada foto para los 2 breakpoints). Eso **no** es lo que descarga un visitante real — un visitante móvil descarga la variante de foto de ~400px de ancho, no todas. El peso real estimado por visita en móvil ronda los **240 KB** (fotos en su variante chica + las 2 fuentes woff2 + HTML/CSS), bien debajo del presupuesto de 500 KB de `PRODUCT.md`. Esto es una estimación por inspección de los tamaños de archivo generados, no una medición de red real — falta confirmar con throttling de 3G en Chrome DevTools o similar antes de publicar.
+**Performance posterior:** la auditoría de imágenes posterior registró **390,912 B** de transferencia de página completa en 390px DPR3, 430px DPR3 y 1440px DPR2. Las tres mediciones quedan bajo el presupuesto de 500 KB de `PRODUCT.md`. La galería mantiene lazy loading; probar el flujo completo en teléfono físico y red real sigue siendo recomendable antes del despliegue.
 
-**Qué se verificó y a qué anchos:** todo el trabajo visual se probó en el navegador a **1440px** (desktop, ancho exacto confirmado vía `window.innerWidth`) y a **~500px** (el entorno de automatización de navegador usado en este proyecto tiene un mínimo de ventana de ~500px, no se pudo forzar 390px real). El único breakpoint del proyecto es `900px`, así que el CSS que corre a 500px es idéntico al que correría a 390px — pero esto **no está verificado pixel-exacto en un dispositivo móvil real**. Antes de publicar, probar en un teléfono real.
+**Qué se verificó y a qué anchos:** hay mediciones de transferencia posteriores a 390px DPR3, 430px DPR3 y 1440px DPR2. El único breakpoint de layout es `900px`; aun así, falta una prueba manual del funnel en teléfono físico y QR real antes de publicar.
 
 Dos pasadas de calidad ya corridas y documentadas, ambas en la raíz del repo:
 - `CRITIQUE-LANDING.md` — revisión de diseño (dual-agent), heurísticas de Nielsen, personas, AI-slop check.
@@ -58,16 +59,23 @@ Ambos documentos tienen fecha de esta sesión de trabajo — si el código cambi
 
 - **Astro puro (`astro@^7.3.3`), sin framework de UI (React/Vue/Svelte).** Por qué: la página es estática, sin interactividad compleja — no hay estado que justifique un framework de componentes. Astro compila a HTML puro, minimiza el JS que llega al navegador. El único JS que corre en el cliente hoy es cero — no hay `<script>` de cliente en ningún componente.
 - **CSS propio con custom properties (`src/styles/tokens.css`), sin Tailwind, sin librería de UI.** Por qué: `PRODUCT.md` lo pide explícito ("sin librerías de UI"). El sistema de diseño es pequeño y a medida (una paleta de 2 colores + escala de grises, una escala tipográfica, una escala de espaciado) — un framework de utilidades no aporta nada que los custom properties no den ya, y agregar Tailwind sumaría peso de build sin necesidad real.
-- **`astro:assets` con `<Image>` para todas las fotos**, nunca `<img>` plano ni rutas a `public/`. Por qué: genera automáticamente las variantes de ancho (`widths`) y sirve la que corresponde según `sizes`, además de optimizar formato/compresión en build. Es la diferencia entre los 768 KB del `dist/` completo y los ~240 KB que baja un visitante real — sin esto, cada visitante bajaría la foto a su tamaño máximo sin importar el viewport.
+- **`astro:assets` con `<Image>` para todas las fotos**, nunca `<img>` plano ni rutas a `public/`. Por qué: genera automáticamente las variantes de ancho (`widths`) y sirve la que corresponde según `sizes`, además de optimizar formato/compresión en build. La galería usa explícitamente `widths={[400, 675, 800]}` y las mediciones posteriores se mantienen bajo el presupuesto de 500 KB.
 - **Fuentes autoalojadas en woff2** (`public/fonts/archivo-expanded-latin.woff2`, `public/fonts/instrument-sans-latin.woff2`), declaradas en `src/layouts/Base.astro` con `@font-face` + `<link rel="preload">`. Por qué: `PRODUCT.md` prohíbe explícitamente depender de Google Fonts por `@import`/`<link>` externo — una fuente autoalojada no depende de una request externa que puede fallar o ser lenta en la conexión móvil del usuario objetivo, y con `font-display: swap` el texto nunca queda invisible esperando la fuente.
 - **Un solo breakpoint, en `900px`.** Por qué: `PRODUCT.md` pide "mobile-first estricto (casi 100% del tráfico)". No hay tablet real en el público objetivo (alguien mirando su celular en un evento deportivo), así que no se diseñó un estado intermedio — es móvil o escritorio, sin punto medio.
-- **Deploy estático: se sube el contenido de `dist/` a SiteGround por hosting compartido.** Dominio: **sheepsport.com** (dato dado directamente para este documento — no hay configuración de dominio ni de despliegue automatizado en el repo todavía, ver sección 7). Por qué SiteGround: ya es el hosting existente de Black Sheep Studio (decisión de negocio, no técnica). `npm run build` genera `dist/` listo para subir tal cual — no hace falta build en el servidor.
+- **Deploy estático: se sube el contenido de `dist/` a SiteGround por hosting compartido.** Dominio: **sheepsport.com**, configurado en `astro.config.mjs` mediante `site`. `npm run build` genera `dist/` listo para subir tal cual — no hace falta build en el servidor.
+
+### SEO técnico básico
+
+- `Base.astro` genera canonical absoluto para las rutas indexables mediante `Astro.url.pathname` y `Astro.site`: `https://sheepsport.com/` y `https://sheepsport.com/terminos`.
+- El layout genera `og:title`, `og:description`, `og:type`, `og:url`, `og:site_name` y metadatos Twitter equivalentes a partir del `title` y `description` de cada página. **No hay `og:image`** hasta contar con un asset definitivo de 1200×630.
+- `public/robots.txt` permite rastreo y apunta a `https://sheepsport.com/sitemap.xml`.
+- `public/sitemap.xml` es estático y deliberadamente solo lista `/` y `/terminos`.
 
 ---
 
 ## 4. Sistema de diseño
 
-Todos los valores están en `src/styles/tokens.css`. No hay valores de color hardcodeados fuera de ese archivo — verificado por grep, cero resultados.
+Los tokens de color viven en `src/styles/tokens.css`. Hay una excepción deliberada: el gradiente de legibilidad del Hero usa `rgba(13, 15, 12, 0.92)` en `Hero.astro`.
 
 ### Paleta
 
@@ -96,9 +104,9 @@ Todos los valores están en `src/styles/tokens.css`. No hay valores de color har
 | `--color-gray-300` sobre `--color-ink` | 10.17:1 | Subtítulo del CTA final |
 | `--color-gray-500` sobre `--color-surface` | 8.93:1 | Texto secundario — la combinación más común del sitio |
 | `--color-gray-500` sobre `--color-gray-100` | 8.09:1 | Texto secundario en la sección Precios (escritorio) |
-| `--color-gray-400` sobre `--color-surface` | **3.84:1** | Números 01/02/03 de Cómo Comprar — **no pasa AA (4.5:1)**, decisión consciente: el orden ya lo comunica la posición y el título va en negro sólido al lado; el número es refuerzo visual, no el único canal de la información. |
+| `--color-gray-400` sobre `--color-surface` | **3.84:1** | Números 01/02/03 de Cómo Comprar — pasan AA para texto grande (3:1); se muestran en tamaño `2xl` y peso 800. |
 
-Todo lo demás del sistema pasa AA con margen amplio. El único punto sub-AA es deliberado y documentado, no un descuido.
+Todo lo demás del sistema pasa AA con margen amplio.
 
 ### La regla del volt — inviolable
 
@@ -160,9 +168,9 @@ Lo siguiente **no se cambia sin permiso explícito**, aunque una revisión de di
 
 **Los GIF de 49 bytes en Gallery ya no existen — se puede ignorar esa preocupación.** En una iteración anterior, `Gallery.astro` mostraba 3 fotos grandes en escritorio y ocultaba 3 más con un truco de `<picture><source media>` apuntando a un GIF transparente de 1×1 para evitar la descarga de la foto real en pantallas grandes. Ese enfoque se **reemplazó por completo** cuando la decisión de diseño cambió a "6 fotos siempre visibles" (sección 5) — hoy `Gallery.astro` no tiene ningún `<picture>`, ningún GIF, ningún truco de carga condicional. Se menciona acá solo para que quede registrado que si alguien encuentra referencias viejas a esto en `CRITIQUE-LANDING.md` o en commits anteriores, ya no aplica al código actual.
 
-**El copy es provisional y no pasó una revisión de copywriting dedicada.** Todo el texto (titulares, subtítulos, preguntas frecuentes, términos) fue escrito durante la construcción de la página, no por quien redacta normalmente para la marca. Antes de publicar, alguien tiene que leerlo con ojo de marca — tono, precisión, nada mal dicho.
+**El proceso de compra, FAQ y Términos ya fueron revisados.** Una revisión editorial adicional de marca puede hacerse si se desea, pero no se debe revertir ni alterar ese copy sin una decisión de producto.
 
-**No hay valores hardcodeados de color fuera de `tokens.css`** (verificado por grep) — pero sí hay algunos valores de layout hardcodeados fuera del sistema de tokens, todos deliberados y comentados donde corresponde: los dos altos fijos ya mencionados, y el `object-position` de cada foto (valores de porcentaje ajustados a mano mirando el recorte real, no calculables).
+Además del color del overlay del Hero, hay valores de layout hardcodeados fuera del sistema de tokens, todos deliberados y comentados donde corresponde: los dos altos fijos ya mencionados y el `object-position` de cada foto (valores de porcentaje ajustados a mano mirando el recorte real, no calculables).
 
 ---
 
@@ -179,10 +187,9 @@ Lo siguiente **no se cambia sin permiso explícito**, aunque una revisión de di
 
 ### No bloquea (se puede publicar sin esto y arreglarlo después)
 
-- Revisión de copy por alguien de marca (sección 6).
-- Targets táctiles del wordmark del header (`209×23px`) y el enlace "Términos" del footer (`56×16px`) — ambos por debajo del mínimo recomendado de 44×44px. Detalle en `AUDIT-LANDING.md`.
+- Una revisión editorial adicional de marca, si se desea.
 - Google Analytics 4 con los tres eventos de medición del funnel — **no está definido cuáles son los tres eventos.** Esto no estaba decidido en ningún documento del proyecto; hay que definirlo antes de implementarlo, no asumir cuáles son.
-- Cualquier otro hallazgo pendiente listado en `AUDIT-LANDING.md`, incluida la decisión sin resolver sobre el contraste de los números 01/02/03 (subido de 1.89:1 a 3.84:1 en esta sesión, pero sigue sin pasar AA — es una decisión de diseño aceptada, no un bug, ver sección 4).
+- Prueba manual en teléfono físico, QR real y conexión móvil antes de publicar.
 
 ---
 
@@ -193,7 +200,6 @@ Lo siguiente **no se cambia sin permiso explícito**, aunque una revisión de di
 | Número de WhatsApp | `src/components/FinalCta.astro` | `const whatsappUrl = "#";` (línea 4) |
 | URL de galería de Drive del evento activo | `src/components/Events.astro` | campo `url: "#"` dentro del array `events` (línea 15) |
 | Confirmar nombre/fecha del evento piloto | `src/components/Events.astro` | `name: "CrossFit Open Mérida"` (línea 12), `date`/`isoDate` (líneas 13–14) |
-| Confirmar precios de lanzamiento | `src/components/Pricing.astro` | array `tiers` (líneas 9–11): `US$4` / `US$6` / `US$10` |
 | Confirmar foto del hero | `src/components/Hero.astro` | `import heroPhoto from "../assets/photos/DSC06482-Mejorado-NR.webp"` (línea 3) |
 | Confirmar las 6 fotos de Muestra | `src/components/Gallery.astro` | array `photos` (líneas 10–17) |
 | Definir los 3 eventos de medición de GA4 | — (no implementado, no decidido en ningún documento) | — |
@@ -220,12 +226,12 @@ npm run preview        # sirve dist/ localmente para probar el build de producci
 src/
   components/    # las 9 secciones de la landing, un componente .astro por sección
   layouts/       # Base.astro — el único layout, con el <head>, fuentes y reset global
-  pages/         # index.astro (home) y terminos.astro — cada archivo acá es una ruta real
+  pages/         # index.astro, terminos.astro y 404.astro
   styles/        # tokens.css — todo el sistema de diseño, un solo archivo
   assets/photos/ # 18 fotos fuente (.webp), solo 7 están importadas por algún componente
 public/
   fonts/         # los dos woff2 autoalojados
-  favicon.ico, favicon.svg
+  favicon.ico, favicon.svg, robots.txt, sitemap.xml
 design/
   reference/     # black-sheep-sport-landing.html — SOLO REFERENCIA VISUAL, no se toca ni se
                  # importa desde ningún lado. Es un export de una herramienta de diseño con

@@ -87,3 +87,11 @@ El navegador automatizado en esta sesión tiene un mínimo de ventana de ~500px 
 Fuera de eso, no hay más P0/P1/P2 abiertos. El sistema quedó limpio después de los 3 fixes de `CRITIQUE-LANDING.md`.
 
 > Podés pedirme que aplique esto ahora, más adelante, o dejarlo así. Volvé a correr `/impeccable audit` después de cualquier cambio para ver el score.
+
+---
+
+## Estado posterior / actualización
+
+Este documento conserva el score y las mediciones de su auditoría original. Después se resolvieron los targets táctiles señalados, se limitaron los hover a dispositivos con puntero fino, se añadieron estados `:active` y `touch-action: manipulation`, y `Cómo comprar` se actualizó a `ol` / `li`.
+
+La galería usa ahora `widths={[400, 675, 800]}`. Una auditoría posterior de transferencia registró 390,912 B de página completa en 390px DPR3, 430px DPR3 y 1440px DPR2, todos bajo el presupuesto de 500 KB. Los precios, el copy del proceso, FAQ y Términos también fueron revisados posteriormente; este documento no se recalculó ni se alteró para reflejar esos cambios.
