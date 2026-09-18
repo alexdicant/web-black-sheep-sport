@@ -3,15 +3,17 @@ interface EventItem {
   name: string;
   date: string;
   isoDate: string;
+  location: string;
   url: string;
   isActive: boolean;
 }
 
 const events: EventItem[] = [
   {
-    name: "CrossFit Open Mérida",
-    date: "14 de septiembre, 2026",
-    isoDate: "2026-09-14",
+    name: "HAPPY WOOD",
+    date: "19 de septiembre de 2026",
+    isoDate: "2026-09-19",
+    location: "Be Happy",
     url: "#",
     isActive: true,
   },
@@ -27,9 +29,12 @@ const events: EventItem[] = [
         <article class="events__card">
           {event.isActive && <span class="events__badge">Activo ahora</span>}
           <h3 class="events__name">{event.name}</h3>
-          <time class="events__date" datetime={event.isoDate}>
-            {event.date}
-          </time>
+          <div class="events__metadata">
+            <time class="events__date" datetime={event.isoDate}>
+              <strong>Fecha:</strong> {event.date}
+            </time>
+            <span class="events__location"><strong>Lugar:</strong> {event.location}</span>
+          </div>
           <a class="events__cta" href={event.url}>
             Ver mi galería
           </a>
@@ -89,10 +94,18 @@ const events: EventItem[] = [
     margin-bottom: var(--space-1);
   }
 
-  .events__date {
+  .events__date,
+  .events__location {
     display: block;
     font-size: var(--font-size-sm);
     color: var(--color-gray-500);
+  }
+
+  .events__date {
+    margin-bottom: var(--space-1);
+  }
+
+  .events__metadata {
     margin-bottom: var(--space-5);
   }
 
