@@ -27,7 +27,9 @@ Fuente completa: `PRODUCT.md` en la raíz del repo.
 
 ## 2. Estado actual
 
-El sitio tiene **2 rutas públicas indexables**: `/` (landing completa) y `/terminos` (política de compra/entrega). También incluye `src/pages/404.astro`, que genera `404.html` para errores y se marca como `noindex, nofollow`. Todas las secciones descritas abajo están construidas, con datos de ejemplo/placeholder donde falta información real (ver sección 8).
+Se añadieron las páginas `/privacidad` y `/cookies`, se ampliaron los términos en `/terminos` y el footer enlaza las tres páginas legales. Google Analytics y Search Console siguen pendientes; este MVP no incluye banner de cookies.
+
+El sitio tiene **4 rutas públicas indexables**: `/` (landing completa), `/terminos` (política de compra/entrega), `/privacidad` y `/cookies`. También incluye `src/pages/404.astro`, que genera `404.html` para errores y se marca como `noindex, nofollow`. Todas las secciones descritas abajo están construidas, con datos de ejemplo/placeholder donde falta información real (ver sección 8).
 
 | Sección | Archivo | Estado |
 |---|---|---|

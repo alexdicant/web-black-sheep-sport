@@ -1,0 +1,104 @@
+---
+import Base from "../layouts/Base.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import BackToTop from "../components/BackToTop.astro";
+---
+
+<Base title="Política de cookies — Black Sheep Sport" description="Información sobre el uso actual de cookies en Black Sheep Sport.">
+  <Header />
+  <main>
+    <section class="legal" aria-labelledby="cookies-title">
+      <h1 class="legal__title" id="cookies-title">Política de cookies</h1>
+
+      <div class="legal__body">
+        <section>
+          <h2>Qué son las cookies</h2>
+          <p>Las cookies son pequeños archivos que un sitio web puede guardar en el navegador. Tecnologías similares pueden ayudar a recordar información o entender cómo funciona un servicio.</p>
+        </section>
+
+        <section>
+          <h2>Uso actual</h2>
+          <p>Actualmente Black Sheep Sport no utiliza cookies publicitarias ni de remarketing. El sitio tampoco utiliza cookies propias.</p>
+        </section>
+
+        <section>
+          <h2>Servicios externos</h2>
+          <p>Al seguir enlaces hacia servicios externos como Google Drive o WhatsApp, esos proveedores pueden utilizar sus propias cookies o tecnologías conforme a sus propias políticas. Esas cookies no son gestionadas por Black Sheep Sport.</p>
+        </section>
+
+        <section>
+          <h2>Analítica</h2>
+          <p>Actualmente no se utilizan cookies de Google Analytics. Si se incorpora una herramienta analítica en el futuro, esta política se actualizará para informar de su funcionamiento.</p>
+        </section>
+
+        <section>
+          <h2>Control desde el navegador</h2>
+          <p>Puedes revisar, bloquear o eliminar cookies desde la configuración de tu navegador.</p>
+        </section>
+
+        <section>
+          <h2>Actualizaciones</h2>
+          <p>Esta política podrá actualizarse conforme evolucione el servicio.</p>
+        </section>
+
+        <p class="legal__updated">Última actualización: 18 de septiembre de 2026</p>
+      </div>
+
+      <a class="legal__back" href="/">Volver al inicio</a>
+    </section>
+  </main>
+  <Footer />
+  <BackToTop />
+</Base>
+
+<style>
+  .legal {
+    max-width: var(--container-max-width);
+    margin: 0 auto;
+    padding: var(--space-section-block) var(--container-padding);
+  }
+
+  .legal__title {
+    margin-bottom: var(--space-6);
+    font-size: var(--font-size-2xl);
+    text-transform: uppercase;
+  }
+
+  .legal__body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    max-width: var(--measure-prose);
+    margin-bottom: var(--space-7);
+  }
+
+  .legal__body section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .legal__body h2 {
+    font-size: var(--font-size-base);
+  }
+
+  .legal__body p {
+    color: var(--color-gray-500);
+    font-size: var(--font-size-sm);
+    line-height: var(--line-height-base);
+  }
+
+  .legal__updated {
+    color: var(--color-gray-500);
+  }
+
+  .legal__back {
+    display: inline-block;
+    color: var(--color-ink);
+    font-size: var(--font-size-sm);
+    font-weight: 700;
+    text-decoration: underline;
+    text-underline-offset: 0.16em;
+  }
+</style>

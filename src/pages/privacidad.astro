@@ -1,0 +1,127 @@
+---
+import Base from "../layouts/Base.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import BackToTop from "../components/BackToTop.astro";
+---
+
+<Base title="Política de privacidad — Black Sheep Sport" description="Cómo Black Sheep Sport trata la información relacionada con sus fotografías deportivas y el proceso de compra.">
+  <Header />
+  <main>
+    <section class="legal" aria-labelledby="privacidad-title">
+      <h1 class="legal__title" id="privacidad-title">Política de privacidad</h1>
+
+      <div class="legal__body">
+        <section>
+          <h2>Responsable y alcance</h2>
+          <p>Esta política corresponde a Black Sheep Sport, una división de Black Sheep Studio. Explica el tratamiento de información relacionada con el uso de sheepsport.com y el proceso de compra de fotografías.</p>
+        </section>
+
+        <section>
+          <h2>Qué información puede tratarse</h2>
+          <p>Según la solicitud, podemos tratar el nombre que proporciones voluntariamente por WhatsApp, los códigos de fotografías seleccionadas, los mensajes relacionados con la compra, los comprobantes de pago enviados voluntariamente y la información mínima necesaria para gestionar la entrega.</p>
+          <p>También pueden tratarse fotografías de participantes tomadas durante eventos deportivos e información técnica básica generada por el funcionamiento normal del sitio o del hosting.</p>
+          <p>La web no tiene cuentas de usuario ni formularios propios, y no almacena una base de datos de clientes en el sitio.</p>
+        </section>
+
+        <section>
+          <h2>Finalidades</h2>
+          <p>La información se utiliza para localizar fotografías, procesar solicitudes de compra, verificar pagos, entregar fotografías, atender consultas, resolver solicitudes de corrección o retiro de imágenes y mantener o mejorar el funcionamiento del servicio.</p>
+        </section>
+
+        <section>
+          <h2>Fotografías de eventos</h2>
+          <p>Black Sheep Sport fotografía participantes durante eventos deportivos. Cuando corresponde, esta actividad se realiza en coordinación con los organizadores del evento. Las galerías pueden contener imágenes de participantes.</p>
+          <p>Cualquier persona que desee solicitar el retiro de una fotografía en la que aparezca puede contactar a Black Sheep Sport por WhatsApp.</p>
+        </section>
+
+        <section>
+          <h2>Servicios de terceros</h2>
+          <p>Utilizamos Google Drive para alojar y mostrar las galerías, WhatsApp para la comunicación, coordinación de compra y entrega, y Binance cuando el cliente decide utilizar ese método de pago. Estos proveedores operan bajo sus propias políticas y condiciones.</p>
+        </section>
+
+        <section>
+          <h2>Analítica</h2>
+          <p>Google Analytics no está instalado actualmente. Si en el futuro se incorporan herramientas de medición o analítica, esta política se actualizará para reflejarlo.</p>
+        </section>
+
+        <section>
+          <h2>Conservación</h2>
+          <p>Los datos relacionados con solicitudes y compras se conservan durante el tiempo razonablemente necesario para gestionar el servicio, resolver incidencias y cumplir obligaciones aplicables.</p>
+        </section>
+
+        <section>
+          <h2>Derechos y solicitudes</h2>
+          <p>Cuando corresponda, puedes solicitar conocer qué información se mantiene sobre ti, corregir datos, solicitar su eliminación, pedir el retiro de fotografías o plantear dudas sobre privacidad.</p>
+          <p>Canal de contacto: <a href="https://wa.me/584247438483">WhatsApp +58 424-7438483</a>.</p>
+        </section>
+
+        <section>
+          <h2>Cambios</h2>
+          <p>Esta política podrá actualizarse conforme evolucione el servicio.</p>
+        </section>
+
+        <p class="legal__updated">Última actualización: 18 de septiembre de 2026</p>
+      </div>
+
+      <a class="legal__back" href="/">Volver al inicio</a>
+    </section>
+  </main>
+  <Footer />
+  <BackToTop />
+</Base>
+
+<style>
+  .legal {
+    max-width: var(--container-max-width);
+    margin: 0 auto;
+    padding: var(--space-section-block) var(--container-padding);
+  }
+
+  .legal__title {
+    margin-bottom: var(--space-6);
+    font-size: var(--font-size-2xl);
+    text-transform: uppercase;
+  }
+
+  .legal__body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    max-width: var(--measure-prose);
+    margin-bottom: var(--space-7);
+  }
+
+  .legal__body section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .legal__body h2 {
+    font-size: var(--font-size-base);
+  }
+
+  .legal__body p {
+    color: var(--color-gray-500);
+    font-size: var(--font-size-sm);
+    line-height: var(--line-height-base);
+  }
+
+  .legal__body a,
+  .legal__back {
+    font-weight: 700;
+    text-decoration: underline;
+    text-underline-offset: 0.16em;
+  }
+
+  .legal__updated {
+    color: var(--color-gray-500);
+  }
+
+  .legal__back {
+    display: inline-block;
+    color: var(--color-ink);
+    font-size: var(--font-size-sm);
+  }
+</style>

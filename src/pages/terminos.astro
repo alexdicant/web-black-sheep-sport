@@ -5,30 +5,75 @@ import Footer from "../components/Footer.astro";
 import BackToTop from "../components/BackToTop.astro";
 ---
 
-<Base title="Términos — Black Sheep Sport" description="Cómo funciona la compra y entrega de tus fotos.">
+<Base title="Términos y condiciones — Black Sheep Sport" description="Términos y condiciones para la compra y entrega de fotografías deportivas.">
   <Header />
   <main>
     <section class="terminos" aria-labelledby="terminos-title">
-      <p class="terminos__label">Términos</p>
-      <h1 class="terminos__title" id="terminos-title">Cómo funciona</h1>
+      <h1 class="terminos__title" id="terminos-title">Términos y condiciones</h1>
 
       <div class="terminos__body">
-        <p>
-          Las fotos de la galería llevan marca de agua y sirven para que identifiques cuáles quieres comprar. Cada archivo tiene un código.
-        </p>
-        <p>Para comprar, envíanos por WhatsApp tu nombre y los códigos de las fotos seleccionadas.</p>
-        <p>Las fotos compradas se entregan editadas, en alta resolución y sin marca de agua, mediante WhatsApp en formato de archivo.</p>
-        <p>Aceptamos pago móvil y Binance.</p>
-        <p>
-          La galería de cada evento se publica dentro de las 24 horas posteriores a su finalización. Una vez confirmado el pago, las fotos finales se entregan al día siguiente.
-        </p>
-        <p>El paquete “Todas tus fotos” incluye todas las fotografías disponibles del deportista en la galería. Cada deportista se compra por separado.</p>
-        <p>
-          Si quieres que retiremos alguna fotografía tuya de la galería, escríbenos y la eliminaremos.
-        </p>
-        <p>
-          Si envías por error el código de otra fotografía, verificaremos la selección y buscaremos entregarte la correcta. No se realizan reembolsos automáticos por errores en el código enviado.
-        </p>
+        <section>
+          <h2>Galerías y selección</h2>
+          <p>Las fotografías mostradas en la galería llevan marca de agua para facilitar la selección. Cada archivo tiene un código; para comprar, envíanos por WhatsApp tu nombre y los códigos que seleccionaste.</p>
+        </section>
+
+        <section>
+          <h2>Precios</h2>
+          <ul>
+            <li>1 foto: US$4</li>
+            <li>2 fotos: US$7</li>
+            <li>Todas tus fotos: US$12</li>
+          </ul>
+          <p>Los precios publicados corresponden a la oferta vigente y pueden actualizarse para eventos futuros.</p>
+        </section>
+
+        <section>
+          <h2>Todas tus fotos</h2>
+          <p>Este paquete incluye todas las fotografías disponibles y utilizables del deportista en la galería. No implica una cantidad mínima garantizada. Cada deportista se compra por separado.</p>
+        </section>
+
+        <section>
+          <h2>Pago</h2>
+          <p>Actualmente aceptamos pago móvil y Binance. La compra se considera confirmada cuando Black Sheep Sport verifica el pago.</p>
+        </section>
+
+        <section>
+          <h2>Entrega</h2>
+          <p>La entrega es digital. Las fotografías compradas se entregan editadas, en alta resolución y sin marca de agua, mediante WhatsApp en formato de archivo.</p>
+          <p>La galería general se publica dentro de las 24 horas posteriores al evento. Después de confirmar el pago, la entrega se realiza normalmente al día siguiente.</p>
+        </section>
+
+        <section>
+          <h2>Disponibilidad</h2>
+          <p>La disponibilidad depende de que existan fotografías utilizables del participante. No se garantiza que todos los participantes tengan una cantidad determinada de imágenes.</p>
+        </section>
+
+        <section>
+          <h2>Errores en códigos</h2>
+          <p>Si envías por error el código de otra fotografía, revisaremos la selección y buscaremos entregar la fotografía correcta cuando pueda identificarse. No existe reembolso automático únicamente por un error de código enviado por el cliente.</p>
+        </section>
+
+        <section>
+          <h2>Retiro de fotografías</h2>
+          <p>Si deseas que una fotografía tuya sea retirada de una galería, puedes solicitarlo por WhatsApp.</p>
+        </section>
+
+        <section>
+          <h2>Uso de las fotografías compradas</h2>
+          <p>Las fotografías adquiridas se entregan para uso personal del cliente, salvo que Black Sheep Sport acuerde expresamente otro tipo de uso.</p>
+        </section>
+
+        <section>
+          <h2>Servicios de terceros</h2>
+          <p>Google Drive, WhatsApp y los proveedores de pago funcionan como servicios externos y están sujetos a sus propias condiciones.</p>
+        </section>
+
+        <section>
+          <h2>Cambios</h2>
+          <p>Black Sheep Sport puede actualizar precios, procesos y condiciones para eventos futuros. Los cambios no alterarán retroactivamente las compras ya confirmadas.</p>
+        </section>
+
+        <p class="terminos__updated">Última actualización: 18 de septiembre de 2026</p>
       </div>
 
       <a class="terminos__back" href="/">Volver al inicio</a>
@@ -45,16 +90,6 @@ import BackToTop from "../components/BackToTop.astro";
     margin: 0 auto;
   }
 
-  .terminos__label {
-    font-family: var(--font-family-display);
-    font-weight: 800;
-    font-size: var(--font-size-sm);
-    letter-spacing: 0.09em;
-    color: var(--color-gray-500);
-    text-transform: uppercase;
-    margin-bottom: var(--space-3);
-  }
-
   .terminos__title {
     font-size: var(--font-size-2xl);
     text-transform: uppercase;
@@ -69,9 +104,32 @@ import BackToTop from "../components/BackToTop.astro";
     margin-bottom: var(--space-7);
   }
 
-  .terminos__body p {
+  .terminos__body section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .terminos__body h2 {
+    font-size: var(--font-size-base);
+  }
+
+  .terminos__body p,
+  .terminos__body li {
     font-size: var(--font-size-sm);
     line-height: var(--line-height-base);
+    color: var(--color-gray-500);
+  }
+
+  .terminos__body ul {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    padding-left: var(--space-4);
+    list-style: disc;
+  }
+
+  .terminos__updated {
     color: var(--color-gray-500);
   }
 

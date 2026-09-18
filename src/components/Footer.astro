@@ -1,7 +1,12 @@
 <footer class="footer">
   <p class="footer__text">
-    Un servicio de Black Sheep Studio · <a class="footer__link" href="/terminos">Términos</a>
+    Un servicio de Black Sheep Studio
   </p>
+  <nav class="footer__links" aria-label="Enlaces legales">
+    <a class="footer__link" href="/privacidad">Privacidad</a>
+    <a class="footer__link" href="/cookies">Cookies</a>
+    <a class="footer__link" href="/terminos">Términos</a>
+  </nav>
 </footer>
 
 <style>
@@ -13,6 +18,14 @@
   .footer__text {
     font-size: var(--font-size-xs);
     color: var(--color-gray-500);
+  }
+
+  .footer__links {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: var(--space-2);
+    gap: var(--space-1) var(--space-4);
   }
 
   .footer__link {
