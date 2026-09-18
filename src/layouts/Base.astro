@@ -15,6 +15,7 @@ const {
   noindex = false,
 } = Astro.props;
 const canonicalUrl = canonical ? new URL(Astro.url.pathname, Astro.site) : undefined;
+const ogImageUrl = new URL("/og-black-sheep-sport.webp", Astro.site);
 ---
 
 <!doctype html>
@@ -30,9 +31,13 @@ const canonicalUrl = canonical ? new URL(Astro.url.pathname, Astro.site) : undef
     <meta property="og:type" content="website" />
     {canonicalUrl && <meta property="og:url" content={canonicalUrl} />}
     <meta property="og:site_name" content="Black Sheep Sport" />
-    <meta name="twitter:card" content="summary" />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageUrl} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" href="/favicon.ico" />
     <meta name="generator" content={Astro.generator} />
