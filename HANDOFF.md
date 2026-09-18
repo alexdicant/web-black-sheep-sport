@@ -85,7 +85,9 @@ En `feature/event-gallery-selection`, HAPPY WOOD ya no usa un placeholder de Goo
 
 - `Events.astro` enlaza a `/eventos/happy-wood/`;
 - existe una página Astro propia para el evento;
-- la carpeta del evento contiene 162 fotografías reales;
+- las 162 fotografías anteriores de HAPPY WOOD eran de prueba y fueron retiradas;
+- HAPPY WOOD está actualmente en estado vacío y muestra “Próximamente” mientras se espera el lote real;
+- Fogueo Be Fit contiene 194 fotografías reales y su galería propia ya fue probada manualmente;
 - la galería seleccionable, localStorage, pricing orientativo y WhatsApp dinámico funcionan;
 - existe un estado vacío reutilizable para crear páginas antes de recibir las fotos.
 
@@ -99,8 +101,8 @@ La galería fue probada físicamente y el flujo funciona. Esta funcionalidad sig
 | `/terminos/` | Términos y condiciones |
 | `/privacidad/` | Política de privacidad |
 | `/cookies/` | Política de cookies |
-| `/eventos/happy-wood/` | Galería propia de HAPPY WOOD; solo existe en la rama feature hasta su merge |
-| `/eventos/fogueo-be-fit/` | Galería propia de Fogueo Be Fit; evento pasado, creada con 0 fotografías y estado “Próximamente” |
+| `/eventos/happy-wood/` | Galería propia de HAPPY WOOD; actualmente con 0 fotos y estado “Próximamente” |
+| `/eventos/fogueo-be-fit/` | Galería propia activa de Fogueo Be Fit; evento pasado con 194 fotografías reales |
 | `404.html` | Página de error personalizada, `noindex, nofollow` |
 
 Astro genera **7 páginas estáticas** en el build de la rama feature. El MVP original de `main` generaba 5 antes de incorporar las rutas de eventos.
@@ -113,7 +115,7 @@ Astro genera **7 páginas estáticas** en el build de la rama feature. El MVP or
 | Hero | `src/components/Hero.astro` | Funcional. Foto real. H1: **“ASÍ SE VE DAR TODO”**. Encuadre móvil corregido para evitar que el copy cubra el rostro. |
 | Eventos | `src/components/Events.astro` | **HAPPY WOOD** permanece activo y **Fogueo Be Fit** figura como evento pasado. Ambos CTA apuntan a sus galerías propias. |
 | Galería seleccionable | `src/components/EventGallery.astro` | Componente reutilizable con estado vacío, selección accesible, localStorage, pricing informativo y WhatsApp dinámico. |
-| Página de evento | `src/pages/eventos/happy-wood.astro` | Descubre automáticamente las fotos reales del evento mediante `import.meta.glob()`. |
+| Páginas de evento | `src/pages/eventos/*.astro` | Descubren automáticamente las fotos de cada evento mediante `import.meta.glob()`. |
 | Cómo comprar | `src/components/HowToBuy.astro` | Funcional. Semántica `ol` / `li`; proceso real explicado en 3 pasos. |
 | Precios | `src/components/Pricing.astro` | US$4 / US$7 / US$12. Layout móvil corregido y CTA **“Buscar mis fotos”** hacia `/#tu-evento`. |
 | Muestra | `src/components/Gallery.astro` | 6 fotos reales. Variantes optimizadas `widths={[400, 675, 800]}`. |
@@ -220,10 +222,13 @@ La tarjeta conserva el badge **“Activo ahora”**.
 - URL desde Home: `/eventos/happy-wood/`.
 - Página: `src/pages/eventos/happy-wood.astro`.
 - Carpeta: `src/assets/events/happy-wood/`.
-- Fotografías reales detectadas: 162.
+- Fotografías actuales: 0.
+- Las 162 fotografías anteriores eran de prueba y fueron retiradas.
+- Estado actual: muestra automáticamente “Próximamente”, sin grid ni controles de selección o compra.
+- Pendiente: recibir y copiar el lote real mañana.
 - Key de selección: `black-sheep-selection-happy-wood`.
 - WhatsApp de compra: `584247438483`.
-- Estado: funcional y probado, todavía sin merge a `main`.
+- Estado: página y galería creadas, todavía sin merge a `main`.
 
 La referencia anterior a `url: "#"` y a una URL pendiente de Google Drive corresponde al MVP original; ya no describe esta rama. Google Drive no forma parte del flujo comercial propuesto por la feature.
 
@@ -238,8 +243,8 @@ La referencia anterior a `url: "#"` y a una URL pendiente de Google Drive corres
 - **Página creada:** `src/pages/eventos/fogueo-be-fit.astro`.
 - **URL:** `/eventos/fogueo-be-fit/`.
 - **Galería propia:** usa `EventGallery.astro` y la carpeta `src/assets/events/fogueo-be-fit/`.
-- **Fotografías actuales:** 0; la página muestra automáticamente “Próximamente”.
-- **Pendiente:** copiar en su carpeta el lote preparado de imágenes y ejecutar build/deploy.
+- **Fotografías actuales:** 194 fotografías reales incorporadas.
+- **Estado:** galería activa y probada manualmente; selección, pricing y WhatsApp funcionan.
 - **Key de selección:** `black-sheep-selection-fogueo-be-fit`.
 
 ---
@@ -386,9 +391,8 @@ Las previews de selección llegan preparadas antes de copiarse al repositorio:
 
 - ya tienen marca de agua;
 - ya están optimizadas para navegar y seleccionar;
-- las verticales normalmente miden `267×400`;
-- las horizontales normalmente miden `400×267`;
-- el formato real probado en HAPPY WOOD es `.jpg`.
+- el lote real actual de Fogueo Be Fit contiene verticales de `267×400` y horizontales de `600×400`;
+- el formato real actual de Fogueo Be Fit es `.jpg`.
 
 El glob actual admite exactamente estas extensiones en minúsculas:
 
@@ -1360,7 +1364,7 @@ hacia `/#tu-evento`. El CTA no abre WhatsApp directamente: primero lleva al clie
 - No volver al experimento anterior de GIF transparente / carga condicional.
 - Hover de zoom únicamente en dispositivos con hover real / pointer fino.
 
-No confundir `Gallery.astro`, que es una muestra editorial de la landing, con `EventGallery.astro`, que contiene las fotos seleccionables de cada evento. La galería de HAPPY WOOD tiene 162 fotos reales en la rama feature y usa lazy loading, códigos por filename y barra de compra.
+No confundir `Gallery.astro`, que es una muestra editorial de la landing, con `EventGallery.astro`, que contiene las fotos seleccionables de cada evento. Fogueo Be Fit tiene 194 fotos reales y usa lazy loading, códigos por filename y barra de compra. HAPPY WOOD está actualmente vacío y muestra “Próximamente”.
 
 ### Interacciones móviles
 
@@ -1801,16 +1805,13 @@ https://sheepsport.com/
 
 En `feature/event-gallery-selection` se verificaron:
 
-- 162 fotos reales de HAPPY WOOD;
-- estado vacío sin fallback;
-- selección y deselección;
-- restauración y limpieza de localStorage;
-- pricing de 1, 2 y 3+ fotos;
-- WhatsApp dinámico con códigos reales;
-- build estático de `/eventos/happy-wood/`;
-- prueba física de la galería.
+- 194 fotos reales de Fogueo Be Fit;
+- selección, pricing y WhatsApp de Fogueo Be Fit mediante prueba manual de la galería;
+- HAPPY WOOD con 0 fotos después de retirar las 162 imágenes de prueba;
+- estado vacío de HAPPY WOOD sin fallback, grid ni controles de compra;
+- build estático de `/eventos/fogueo-be-fit/` y `/eventos/happy-wood/`.
 
-Sigue pendiente una decisión explícita de merge y un deploy de esta feature. Después de desplegarla, repetir en producción el flujo `QR → Home → HAPPY WOOD → galería propia → selección → WhatsApp`, preferiblemente desde un teléfono con datos móviles.
+Sigue pendiente una decisión explícita de merge y un deploy de esta feature. Después de desplegarla, repetir en producción el flujo `QR → Home → Fogueo Be Fit → galería propia → selección → WhatsApp`, preferiblemente desde un teléfono con datos móviles. HAPPY WOOD deberá probarse de la misma forma cuando se incorpore su lote real.
 
 ---
 
@@ -1855,10 +1856,10 @@ src/
   assets/events/
     fogueo-be-fit/
       README.md
-      0 fotos; lote preparado pendiente
+      194 fotos reales incorporadas y probadas
     happy-wood/
       README.md
-      162 fotos reales
+      0 fotos; lote real pendiente para mañana
 
   utils/
     eventPhotos.ts
@@ -2038,7 +2039,8 @@ No se implementó en esta primera fase SEO. Puede evaluarse después sin bloquea
 3. Hacer merge únicamente con autorización.
 4. Ejecutar build y desplegar el contenido completo de `dist/`.
 5. Probar en producción:
-   `QR → Home → HAPPY WOOD → galería propia → selección → WhatsApp`.
+   `QR → Home → Fogueo Be Fit → galería propia → selección → WhatsApp`.
+6. Cuando llegue el lote real de HAPPY WOOD, copiarlo, ejecutar build/deploy y repetir el flujo completo para ese evento.
 
 ### P1 — útil, no bloqueante
 
@@ -2086,6 +2088,6 @@ El MVP original de producción quedó documentado con Drive como contexto histó
 
 ### Evolución lista en la rama feature
 
-La rama `feature/event-gallery-selection` añade una galería propia funcional para HAPPY WOOD con 162 fotos reales, selección, localStorage, pricing y WhatsApp dinámico. Está probada, pero al verificar este documento todavía no se ha fusionado en `main` ni debe describirse como desplegada en producción.
+La evolución de galerías propias está operativa con 194 fotos reales de Fogueo Be Fit; su selección, pricing y WhatsApp fueron probados manualmente. HAPPY WOOD conserva su página y galería, pero está actualmente con 0 fotos: las 162 anteriores eran pruebas, fueron retiradas y el lote real queda pendiente para mañana. Esta evolución todavía no debe describirse como desplegada en producción hasta verificar merge y deploy.
 
 El siguiente hito es decidir si se publica la feature, hacer merge con autorización y desplegar/probar `dist/`.
