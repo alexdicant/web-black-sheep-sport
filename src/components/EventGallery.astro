@@ -57,6 +57,12 @@ const hasPhotos = photos.length > 0;
   {
     hasPhotos ? (
       <>
+        <svg class="event-gallery__symbols" aria-hidden="true">
+          <symbol id="event-gallery-expand-icon" viewBox="0 0 24 24">
+            <circle cx="10.5" cy="10.5" r="5.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+            <path d="m14.5 14.5 5 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+          </symbol>
+        </svg>
         <ul class="event-gallery__grid" aria-label={`Fotografías de ${eventName}`}>
           {photos.map((photo) => (
             <li class="event-gallery__item">
@@ -74,6 +80,7 @@ const hasPhotos = photos.length > 0;
                     class="photo-choice__image"
                     src={photo.src}
                     alt={`Foto del evento ${eventName}, código ${photo.code}`}
+                    data-photo-image
                     loading="lazy"
                     decoding="async"
                     widths={[200, 400]}
@@ -86,6 +93,16 @@ const hasPhotos = photos.length > 0;
                   </span>
                 </span>
                 <span class="photo-choice__code">{photo.code}</span>
+              </button>
+              <button
+                class="photo-expand"
+                type="button"
+                aria-label={`Ampliar foto ${photo.code}`}
+                data-photo-expand
+              >
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <use href="#event-gallery-expand-icon"></use>
+                </svg>
               </button>
             </li>
           ))}
@@ -109,6 +126,67 @@ const hasPhotos = photos.length > 0;
             </button>
           </div>
         </div>
+
+        <dialog
+          class="photo-lightbox"
+          aria-label="Vista ampliada de la galería"
+          data-photo-lightbox
+        >
+          <header class="photo-lightbox__header">
+            <h2 class="photo-lightbox__code" data-lightbox-code></h2>
+            <button
+              class="photo-lightbox__close"
+              type="button"
+              aria-label="Cerrar vista ampliada"
+              data-lightbox-close
+            >
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="m5 5 14 14M19 5 5 19" stroke="currentColor" stroke-width="1.8" stroke-linecap="square" />
+              </svg>
+            </button>
+          </header>
+
+          <div class="photo-lightbox__stage">
+            <img
+              class="photo-lightbox__image"
+              src={undefined}
+              alt=""
+              decoding="async"
+              data-lightbox-image
+            />
+          </div>
+
+          <div class="photo-lightbox__controls">
+            <button
+              class="photo-lightbox__nav"
+              type="button"
+              aria-label="Foto anterior"
+              data-lightbox-previous
+            >
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="m15 5-7 7 7 7" stroke="currentColor" stroke-width="1.8" stroke-linecap="square" stroke-linejoin="miter" />
+              </svg>
+            </button>
+            <button
+              class="photo-lightbox__select"
+              type="button"
+              aria-pressed="false"
+              data-lightbox-select
+            >
+              Seleccionar foto
+            </button>
+            <button
+              class="photo-lightbox__nav"
+              type="button"
+              aria-label="Foto siguiente"
+              data-lightbox-next
+            >
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="m9 5 7 7-7 7" stroke="currentColor" stroke-width="1.8" stroke-linecap="square" stroke-linejoin="miter" />
+              </svg>
+            </button>
+          </div>
+        </dialog>
       </>
     ) : (
       <section class="event-gallery__empty">
@@ -129,12 +207,22 @@ const hasPhotos = photos.length > 0;
     const buttons = Array.from(
       gallery.querySelectorAll<HTMLButtonElement>("[data-photo-select]"),
     );
+    const expandButtons = Array.from(
+      gallery.querySelectorAll<HTMLButtonElement>("[data-photo-expand]"),
+    );
     const selectionBar = gallery.querySelector<HTMLElement>("[data-selection-bar]");
     const selectionCount = gallery.querySelector<HTMLElement>("[data-selection-count]");
     const selectionPrice = gallery.querySelector<HTMLElement>("[data-selection-price]");
     const selectionStatus = gallery.querySelector<HTMLElement>("[data-selection-status]");
     const clearButton = gallery.querySelector<HTMLButtonElement>("[data-clear-selection]");
     const buyButton = gallery.querySelector<HTMLButtonElement>("[data-buy-selection]");
+    const lightbox = gallery.querySelector<HTMLDialogElement>("[data-photo-lightbox]");
+    const lightboxImage = gallery.querySelector<HTMLImageElement>("[data-lightbox-image]");
+    const lightboxCode = gallery.querySelector<HTMLElement>("[data-lightbox-code]");
+    const lightboxClose = gallery.querySelector<HTMLButtonElement>("[data-lightbox-close]");
+    const lightboxPrevious = gallery.querySelector<HTMLButtonElement>("[data-lightbox-previous]");
+    const lightboxNext = gallery.querySelector<HTMLButtonElement>("[data-lightbox-next]");
+    const lightboxSelect = gallery.querySelector<HTMLButtonElement>("[data-lightbox-select]");
     const eventName = gallery.dataset.eventName ?? "este evento";
     const storageKey = gallery.dataset.storageKey ?? "black-sheep-selection";
     const whatsappNumber = gallery.dataset.whatsappNumber ?? "";
@@ -146,6 +234,8 @@ const hasPhotos = photos.length > 0;
       buttons.map((button) => button.dataset.photoCode).filter((code): code is string => Boolean(code)),
     );
     const selectedCodes = new Set<string>();
+    let currentPhotoIndex = -1;
+    let lightboxTrigger: HTMLButtonElement | null = null;
 
     const getOrderedCodes = () =>
       buttons
@@ -174,6 +264,22 @@ const hasPhotos = photos.length > 0;
       } catch {
         // La galería sigue funcionando si el navegador bloquea localStorage.
       }
+    };
+
+    const updateLightboxSelection = () => {
+      if (!lightboxSelect || currentPhotoIndex < 0) return;
+
+      const code = buttons[currentPhotoIndex]?.dataset.photoCode ?? "";
+      const isSelected = selectedCodes.has(code);
+      lightboxSelect.dataset.selected = String(isSelected);
+      lightboxSelect.setAttribute("aria-pressed", String(isSelected));
+      lightboxSelect.setAttribute(
+        "aria-label",
+        isSelected
+          ? `Quitar foto ${code} de la selección`
+          : `Seleccionar foto ${code}`,
+      );
+      lightboxSelect.textContent = isSelected ? "Seleccionada" : "Seleccionar foto";
     };
 
     const updateInterface = (announcement = "") => {
@@ -214,6 +320,51 @@ const hasPhotos = photos.length > 0;
       }
 
       if (selectionStatus && announcement) selectionStatus.textContent = announcement;
+      updateLightboxSelection();
+    };
+
+    const toggleSelection = (code: string) => {
+      if (selectedCodes.has(code)) {
+        selectedCodes.delete(code);
+        updateInterface(`Foto ${code} eliminada de la selección.`);
+      } else {
+        selectedCodes.add(code);
+        updateInterface(`Foto ${code} añadida a la selección.`);
+      }
+
+      saveSelection();
+    };
+
+    const showLightboxPhoto = (index: number) => {
+      const selectButton = buttons[index];
+      const image = selectButton?.querySelector<HTMLImageElement>("[data-photo-image]");
+      const code = selectButton?.dataset.photoCode ?? "";
+      if (!image || !lightboxImage || !lightboxCode) return;
+
+      currentPhotoIndex = index;
+      lightboxCode.textContent = code;
+      lightboxImage.alt = image.alt;
+      lightboxImage.src = image.getAttribute("src") ?? image.currentSrc;
+
+      if (lightboxPrevious) lightboxPrevious.disabled = index === 0;
+      if (lightboxNext) lightboxNext.disabled = index === buttons.length - 1;
+
+      updateLightboxSelection();
+    };
+
+    const openLightbox = (index: number, trigger: HTMLButtonElement) => {
+      if (!lightbox || !lightboxClose) return;
+
+      lightboxTrigger = trigger;
+      showLightboxPhoto(index);
+      lightbox.showModal();
+      lightboxClose.focus({ preventScroll: true });
+    };
+
+    const moveLightbox = (direction: -1 | 1) => {
+      const nextIndex = currentPhotoIndex + direction;
+      if (nextIndex < 0 || nextIndex >= buttons.length) return;
+      showLightboxPhoto(nextIndex);
     };
 
     try {
@@ -234,21 +385,45 @@ const hasPhotos = photos.length > 0;
       const target = event.target;
       if (!(target instanceof Element)) return;
 
+      const expandButton = target.closest<HTMLButtonElement>("[data-photo-expand]");
+      if (expandButton && gallery.contains(expandButton)) {
+        event.stopPropagation();
+        const index = expandButtons.indexOf(expandButton);
+        if (index >= 0) openLightbox(index, expandButton);
+        return;
+      }
+
       const button = target.closest<HTMLButtonElement>("[data-photo-select]");
       if (!button || !gallery.contains(button)) return;
 
       const code = button.dataset.photoCode;
       if (!code) return;
+      toggleSelection(code);
+    });
 
-      if (selectedCodes.has(code)) {
-        selectedCodes.delete(code);
-        updateInterface(`Foto ${code} eliminada de la selección.`);
-      } else {
-        selectedCodes.add(code);
-        updateInterface(`Foto ${code} añadida a la selección.`);
+    lightboxClose?.addEventListener("click", () => lightbox?.close());
+    lightboxPrevious?.addEventListener("click", () => moveLightbox(-1));
+    lightboxNext?.addEventListener("click", () => moveLightbox(1));
+    lightboxSelect?.addEventListener("click", () => {
+      const code = buttons[currentPhotoIndex]?.dataset.photoCode;
+      if (code) toggleSelection(code);
+    });
+
+    lightbox?.addEventListener("keydown", (event) => {
+      if (event.key === "ArrowLeft") {
+        event.preventDefault();
+        moveLightbox(-1);
       }
 
-      saveSelection();
+      if (event.key === "ArrowRight") {
+        event.preventDefault();
+        moveLightbox(1);
+      }
+    });
+
+    lightbox?.addEventListener("close", () => {
+      lightboxImage?.removeAttribute("src");
+      lightboxTrigger?.focus({ preventScroll: true });
     });
 
     clearButton?.addEventListener("click", () => {
@@ -352,7 +527,15 @@ const hasPhotos = photos.length > 0;
     gap: var(--space-3) var(--space-1);
   }
 
+  .event-gallery__symbols {
+    position: absolute;
+    width: 0;
+    height: 0;
+    overflow: hidden;
+  }
+
   .event-gallery__item {
+    position: relative;
     min-width: 0;
   }
 
@@ -453,6 +636,160 @@ const hasPhotos = photos.length > 0;
 
   .photo-choice:active {
     transform: scale(0.985);
+  }
+
+  .photo-expand {
+    position: absolute;
+    z-index: 2;
+    top: calc(var(--space-2) + 2px);
+    left: calc(var(--space-2) + 2px);
+    display: grid;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    place-items: center;
+    border: 1px solid rgba(242, 244, 243, 0.72);
+    border-radius: var(--radius-sm);
+    background: rgba(13, 15, 12, 0.76);
+    color: var(--color-ink-inverse);
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
+  }
+
+  .photo-expand svg,
+  .photo-lightbox__close svg,
+  .photo-lightbox__nav svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .photo-expand:active,
+  .photo-lightbox__close:active,
+  .photo-lightbox__nav:active,
+  .photo-lightbox__select:active {
+    transform: translateY(1px);
+  }
+
+  :global(html:has(.photo-lightbox[open])) {
+    overflow: hidden;
+  }
+
+  .photo-lightbox {
+    width: 100%;
+    max-width: none;
+    height: 100dvh;
+    max-height: none;
+    padding:
+      max(var(--space-3), env(safe-area-inset-top, 0px))
+      max(var(--space-3), env(safe-area-inset-right, 0px))
+      max(var(--space-3), env(safe-area-inset-bottom, 0px))
+      max(var(--space-3), env(safe-area-inset-left, 0px));
+    margin: 0;
+    border: 0;
+    border-radius: 0;
+    overflow: hidden;
+    background: var(--color-ink);
+    color: var(--color-ink-inverse);
+  }
+
+  .photo-lightbox[open] {
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr) auto;
+    gap: var(--space-3);
+  }
+
+  .photo-lightbox::backdrop {
+    background: rgba(5, 7, 6, 0.92);
+  }
+
+  .photo-lightbox__header {
+    display: flex;
+    min-width: 0;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+  }
+
+  .photo-lightbox__code {
+    overflow: hidden;
+    color: var(--color-ink-inverse);
+    font-size: var(--font-size-sm);
+    letter-spacing: 0.02em;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .photo-lightbox__close,
+  .photo-lightbox__nav {
+    display: grid;
+    flex: 0 0 auto;
+    width: 48px;
+    height: 48px;
+    padding: 0;
+    place-items: center;
+    border: 1px solid var(--color-gray-500);
+    border-radius: var(--radius-sm);
+    background: transparent;
+    color: var(--color-ink-inverse);
+    cursor: pointer;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+
+  .photo-lightbox__stage {
+    display: flex;
+    min-width: 0;
+    min-height: 0;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background: #080a08;
+  }
+
+  .photo-lightbox__image {
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+  }
+
+  .photo-lightbox__controls {
+    display: grid;
+    grid-template-columns: 48px minmax(0, 1fr) 48px;
+    gap: var(--space-2);
+    align-items: center;
+  }
+
+  .photo-lightbox__select {
+    min-width: 0;
+    min-height: 48px;
+    padding: var(--space-2) var(--space-3);
+    border: 1px solid var(--color-gray-500);
+    border-radius: var(--radius-sm);
+    background: transparent;
+    color: var(--color-ink-inverse);
+    font-family: var(--font-family-display);
+    font-size: var(--font-size-xs);
+    font-weight: 800;
+    text-transform: uppercase;
+    cursor: pointer;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+
+  .photo-lightbox__select[data-selected="true"] {
+    border-color: var(--color-accent);
+    background: var(--color-accent);
+    color: var(--color-accent-on);
+  }
+
+  .photo-lightbox__nav:disabled {
+    opacity: 0.32;
+    cursor: default;
   }
 
   .event-gallery__status {
@@ -564,12 +901,34 @@ const hasPhotos = photos.length > 0;
       background: var(--color-surface);
       border-color: var(--color-surface);
     }
+
+    .photo-expand:hover,
+    .photo-lightbox__close:hover,
+    .photo-lightbox__nav:hover:not(:disabled),
+    .photo-lightbox__select:hover:not([data-selected="true"]) {
+      border-color: var(--color-accent);
+      color: var(--color-accent);
+    }
   }
 
   @media (min-width: 640px) {
     .event-gallery__grid {
       grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: var(--space-4) var(--space-2);
+    }
+
+    .photo-lightbox {
+      width: min(calc(100% - 3rem), 90rem);
+      height: min(calc(100dvh - 3rem), 56rem);
+      margin: auto;
+      padding: var(--space-4);
+      border: 1px solid var(--color-gray-500);
+      border-radius: var(--radius-sm);
+    }
+
+    .photo-lightbox__controls {
+      grid-template-columns: 52px minmax(12rem, 20rem) 52px;
+      justify-content: center;
     }
   }
 
@@ -610,6 +969,10 @@ const hasPhotos = photos.length > 0;
     .photo-choice,
     .photo-choice__check,
     .photo-choice:active,
+    .photo-expand:active,
+    .photo-lightbox__close:active,
+    .photo-lightbox__nav:active,
+    .photo-lightbox__select:active,
     .selection-bar__clear:active,
     .selection-bar__buy:active {
       transform: none;
