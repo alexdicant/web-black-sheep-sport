@@ -27,7 +27,7 @@ Fuente completa: `PRODUCT.md` en la raíz del repo.
 
 ## 2. Estado actual
 
-Se añadieron las páginas `/privacidad` y `/cookies`, se ampliaron los términos en `/terminos` y el footer enlaza las tres páginas legales. Google Analytics y Search Console siguen pendientes; este MVP no incluye banner de cookies.
+Se añadieron las páginas `/privacidad` y `/cookies`, se ampliaron los términos en `/terminos` y el footer enlaza las tres páginas legales. Google Analytics 4 está activo con el Measurement ID `G-T78YKQN3QZ`; Search Console sigue pendiente. Este MVP no incluye banner de cookies.
 
 El sitio tiene **4 rutas públicas indexables**: `/` (landing completa), `/terminos` (política de compra/entrega), `/privacidad` y `/cookies`. También incluye `src/pages/404.astro`, que genera `404.html` para errores y se marca como `noindex, nofollow`. Todas las secciones descritas abajo están construidas, con datos de ejemplo/placeholder donde falta información real (ver sección 8).
 
@@ -190,7 +190,7 @@ Además del color del overlay del Hero, hay valores de layout hardcodeados fuera
 ### No bloquea (se puede publicar sin esto y arreglarlo después)
 
 - Una revisión editorial adicional de marca, si se desea.
-- Google Analytics 4 con los tres eventos de medición del funnel — **no está definido cuáles son los tres eventos.** Esto no estaba decidido en ningún documento del proyecto; hay que definirlo antes de implementarlo, no asumir cuáles son.
+- Los tres eventos de medición del funnel para Google Analytics 4 — **no está definido cuáles son los tres eventos.** La etiqueta base está activa, pero estos eventos no están implementados; hay que definirlos antes de añadirlos, no asumir cuáles son.
 - Prueba manual en teléfono físico, QR real y conexión móvil antes de publicar.
 
 ---
