@@ -16,13 +16,26 @@
   }
 
   .footer__link {
+    position: relative;
     color: inherit;
     text-decoration: underline;
-    transition: color 0.18s ease;
+    transition: color 0.18s ease, opacity 0.18s ease;
   }
 
-  .footer__link:hover {
-    color: var(--color-ink);
+  .footer__link::after {
+    position: absolute;
+    inset: -14px -4px;
+    content: '';
+  }
+
+  .footer__link:active {
+    opacity: 0.72;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .footer__link:hover {
+      color: var(--color-ink);
+    }
   }
 
   @media (min-width: 900px) {

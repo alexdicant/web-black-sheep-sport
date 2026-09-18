@@ -27,19 +27,19 @@ const steps: Step[] = [
 <section class="how-to-buy" aria-labelledby="how-to-buy-title">
   <h2 class="how-to-buy__label" id="how-to-buy-title">Cómo comprar</h2>
 
-  <div class="how-to-buy__list">
+  <ol class="how-to-buy__list">
     {
       steps.map((step) => (
-        <div class="how-to-buy__step">
+        <li class="how-to-buy__step">
           <span class="how-to-buy__number">{step.number}</span>
           <div>
             <p class="how-to-buy__title">{step.title}</p>
             <p class="how-to-buy__description">{step.description}</p>
           </div>
-        </div>
+        </li>
       ))
     }
-  </div>
+  </ol>
 </section>
 
 <style>

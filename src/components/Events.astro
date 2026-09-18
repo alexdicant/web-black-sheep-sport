@@ -68,11 +68,6 @@ const events: EventItem[] = [
     transition: border-color 0.18s ease, transform 0.18s ease;
   }
 
-  .events__card:hover {
-    border-color: var(--color-accent);
-    transform: translateY(-2px);
-  }
-
   .events__badge {
     display: inline-block;
     width: fit-content;
@@ -118,10 +113,21 @@ const events: EventItem[] = [
     transition: background 0.18s ease, color 0.18s ease, transform 0.18s ease;
   }
 
-  .events__cta:hover {
-    background: var(--color-accent);
-    color: var(--color-accent-on);
-    transform: translateY(-2px);
+  .events__cta:active {
+    transform: translateY(1px);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .events__card:hover {
+      border-color: var(--color-accent);
+      transform: translateY(-2px);
+    }
+
+    .events__cta:hover {
+      background: var(--color-accent);
+      color: var(--color-accent-on);
+      transform: translateY(-2px);
+    }
   }
 
   @media (min-width: 900px) {

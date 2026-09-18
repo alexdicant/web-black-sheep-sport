@@ -32,6 +32,10 @@
     text-decoration: none;
   }
 
+  .header__wordmark:active {
+    opacity: 0.72;
+  }
+
   .header__meta {
     display: flex;
     align-items: center;
@@ -73,10 +77,28 @@
       transition: background 0.18s ease, color 0.18s ease, transform 0.18s ease;
     }
 
+  }
+
+  @media (max-width: 899.98px) {
+    .header__wordmark {
+      display: inline-flex;
+      align-items: center;
+      min-height: 44px;
+      margin-block: -11px;
+    }
+  }
+
+  @media (min-width: 900px) and (hover: hover) and (pointer: fine) {
     .header__cta:hover {
       background: var(--color-accent);
       color: var(--color-accent-on);
       transform: translateY(-2px);
+    }
+  }
+
+  @media (min-width: 900px) {
+    .header__cta:active {
+      transform: translateY(1px);
     }
   }
 </style>

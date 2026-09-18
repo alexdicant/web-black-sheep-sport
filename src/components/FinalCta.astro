@@ -49,11 +49,17 @@ const whatsappUrl = "#";
     transition: background 0.18s ease, transform 0.18s ease;
   }
 
-  .final-cta__button:hover {
-    /* Ya está en volt sobre fondo negro: invertir a ink+volt se perdería
-       contra la sección. En vez de eso, pasa a blanco. */
-    background: var(--color-surface);
-    transform: translateY(-2px);
+  .final-cta__button:active {
+    transform: translateY(1px);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .final-cta__button:hover {
+      /* Ya está en volt sobre fondo negro: invertir a ink+volt se perdería
+         contra la sección. En vez de eso, pasa a blanco. */
+      background: var(--color-surface);
+      transform: translateY(-2px);
+    }
   }
 
   @media (min-width: 900px) {
