@@ -39,3 +39,9 @@ Gradientes morado/azul; cards dentro de cards; tiles con icono redondeado sobre 
 ## Accessibility & Inclusion
 
 Contenido solo en español, sin necesidad de i18n. Optimizar para conexión móvil lenta (peso, lazy loading de fotos). Contraste AA mínimo, especialmente volt sobre negro/blanco. Animaciones sutiles y respetuosas de `prefers-reduced-motion` (solo opacidad y translate corto, nunca scroll-driven).
+
+
+## Assets
+Si una imagen referenciada no existe, PARA y pídela. No generes
+placeholders: la fotografía es el producto y un placeholder oculta
+tanto el peso real del build como las decisiones de contraste.

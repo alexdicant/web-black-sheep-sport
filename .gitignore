@@ -46,3 +46,8 @@ pnpm-debug.log*
 .impeccable/live/deferred-svelte-component-accepts.json
 .impeccable/live/*.png
 # impeccable-ignore-end
+
+
+# claude design export — reference only, not built
+design/export/
+design/reference/

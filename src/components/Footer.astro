@@ -1,0 +1,33 @@
+<footer class="footer">
+  <p class="footer__text">
+    Un servicio de Black Sheep Studio · <a class="footer__link" href="/terminos">Términos</a>
+  </p>
+</footer>
+
+<style>
+  .footer {
+    padding: var(--space-5) var(--space-4);
+    text-align: center;
+  }
+
+  .footer__text {
+    font-size: var(--font-size-xs);
+    color: var(--color-gray-400);
+  }
+
+  .footer__link {
+    color: inherit;
+    text-decoration: underline;
+    transition: color 0.18s ease;
+  }
+
+  .footer__link:hover {
+    color: var(--color-ink);
+  }
+
+  @media (min-width: 900px) {
+    .footer {
+      padding: var(--space-6) var(--container-padding);
+    }
+  }
+</style>

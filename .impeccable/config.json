@@ -1,0 +1,14 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "overused-font",
+        "value": "instrument sans",
+        "createdAt": "2026-09-17T21:21:15.087Z",
+        "reason": "display face (Archivo wdth 125) carries brand identity; body face is intentionally neutral. Proposed by advisor, not user-specified."
+      }
+    ]
+  }
+}

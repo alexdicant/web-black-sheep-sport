@@ -1,0 +1,150 @@
+---
+interface EventItem {
+  name: string;
+  date: string;
+  isoDate: string;
+  url: string;
+  isActive: boolean;
+}
+
+const events: EventItem[] = [
+  {
+    name: "CrossFit Open Mérida",
+    date: "14 de septiembre, 2026",
+    isoDate: "2026-09-14",
+    url: "#",
+    isActive: true,
+  },
+  {
+    name: "Milla Urbana Mérida",
+    date: "28 de septiembre, 2026",
+    isoDate: "2026-09-28",
+    url: "#",
+    isActive: false,
+  },
+];
+---
+
+<section class="events" id="tu-evento" aria-labelledby="events-title">
+  <h2 class="events__label" id="events-title">Eventos</h2>
+
+  <div class="events__grid">
+    {
+      events.map((event) => (
+        <article class="events__card">
+          {event.isActive && <span class="events__badge">Activo ahora</span>}
+          <h3 class="events__name">{event.name}</h3>
+          <time class="events__date" datetime={event.isoDate}>
+            {event.date}
+          </time>
+          <a class="events__cta" href={event.url}>
+            Ver mi galería
+          </a>
+        </article>
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  .events {
+    padding: var(--space-section-block) var(--container-padding);
+    max-width: var(--container-max-width);
+    margin: 0 auto;
+  }
+
+  .events__label {
+    font-family: var(--font-family-display);
+    font-weight: 800;
+    font-size: var(--font-size-xs);
+    letter-spacing: 0.09em;
+    color: var(--color-gray-400);
+    text-transform: uppercase;
+    margin-bottom: var(--space-5);
+  }
+
+  .events__grid {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+
+  .events__card {
+    border: 1px solid var(--color-gray-200);
+    padding: var(--space-5);
+    transition: border-color 0.18s ease, transform 0.18s ease;
+  }
+
+  .events__card:hover {
+    border-color: var(--color-accent);
+    transform: translateY(-2px);
+  }
+
+  .events__badge {
+    display: inline-block;
+    width: fit-content;
+    background: var(--color-accent);
+    color: var(--color-accent-on);
+    font-family: var(--font-family-display);
+    font-weight: 800;
+    font-size: var(--font-size-xs);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: var(--space-1) var(--space-2);
+    margin-bottom: var(--space-3);
+  }
+
+  .events__name {
+    font-size: var(--font-size-xl);
+    line-height: 1.08;
+    text-transform: uppercase;
+    margin-bottom: var(--space-1);
+  }
+
+  .events__date {
+    display: block;
+    font-size: var(--font-size-sm);
+    color: var(--color-gray-400);
+    margin-bottom: var(--space-5);
+  }
+
+  .events__cta {
+    display: block;
+    width: 100%;
+    text-align: center;
+    text-decoration: none;
+    font-family: var(--font-family-display);
+    font-weight: 800;
+    font-size: var(--font-size-sm);
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    background: var(--color-ink);
+    color: var(--color-accent);
+    padding: var(--space-4) var(--space-5);
+    border-radius: var(--radius-sm);
+    transition: background 0.18s ease, color 0.18s ease, transform 0.18s ease;
+  }
+
+  .events__cta:hover {
+    background: var(--color-accent);
+    color: var(--color-accent-on);
+    transform: translateY(-2px);
+  }
+
+  @media (min-width: 900px) {
+    .events__grid {
+      flex-direction: row;
+      gap: var(--space-5);
+    }
+
+    .events__card {
+      flex: 1;
+      padding: var(--space-6);
+    }
+
+    .events__cta {
+      display: inline-block;
+      width: auto;
+    }
+  }
+</style>

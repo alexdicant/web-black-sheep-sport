@@ -1,0 +1,122 @@
+---
+import { Image } from "astro:assets";
+import heroPhoto from "../assets/photos/DSC06482-Mejorado-NR.webp";
+---
+
+<section class="hero" aria-labelledby="hero-title">
+  <div class="hero__frame">
+    <Image
+      class="hero__image"
+      src={heroPhoto}
+      alt="Atleta en plena competencia, capturada por Black Sheep Sport"
+      loading="eager"
+      fetchpriority="high"
+      widths={[375, 750, 1100, 1280]}
+      sizes="(min-width: 900px) 50vw, 100vw"
+    />
+
+    <div class="hero__copy">
+      <span class="hero__kicker">Mérida · fotografía deportiva</span>
+      <h1 class="hero__headline" id="hero-title">ASÍ SE VE<br />DAR TODO</h1>
+      <p class="hero__subtitle">Tus fotos, del día que competiste. Listas para presumir.</p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero__frame {
+    position: relative;
+    overflow: hidden;
+    background: var(--color-ink);
+    aspect-ratio: 4 / 5;
+  }
+
+  .hero__image {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 40% 12%;
+  }
+
+  .hero__copy {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    padding: var(--space-6) var(--space-4) var(--space-7);
+    background: linear-gradient(to top, rgba(13, 15, 12, 0.92), rgba(13, 15, 12, 0));
+    color: var(--color-ink-inverse);
+  }
+
+  .hero__kicker {
+    display: inline-block;
+    width: fit-content;
+    background: var(--color-accent);
+    color: var(--color-accent-on);
+    font-family: var(--font-family-display);
+    font-weight: 800;
+    font-size: var(--font-size-xs);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: var(--space-1) var(--space-2);
+  }
+
+  .hero__headline {
+    font-size: var(--font-size-3xl);
+    line-height: 0.98;
+    letter-spacing: -0.01em;
+    text-transform: uppercase;
+  }
+
+  .hero__subtitle {
+    max-width: 42ch;
+    font-size: var(--font-size-base);
+    line-height: var(--line-height-base);
+    color: var(--color-gray-200);
+  }
+
+  .hero {
+    max-width: var(--container-max-width);
+    margin: 0 auto;
+  }
+
+  @media (min-width: 900px) {
+    .hero__frame {
+      display: flex;
+      flex-direction: row-reverse;
+      aspect-ratio: auto;
+      height: 410px;
+      background: var(--color-surface);
+    }
+
+    .hero__image {
+      position: static;
+      flex: 0 0 50%;
+      height: 100%;
+      object-position: 40% 8%;
+    }
+
+    .hero__copy {
+      position: static;
+      flex: 0 0 50%;
+      justify-content: center;
+      gap: var(--space-4);
+      padding: 0 var(--container-padding);
+      background: none;
+      color: var(--color-ink);
+    }
+
+    .hero__subtitle {
+      color: var(--color-gray-400);
+    }
+
+    .hero__kicker {
+      margin-bottom: var(--space-1);
+    }
+  }
+</style>

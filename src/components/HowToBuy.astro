@@ -1,0 +1,115 @@
+---
+interface Step {
+  number: string;
+  title: string;
+  description: string;
+}
+
+const steps: Step[] = [
+  {
+    number: "01",
+    title: "Encuentra",
+    description: "Entra a la galería de tu evento desde arriba.",
+  },
+  {
+    number: "02",
+    title: "Elige",
+    description: "Marca las fotos que más te gustan.",
+  },
+  {
+    number: "03",
+    title: "Compra",
+    description: "Escribe por WhatsApp y coordina el pago.",
+  },
+];
+---
+
+<section class="how-to-buy" aria-labelledby="how-to-buy-title">
+  <h2 class="how-to-buy__label" id="how-to-buy-title">Cómo comprar</h2>
+
+  <div class="how-to-buy__list">
+    {
+      steps.map((step) => (
+        <div class="how-to-buy__step">
+          <span class="how-to-buy__number">{step.number}</span>
+          <div>
+            <p class="how-to-buy__title">{step.title}</p>
+            <p class="how-to-buy__description">{step.description}</p>
+          </div>
+        </div>
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  .how-to-buy {
+    padding-top: var(--space-6);
+    padding-bottom: var(--space-section-block);
+    padding-inline: var(--container-padding);
+    max-width: var(--container-max-width);
+    margin: 0 auto;
+  }
+
+  .how-to-buy__label {
+    font-family: var(--font-family-display);
+    font-weight: 800;
+    font-size: var(--font-size-xs);
+    letter-spacing: 0.09em;
+    color: var(--color-gray-400);
+    text-transform: uppercase;
+    margin-bottom: var(--space-5);
+  }
+
+  .how-to-buy__list {
+    display: flex;
+    flex-direction: column;
+    border-bottom: 1px solid var(--color-gray-200);
+  }
+
+  .how-to-buy__step {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-4);
+    padding: var(--space-4) 0;
+    border-top: 1px solid var(--color-gray-200);
+  }
+
+  .how-to-buy__number {
+    font-family: var(--font-family-display);
+    font-weight: 800;
+    font-size: var(--font-size-2xl);
+    color: var(--color-gray-300);
+    line-height: 1;
+  }
+
+  .how-to-buy__title {
+    font-weight: 700;
+    font-size: var(--font-size-base);
+    margin-bottom: var(--space-1);
+  }
+
+  .how-to-buy__description {
+    font-size: var(--font-size-sm);
+    color: var(--color-gray-400);
+  }
+
+  @media (min-width: 900px) {
+    .how-to-buy__list {
+      flex-direction: row;
+      gap: var(--space-7);
+      padding-top: var(--space-6);
+      border-top: 1px solid var(--color-gray-200);
+      border-bottom: none;
+    }
+
+    .how-to-buy__step {
+      flex: 1;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: var(--space-3);
+      padding: 0;
+      border-top: none;
+    }
+  }
+</style>

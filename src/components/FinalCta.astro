@@ -1,0 +1,62 @@
+---
+// Placeholder: todavía no tenemos el número de WhatsApp definitivo.
+// Reemplazar por el enlace real (https://wa.me/<número>) cuando lo tengamos.
+const whatsappUrl = "#";
+---
+
+<section class="final-cta" aria-labelledby="final-cta-title">
+  <h2 class="final-cta__headline" id="final-cta-title">¿Ya viste tus fotos?</h2>
+  <p class="final-cta__subtitle">Sepáralas antes de que se pierdan entre las demás.</p>
+  <a class="final-cta__button" href={whatsappUrl}>Escribir por WhatsApp</a>
+</section>
+
+<style>
+  .final-cta {
+    padding: var(--space-section-block) var(--container-padding);
+    background: var(--color-ink);
+    text-align: center;
+  }
+
+  .final-cta__headline {
+    color: var(--color-ink-inverse);
+    font-size: var(--font-size-2xl);
+    line-height: 1.05;
+    text-transform: uppercase;
+    text-wrap: balance;
+    margin-bottom: var(--space-3);
+  }
+
+  .final-cta__subtitle {
+    font-size: var(--font-size-sm);
+    color: var(--color-gray-300);
+    margin-bottom: var(--space-6);
+  }
+
+  .final-cta__button {
+    display: inline-block;
+    text-decoration: none;
+    font-family: var(--font-family-display);
+    font-weight: 800;
+    font-size: var(--font-size-sm);
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    background: var(--color-accent);
+    color: var(--color-accent-on);
+    padding: var(--space-4) var(--space-5);
+    border-radius: var(--radius-sm);
+    transition: background 0.18s ease, transform 0.18s ease;
+  }
+
+  .final-cta__button:hover {
+    /* Ya está en volt sobre fondo negro: invertir a ink+volt se perdería
+       contra la sección. En vez de eso, pasa a blanco. */
+    background: var(--color-surface);
+    transform: translateY(-2px);
+  }
+
+  @media (min-width: 900px) {
+    .final-cta__button {
+      padding: var(--space-4) var(--space-6);
+    }
+  }
+</style>

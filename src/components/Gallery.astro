@@ -1,0 +1,86 @@
+---
+import { Image } from "astro:assets";
+import muestra1 from "../assets/photos/DSC00134.webp";
+import muestra2 from "../assets/photos/DSC03575.webp";
+import muestra3 from "../assets/photos/DSC09177.webp";
+import muestra4 from "../assets/photos/DSC08303.webp";
+import muestra5 from "../assets/photos/DSC06183-Mejorado-NR.webp";
+import muestra6 from "../assets/photos/DSC09992.webp";
+
+const photos = [
+  { src: muestra1, alt: "Atleta en plena carrera, foto de Black Sheep Sport" },
+  { src: muestra2, alt: "Ciclista en competencia, foto de Black Sheep Sport" },
+  { src: muestra3, alt: "Atleta de CrossFit en movimiento, foto de Black Sheep Sport" },
+  { src: muestra4, alt: "Corredor cruzando la meta, foto de Black Sheep Sport" },
+  { src: muestra5, alt: "Atleta de CrossFit levantando peso, foto de Black Sheep Sport" },
+  { src: muestra6, alt: "Ciclista en plena ruta, foto de Black Sheep Sport" },
+];
+---
+
+<section class="gallery" id="muestra" aria-labelledby="gallery-title">
+  <h2 class="gallery__label" id="gallery-title">Muestra</h2>
+
+  <div class="gallery__grid">
+    {
+      photos.map((photo) => (
+        <div class="gallery__cell">
+          <Image
+            class="gallery__image"
+            src={photo.src}
+            alt={photo.alt}
+            loading="lazy"
+            widths={[400, 800, 1200]}
+            sizes="(min-width: 900px) 16vw, 50vw"
+          />
+        </div>
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  .gallery {
+    padding: var(--space-section-block) var(--container-padding);
+    max-width: var(--container-max-width);
+    margin: 0 auto;
+  }
+
+  .gallery__label {
+    font-family: var(--font-family-display);
+    font-weight: 800;
+    font-size: var(--font-size-xs);
+    letter-spacing: 0.09em;
+    color: var(--color-gray-400);
+    text-transform: uppercase;
+    margin-bottom: var(--space-5);
+  }
+
+  .gallery__grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-1);
+  }
+
+  .gallery__cell {
+    overflow: hidden;
+  }
+
+  .gallery__image {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 2 / 3;
+    object-fit: cover;
+    transition: transform 0.35s cubic-bezier(0.2, 0.75, 0.2, 1);
+  }
+
+  @media (min-width: 900px) {
+    .gallery__grid {
+      grid-template-columns: repeat(6, 1fr);
+      gap: var(--space-2);
+    }
+
+    .gallery__cell:hover .gallery__image {
+      transform: scale(1.045);
+    }
+  }
+</style>

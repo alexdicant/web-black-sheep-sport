@@ -1,0 +1,91 @@
+---
+interface FaqItem {
+  question: string;
+  answer: string;
+}
+
+const faqs: FaqItem[] = [
+  {
+    question: "¿Cómo encuentro mis fotos?",
+    answer:
+      "Entra a la galería de tu evento desde esta página y búscalas por fecha y hora aproximada.",
+  },
+  {
+    question: "¿Cómo pago?",
+    answer: "Por WhatsApp, una vez elijas tus fotos.",
+  },
+  {
+    question: "¿Cuándo estarán listas?",
+    answer: "Se suben progresivamente después del evento.",
+  },
+  {
+    question: "¿En qué resolución las recibo?",
+    answer: "Todas las fotos se entregan en alta resolución.",
+  },
+];
+---
+
+<section class="faq" aria-labelledby="faq-title">
+  <h2 class="faq__label" id="faq-title">Preguntas frecuentes</h2>
+
+  <div class="faq__list">
+    {
+      faqs.map((item) => (
+        <div class="faq__item">
+          <h3 class="faq__question">{item.question}</h3>
+          <p class="faq__answer">{item.answer}</p>
+        </div>
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  .faq {
+    padding: var(--space-section-block) var(--container-padding);
+    max-width: var(--container-max-width);
+    margin: 0 auto;
+  }
+
+  .faq__label {
+    font-family: var(--font-family-display);
+    font-weight: 800;
+    font-size: var(--font-size-xs);
+    letter-spacing: 0.09em;
+    color: var(--color-gray-400);
+    text-transform: uppercase;
+    margin-bottom: var(--space-5);
+  }
+
+  .faq__list {
+    display: flex;
+    flex-direction: column;
+    border-bottom: 1px solid var(--color-gray-200);
+  }
+
+  .faq__item {
+    border-top: 1px solid var(--color-gray-200);
+    padding: var(--space-4) 0;
+  }
+
+  .faq__question {
+    font-weight: 700;
+    font-size: var(--font-size-sm);
+    margin-bottom: var(--space-1);
+  }
+
+  .faq__answer {
+    font-size: var(--font-size-sm);
+    line-height: var(--line-height-base);
+    color: var(--color-gray-400);
+  }
+
+  @media (min-width: 900px) {
+    .faq__list {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--space-6) var(--space-8);
+      border-bottom: none;
+    }
+  }
+</style>

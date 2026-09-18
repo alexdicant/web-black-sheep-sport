@@ -1,0 +1,131 @@
+---
+interface PricingTier {
+  label: string;
+  price: string;
+  isFeatured: boolean;
+}
+
+const tiers: PricingTier[] = [
+  { label: "1 foto", price: "US$4", isFeatured: false },
+  { label: "2 fotos", price: "US$6", isFeatured: false },
+  { label: "Todas tus fotos", price: "US$10", isFeatured: true },
+];
+---
+
+<section class="pricing" aria-labelledby="pricing-title">
+  <div class="pricing__inner">
+    <h2 class="pricing__label" id="pricing-title">Precios</h2>
+
+    <div class="pricing__row">
+      {
+        tiers.map((tier) => (
+          <div class:list={["pricing__tier", tier.isFeatured && "pricing__tier--featured"]}>
+            {tier.isFeatured && <span class="pricing__badge">Más elegido</span>}
+            <span class="pricing__tier-label">{tier.label}</span>
+            <span class="pricing__tier-price">{tier.price}</span>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .pricing {
+    padding-block: var(--space-section-block);
+  }
+
+  .pricing__inner {
+    max-width: var(--container-max-width);
+    margin: 0 auto;
+    padding-inline: var(--container-padding);
+  }
+
+  .pricing__label {
+    font-family: var(--font-family-display);
+    font-weight: 800;
+    font-size: var(--font-size-xs);
+    letter-spacing: 0.09em;
+    color: var(--color-gray-400);
+    text-transform: uppercase;
+    margin-bottom: var(--space-5);
+  }
+
+  .pricing__row {
+    display: flex;
+    align-items: flex-end;
+    gap: var(--space-3);
+    height: 160px;
+    border-bottom: 2px solid var(--color-ink);
+  }
+
+  .pricing__tier {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding-bottom: var(--space-3);
+  }
+
+  .pricing__tier-label {
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    margin-bottom: var(--space-2);
+  }
+
+  .pricing__tier-price {
+    font-family: var(--font-family-display);
+    font-weight: 800;
+    font-size: var(--font-size-2xl);
+    line-height: 1;
+  }
+
+  .pricing__tier--featured {
+    flex: 1.5;
+    height: 100%;
+    justify-content: flex-end;
+    background: var(--color-accent);
+    color: var(--color-accent-on);
+    padding: var(--space-4) var(--space-3) var(--space-5);
+  }
+
+  .pricing__badge {
+    display: inline-block;
+    width: fit-content;
+    background: var(--color-ink);
+    color: var(--color-accent);
+    font-family: var(--font-family-display);
+    font-weight: 800;
+    font-size: var(--font-size-xs);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: var(--space-1) var(--space-2);
+    margin-bottom: var(--space-3);
+  }
+
+  .pricing__tier--featured .pricing__tier-price {
+    font-size: var(--font-size-4xl);
+  }
+
+  @media (min-width: 900px) {
+    .pricing {
+      background: var(--color-gray-100);
+    }
+
+    .pricing__row {
+      height: 230px;
+      gap: var(--space-6);
+      border-bottom-width: 3px;
+    }
+
+    .pricing__tier {
+      padding-bottom: var(--space-6);
+    }
+
+    .pricing__tier--featured {
+      flex: 1.6;
+      padding: var(--space-6) var(--space-5) var(--space-7);
+    }
+  }
+</style>
