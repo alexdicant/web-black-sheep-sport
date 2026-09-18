@@ -7,8 +7,8 @@ interface PricingTier {
 
 const tiers: PricingTier[] = [
   { label: "1 foto", price: "US$4", isFeatured: false },
-  { label: "2 fotos", price: "US$6", isFeatured: false },
-  { label: "Todas tus fotos", price: "US$10", isFeatured: true },
+  { label: "2 fotos", price: "US$7", isFeatured: false },
+  { label: "Todas tus fotos", price: "US$12", isFeatured: true },
 ];
 ---
 
@@ -44,7 +44,7 @@ const tiers: PricingTier[] = [
   .pricing__label {
     font-family: var(--font-family-display);
     font-weight: 800;
-    font-size: var(--font-size-xs);
+    font-size: var(--font-size-sm);
     letter-spacing: 0.09em;
     color: var(--color-gray-500);
     text-transform: uppercase;
