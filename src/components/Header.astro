@@ -1,22 +1,27 @@
 <header class="header">
-  <a class="header__wordmark" href="#inicio" aria-label="Black Sheep Sport, inicio">Black Sheep Sport</a>
+  <div class="header__inner">
+    <a class="header__wordmark" href="#inicio" aria-label="Black Sheep Sport, inicio">Black Sheep Sport</a>
 
-  <div class="header__meta">
-    <span class="header__location header__location--short">Mérida</span>
-    <span class="header__location header__location--full">Mérida, Venezuela</span>
-    <a class="header__cta" href="#tu-evento">Escríbenos</a>
+    <div class="header__meta">
+      <span class="header__location header__location--short">Mérida</span>
+      <span class="header__location header__location--full">Mérida, Venezuela</span>
+      <a class="header__cta" href="#tu-evento">Escríbenos</a>
+    </div>
   </div>
 </header>
 
 <style>
   .header {
+    border-bottom: 1px solid var(--color-gray-200);
+  }
+
+  .header__inner {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: var(--space-5) var(--container-padding);
     max-width: var(--container-max-width);
     margin: 0 auto;
-    border-bottom: 1px solid var(--color-gray-200);
   }
 
   .header__wordmark {

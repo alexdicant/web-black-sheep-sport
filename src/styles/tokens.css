@@ -34,11 +34,14 @@
   --radius-sm: 2px;
 
   /* Contenedor compartido por todas las secciones — fluido, sin salto en 900px */
-  --container-max-width: 1280px;
-  --container-padding: clamp(1rem, -0.75rem + 5.6vw, 3.75rem); /* 16px → 60px */
+  --container-max-width: 1440px;
+  --container-padding: clamp(1rem, -0.46rem + 4.7vw, 3.75rem); /* 16px → 60px, tope cerca de 1440 */
 
   /* Padding vertical de sección — mismo mín/máx que antes, ahora fluido */
   --space-section-block: clamp(2rem, 0.7rem + 4.2vw, 4rem); /* 32px → 64px */
+
+  /* Tope de medida para prosa (párrafos, respuestas, descripciones) — independiente del contenedor */
+  --measure-prose: 65ch;
 
   /* Espaciado: escala de 8px */
   --space-1: 0.25rem;

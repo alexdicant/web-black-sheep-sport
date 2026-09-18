@@ -15,13 +15,6 @@ const events: EventItem[] = [
     url: "#",
     isActive: true,
   },
-  {
-    name: "Milla Urbana Mérida",
-    date: "28 de septiembre, 2026",
-    isoDate: "2026-09-28",
-    url: "#",
-    isActive: false,
-  },
 ];
 ---
 
@@ -133,12 +126,12 @@ const events: EventItem[] = [
 
   @media (min-width: 900px) {
     .events__grid {
-      flex-direction: row;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
       gap: var(--space-5);
     }
 
     .events__card {
-      flex: 1;
       padding: var(--space-6);
     }
 
