@@ -57,7 +57,7 @@ La principal consideración de privacidad es arquitectónica: las fotos están p
 ### P2-01 — Los filenames externos no tienen contrato de validación
 
 - **Severidad:** P2 — recomendable.
-- **Archivo / líneas:** `src/pages/eventos/happy-wood.astro:13-28`; `src/components/EventGallery.astro:60-89, 145-173, 219-268`; `src/assets/events/happy-wood/README.md:3-14`.
+- **Archivo / líneas:** `src/pages/eventos/happy-wod.astro:13-28`; `src/components/EventGallery.astro:60-89, 145-173, 219-268`; `src/assets/events/happy-wod/README.md:3-14`.
 - **Riesgo:** el nombre se convierte directamente en código visible, atributo `data-photo-code`, valor persistido y texto de compra. No hay límites de longitud, formato permitido, caracteres de control, normalización Unicode ni comprobación de códigos duplicados. `decodeURIComponent()` también puede lanzar `URIError` ante un `%` mal formado en la clave entregada por Vite.
 - **Escenario realista:** un lote del fotógrafo contiene un nombre con `%`, salto de línea, caracteres bidireccionales, emoji/confusables o dos archivos con el mismo stem (`ABC.jpg` y `ABC.png`). El build puede fallar, dos fotos pueden compartir código, o el mensaje puede ser ambiguo. Es un riesgo de integridad y disponibilidad del proceso de publicación; no requiere ni produce ejecución remota en producción.
 - **Impacto:** publicación bloqueada, pedido equivocado, códigos engañosos o UX/accesibilidad degradadas.
@@ -67,7 +67,7 @@ La principal consideración de privacidad es arquitectónica: las fotos están p
 ### P2-02 — Galería y selección sin límites de volumen
 
 - **Severidad:** P2 — recomendable (robustez/funcional, no vulnerabilidad de servidor).
-- **Archivo / líneas:** `src/pages/eventos/happy-wood.astro:13-28`; `src/components/EventGallery.astro:61-92, 145-173, 260-274`.
+- **Archivo / líneas:** `src/pages/eventos/happy-wod.astro:13-28`; `src/components/EventGallery.astro:61-92, 145-173, 260-274`.
 - **Riesgo:** todas las imágenes se materializan en un único HTML y todos los códigos seleccionados se agregan a una URL GET de WhatsApp. No hay máximo de fotos por evento ni límite/canal alternativo para la selección.
 - **Escenario realista:** con las 162 fotos actuales, seleccionar todo produce un mensaje de 1.767 caracteres y una URL de 2.517 caracteres. Navegadores modernos suelen tolerarla, pero algunos webviews, deep links o integraciones móviles pueden truncarla o no abrirla. Con cientos o miles de códigos el fallo es probable. Un lote accidental de 5.000 imágenes también generaría miles de nodos, aproximadamente 10.000 variantes y varios MiB de HTML.
 - **Impacto:** compra que no abre o llega incompleta, render lento, consumo alto de memoria y builds costosos. No hay DoS de backend porque no existe backend.
@@ -87,7 +87,7 @@ La principal consideración de privacidad es arquitectónica: las fotos están p
 ### P2-04 — Las fotografías del evento son públicas y scrapeables por diseño
 
 - **Severidad:** P2 — privacidad/control de acceso, no fallo de autenticación.
-- **Archivo / líneas:** `src/pages/eventos/happy-wood.astro:31-46`; `src/components/EventGallery.astro:57-92`; `src/layouts/Base.astro:27`; `public/robots.txt:1-4`.
+- **Archivo / líneas:** `src/pages/eventos/happy-wod.astro:31-46`; `src/components/EventGallery.astro:57-92`; `src/layouts/Base.astro:27`; `public/robots.txt:1-4`.
 - **Riesgo:** la página usa `noindex`, pero no requiere credencial, token ni autorización. Las variantes WebP quedan en rutas públicas y pueden descargarse o enumerarse desde el HTML. `robots.txt` tampoco es un control de acceso.
 - **Escenario realista:** una persona obtiene o adivina el slug, comparte la URL o descarga las 162 previews. Un crawler que ignore `noindex` también puede conservarlas. El watermark reduce reutilización comercial, no exposición de la imagen.
 - **Impacto:** privacidad de participantes, solicitudes de retiro y posible exposición de menores; depende del consentimiento y expectativas del evento.
@@ -160,7 +160,7 @@ No se encontraron `set:html`, `innerHTML`, `outerHTML`, `insertAdjacentHTML`, `d
 
 Flujo real del código:
 
-1. Vite devuelve rutas mediante `import.meta.glob()` (`happy-wood.astro:13-16`).
+1. Vite devuelve rutas mediante `import.meta.glob()` (`happy-wod.astro:13-16`).
 2. Se obtiene el basename, se aplica `decodeURIComponent()` y se elimina la extensión (`:21-27`).
 3. Astro inserta el código en texto y atributos (`EventGallery.astro:60-89`). Las expresiones normales de Astro se escapan; solo `set:html` omite el escape, y no se usa. Véase la [referencia oficial de directivas de Astro](https://docs.astro.build/en/reference/directives-reference/#sethtml).
 4. El JS lee `dataset`, pero las actualizaciones visibles usan `textContent` o `setAttribute` (`:183-216`), nunca parsing HTML.
@@ -193,7 +193,7 @@ Los 162 archivos actuales son homogéneos: códigos de 8 caracteres, filenames d
 ## WhatsApp dinámico
 
 - El esquema y host `https://wa.me/` están hardcodeados.
-- El número `584247438483` se pasa como prop estática desde `happy-wood.astro:45` y no depende del usuario o filename.
+- El número `584247438483` se pasa como prop estática desde `happy-wod.astro:45` y no depende del usuario o filename.
 - Los códigos solo entran al mensaje y el mensaje completo usa `encodeURIComponent()`.
 - `&`, `?`, `#`, comillas o cadenas similares a `javascript:` dentro de un código no pueden crear otro parámetro, cambiar el número, cambiar el esquema ni crear un open redirect.
 - El enlace creado dinámicamente usa `target="_blank"` y `rel="noopener noreferrer"` (`EventGallery.astro:269-273`). Es el único `_blank` de la aplicación.
@@ -202,7 +202,7 @@ Los 162 archivos actuales son homogéneos: códigos de 8 caracteres, filenames d
 
 ## `localStorage`
 
-**Key:** `black-sheep-selection-happy-wood` (`happy-wood.astro:44`).
+**Key:** `black-sheep-selection-happy-wod` (`happy-wod.astro:44`).
 
 **Contenido:** JSON con un array de códigos de fotos; no guarda nombre, teléfono, pago, mensaje ni dato sensible.
 
@@ -351,7 +351,7 @@ No se publican:
 - `README.md`, `HANDOFF.md`, `PRODUCT.md` ni auditorías internas;
 - `src/`, fuentes `.astro`, `.git`, `.env`, `package*.json`, config de Astro o TypeScript;
 - originales JPEG/Lightroom;
-- `src/assets/events/happy-wood/README.md` (confirmado ausente de `dist/`).
+- `src/assets/events/happy-wod/README.md` (confirmado ausente de `dist/`).
 
 Los nombres base de las fotos sí aparecen en HTML y nombres de assets, porque son deliberadamente los códigos comerciales. Esto no expone rutas locales.
 

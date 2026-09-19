@@ -44,7 +44,7 @@ QR del evento
 → recibir fotos finales por WhatsApp como archivos
 ```
 
-Este flujo con Google Drive describe el MVP original que sigue siendo el contexto histórico de producción. En la rama `feature/event-gallery-selection` existe una evolución funcional que reemplaza el paso de Drive para HAPPY WOOD por una galería propia:
+Este flujo con Google Drive describe el MVP original que sigue siendo el contexto histórico de producción. En la rama `feature/event-gallery-selection` existe una evolución funcional que reemplaza el paso de Drive para HAPPY WOD por una galería propia:
 
 ```text
 QR del evento
@@ -81,12 +81,12 @@ El sitio ya tiene cerrados los bloques visuales, legales, SEO básico, analític
 
 ### Evolución en la rama feature
 
-En `feature/event-gallery-selection`, HAPPY WOOD ya no usa un placeholder de Google Drive:
+En `feature/event-gallery-selection`, HAPPY WOD ya no usa un placeholder de Google Drive:
 
-- `Events.astro` enlaza a `/eventos/happy-wood/`;
+- `Events.astro` enlaza a `/eventos/happy-wod/`;
 - existe una página Astro propia para el evento;
-- las 162 fotografías anteriores de HAPPY WOOD eran de prueba y fueron retiradas;
-- HAPPY WOOD está actualmente en estado vacío y muestra “Próximamente” mientras se espera el lote real;
+- las 162 fotografías anteriores de HAPPY WOD eran de prueba y fueron retiradas;
+- HAPPY WOD está actualmente en estado vacío y muestra “Próximamente” mientras se espera el lote real;
 - Fogueo Be Fit contiene 194 fotografías reales y su galería propia ya fue probada manualmente;
 - la galería seleccionable, localStorage, pricing orientativo y WhatsApp dinámico funcionan;
 - existe un estado vacío reutilizable para crear páginas antes de recibir las fotos.
@@ -101,7 +101,7 @@ La galería fue probada físicamente y el flujo funciona. Esta funcionalidad sig
 | `/terminos/` | Términos y condiciones |
 | `/privacidad/` | Política de privacidad |
 | `/cookies/` | Política de cookies |
-| `/eventos/happy-wood/` | Galería propia de HAPPY WOOD; actualmente con 0 fotos y estado “Próximamente” |
+| `/eventos/happy-wod/` | Galería propia de HAPPY WOD; actualmente con 0 fotos y estado “Próximamente” |
 | `/eventos/fogueo-be-fit/` | Galería propia activa de Fogueo Be Fit; evento pasado con 194 fotografías reales |
 | `404.html` | Página de error personalizada, `noindex, nofollow` |
 
@@ -113,7 +113,7 @@ Astro genera **7 páginas estáticas** en el build de la rama feature. El MVP or
 |---|---|---|
 | Header | `src/components/Header.astro` | Funcional. Wordmark + ubicación. CTA desktop **“Buscar mis fotos”** hacia `/#tu-evento`. |
 | Hero | `src/components/Hero.astro` | Funcional. Foto real. H1: **“ASÍ SE VE DAR TODO”**. Encuadre móvil corregido para evitar que el copy cubra el rostro. |
-| Eventos | `src/components/Events.astro` | **HAPPY WOOD** permanece activo y **Fogueo Be Fit** figura como evento pasado. Ambos CTA apuntan a sus galerías propias. |
+| Eventos | `src/components/Events.astro` | **HAPPY WOD** permanece activo y **Fogueo Be Fit** figura como evento pasado. Ambos CTA apuntan a sus galerías propias. |
 | Galería seleccionable | `src/components/EventGallery.astro` | Componente reutilizable con estado vacío, selección accesible, localStorage, pricing informativo y WhatsApp dinámico. |
 | Páginas de evento | `src/pages/eventos/*.astro` | Descubren automáticamente las fotos de cada evento mediante `import.meta.glob()`. |
 | Cómo comprar | `src/components/HowToBuy.astro` | Funcional. Semántica `ol` / `li`; proceso real explicado en 3 pasos. |
@@ -209,7 +209,7 @@ La compra se considera confirmada una vez verificado el pago.
 
 El primer evento real cargado es:
 
-**Nombre:** HAPPY WOOD  
+**Nombre:** HAPPY WOD
 **Lugar:** Be Happy  
 **Fecha visible:** 19 de septiembre de 2026  
 **Fecha ISO:** `2026-09-19`  
@@ -219,14 +219,14 @@ La tarjeta conserva el badge **“Activo ahora”**.
 
 ### Estado en la rama `feature/event-gallery-selection`
 
-- URL desde Home: `/eventos/happy-wood/`.
-- Página: `src/pages/eventos/happy-wood.astro`.
-- Carpeta: `src/assets/events/happy-wood/`.
+- URL desde Home: `/eventos/happy-wod/`.
+- Página: `src/pages/eventos/happy-wod.astro`.
+- Carpeta: `src/assets/events/happy-wod/`.
 - Fotografías actuales: 0.
 - Las 162 fotografías anteriores eran de prueba y fueron retiradas.
 - Estado actual: muestra automáticamente “Próximamente”, sin grid ni controles de selección o compra.
 - Pendiente: recibir y copiar el lote real mañana.
-- Key de selección: `black-sheep-selection-happy-wood`.
+- Key de selección: `black-sheep-selection-happy-wod`.
 - WhatsApp de compra: `584247438483`.
 - Estado: página y galería creadas, todavía sin merge a `main`.
 
@@ -323,11 +323,11 @@ Ejemplo real:
 
 | Concepto | Valor |
 |---|---|
-| Nombre | `HAPPY WOOD` |
-| Slug | `happy-wood` |
-| URL | `/eventos/happy-wood/` |
-| Carpeta | `src/assets/events/happy-wood/` |
-| Página | `src/pages/eventos/happy-wood.astro` |
+| Nombre | `HAPPY WOD` |
+| Slug | `happy-wod` |
+| URL | `/eventos/happy-wod/` |
+| Carpeta | `src/assets/events/happy-wod/` |
+| Página | `src/pages/eventos/happy-wod.astro` |
 
 Ejemplos adicionales:
 
@@ -477,7 +477,7 @@ Cambiar un filename después de publicar cambia el código visible. También pue
 Usar como template real:
 
 ```text
-src/pages/eventos/happy-wood.astro
+src/pages/eventos/happy-wod.astro
 ```
 
 Crear:
@@ -486,16 +486,16 @@ Crear:
 src/pages/eventos/<slug>.astro
 ```
 
-No copiar mecánicamente valores de HAPPY WOOD. En la página actual están hardcodeados estos datos específicos y todos deben revisarse:
+No copiar mecánicamente valores de HAPPY WOD. En la página actual están hardcodeados estos datos específicos y todos deben revisarse:
 
-- segmento `happy-wood` dentro del patrón del glob;
-- `title="HAPPY WOOD | Black Sheep Sport"`;
-- description con `HAPPY WOOD`;
-- `eventName="HAPPY WOOD"`;
+- segmento `happy-wod` dentro del patrón del glob;
+- `title="HAPPY WOD | Black Sheep Sport"`;
+- description con `HAPPY WOD`;
+- `eventName="HAPPY WOD"`;
 - `venue="Be Happy"`;
 - `date="19 de septiembre de 2026"`;
 - `isoDate="2026-09-19"`;
-- `storageKey="black-sheep-selection-happy-wood"`;
+- `storageKey="black-sheep-selection-happy-wod"`;
 - `whatsappNumber="584247438483"` si el evento fuera autorizado a usar otro número.
 
 La estructura real que debe conservarse es:
@@ -558,11 +558,11 @@ Antes de dar el archivo por terminado, buscar `REEMPLAZAR` dentro de él. El res
 
 #### Patrón exacto de `import.meta.glob()`
 
-HAPPY WOOD usa:
+HAPPY WOD usa:
 
 ```ts
 const eventPhotoModules = import.meta.glob<EventImageModule>(
-  "../../assets/events/happy-wood/*.{webp,jpg,jpeg,png,avif}",
+  "../../assets/events/happy-wod/*.{webp,jpg,jpeg,png,avif}",
   { eager: true },
 );
 ```
@@ -624,12 +624,12 @@ No sustituir este orden por `.sort()` sin comparador ni reimplementarlo dentro d
 
 #### Metadata y SEO actual de una galería
 
-HAPPY WOOD usa actualmente:
+HAPPY WOD usa actualmente:
 
 ```text
-Title: HAPPY WOOD | Black Sheep Sport
-Description: Galería de fotografías de HAPPY WOOD. Encuentra y selecciona tus fotos del evento.
-Canonical: https://sheepsport.com/eventos/happy-wood/
+Title: HAPPY WOD | Black Sheep Sport
+Description: Galería de fotografías de HAPPY WOD. Encuentra y selecciona tus fotos del evento.
+Canonical: https://sheepsport.com/eventos/happy-wod/
 Robots: noindex, follow
 ```
 
@@ -677,11 +677,11 @@ Ejemplo de uso adaptado:
 />
 ```
 
-No dejar `HAPPY WOOD`, `Be Happy`, su fecha ni su storage key en una página nueva.
+No dejar `HAPPY WOD`, `Be Happy`, su fecha ni su storage key en una página nueva.
 
 #### Limitaciones hardcodeadas actuales del componente
 
-El nombre del evento, lugar, fecha, key y número de WhatsApp llegan por props; no están fijados a HAPPY WOOD dentro del JavaScript.
+El nombre del evento, lugar, fecha, key y número de WhatsApp llegan por props; no están fijados a HAPPY WOD dentro del JavaScript.
 
 Sí están hardcodeados dentro de `EventGallery.astro` y se aplican a todos los eventos:
 
@@ -748,10 +748,10 @@ No aumentar la prominencia del indicador inactivo: es una pista discreta que no 
 
 #### localStorage: key exclusiva por evento
 
-HAPPY WOOD usa:
+HAPPY WOD usa:
 
 ```text
-black-sheep-selection-happy-wood
+black-sheep-selection-happy-wod
 ```
 
 Convención obligatoria para nuevas páginas:
@@ -763,7 +763,7 @@ black-sheep-selection-<slug>
 Ejemplos:
 
 ```text
-black-sheep-selection-happy-wood
+black-sheep-selection-happy-wod
 black-sheep-selection-copa-merida-2026
 black-sheep-selection-reto-los-andes
 ```
@@ -815,7 +815,7 @@ Hola, vi mis fotos de <EVENTO> y seleccioné estas fotos: <CODIGOS>. Vi que tien
 
 Los códigos se obtienen en ese momento desde el `Set` de selección y se ordenan según el orden de los botones de la galería. No se hardcodean combinaciones.
 
-El nombre `<EVENTO>` sale de la prop `eventName`. Al crear una página, verificar que esa prop contiene el nombre real para no enviar accidentalmente `HAPPY WOOD`.
+El nombre `<EVENTO>` sale de la prop `eventName`. Al crear una página, verificar que esa prop contiene el nombre real para no enviar accidentalmente `HAPPY WOD`.
 
 La URL se construye así:
 
@@ -962,11 +962,11 @@ rg -o '<link rel="canonical"[^>]+>|<meta name="robots"[^>]+>' \
   "dist/eventos/$EVENT_SLUG/index.html"
 ```
 
-Buscar placeholders sin sustituir y valores de HAPPY WOOD copiados por accidente. Ambos comandos deben terminar sin coincidencias para otro evento:
+Buscar placeholders sin sustituir y valores de HAPPY WOD copiados por accidente. Ambos comandos deben terminar sin coincidencias para otro evento:
 
 ```bash
 rg -n 'REEMPLAZAR' "src/pages/eventos/$EVENT_SLUG.astro"
-rg -n 'HAPPY WOOD|happy-wood|Be Happy|2026-09-19' \
+rg -n 'HAPPY WOD|happy-wod|Be Happy|2026-09-19' \
   "src/pages/eventos/$EVENT_SLUG.astro"
 ```
 
@@ -1364,7 +1364,7 @@ hacia `/#tu-evento`. El CTA no abre WhatsApp directamente: primero lleva al clie
 - No volver al experimento anterior de GIF transparente / carga condicional.
 - Hover de zoom únicamente en dispositivos con hover real / pointer fino.
 
-No confundir `Gallery.astro`, que es una muestra editorial de la landing, con `EventGallery.astro`, que contiene las fotos seleccionables de cada evento. Fogueo Be Fit tiene 194 fotos reales y usa lazy loading, códigos por filename y barra de compra. HAPPY WOOD está actualmente vacío y muestra “Próximamente”.
+No confundir `Gallery.astro`, que es una muestra editorial de la landing, con `EventGallery.astro`, que contiene las fotos seleccionables de cada evento. Fogueo Be Fit tiene 194 fotos reales y usa lazy loading, códigos por filename y barra de compra. HAPPY WOD está actualmente vacío y muestra “Próximamente”.
 
 ### Interacciones móviles
 
@@ -1807,11 +1807,11 @@ En `feature/event-gallery-selection` se verificaron:
 
 - 194 fotos reales de Fogueo Be Fit;
 - selección, pricing y WhatsApp de Fogueo Be Fit mediante prueba manual de la galería;
-- HAPPY WOOD con 0 fotos después de retirar las 162 imágenes de prueba;
-- estado vacío de HAPPY WOOD sin fallback, grid ni controles de compra;
-- build estático de `/eventos/fogueo-be-fit/` y `/eventos/happy-wood/`.
+- HAPPY WOD con 0 fotos después de retirar las 162 imágenes de prueba;
+- estado vacío de HAPPY WOD sin fallback, grid ni controles de compra;
+- build estático de `/eventos/fogueo-be-fit/` y `/eventos/happy-wod/`.
 
-Sigue pendiente una decisión explícita de merge y un deploy de esta feature. Después de desplegarla, repetir en producción el flujo `QR → Home → Fogueo Be Fit → galería propia → selección → WhatsApp`, preferiblemente desde un teléfono con datos móviles. HAPPY WOOD deberá probarse de la misma forma cuando se incorpore su lote real.
+Sigue pendiente una decisión explícita de merge y un deploy de esta feature. Después de desplegarla, repetir en producción el flujo `QR → Home → Fogueo Be Fit → galería propia → selección → WhatsApp`, preferiblemente desde un teléfono con datos móviles. HAPPY WOD deberá probarse de la misma forma cuando se incorpore su lote real.
 
 ---
 
@@ -1841,7 +1841,7 @@ src/
     index.astro
     eventos/
       fogueo-be-fit.astro
-      happy-wood.astro
+      happy-wod.astro
     terminos.astro
     privacidad.astro
     cookies.astro
@@ -1857,7 +1857,7 @@ src/
     fogueo-be-fit/
       README.md
       194 fotos reales incorporadas y probadas
-    happy-wood/
+    happy-wod/
       README.md
       0 fotos; lote real pendiente para mañana
 
@@ -2018,7 +2018,7 @@ Descartado. La fotografía debe sentirse como el producto, no como una ilustraci
 
 ### Deshabilitar visualmente los CTA placeholder
 
-Descartado en el MVP original. En la rama feature ya no existe el placeholder `url: "#"` para HAPPY WOOD: el CTA apunta a `/eventos/happy-wood/`. Para eventos futuros sin fotos, el CTA puede permanecer operativo y llevar al estado vacío “Próximamente”.
+Descartado en el MVP original. En la rama feature ya no existe el placeholder `url: "#"` para HAPPY WOD: el CTA apunta a `/eventos/happy-wod/`. Para eventos futuros sin fotos, el CTA puede permanecer operativo y llevar al estado vacío “Próximamente”.
 
 ### Banner de cookies
 
@@ -2040,7 +2040,7 @@ No se implementó en esta primera fase SEO. Puede evaluarse después sin bloquea
 4. Ejecutar build y desplegar el contenido completo de `dist/`.
 5. Probar en producción:
    `QR → Home → Fogueo Be Fit → galería propia → selección → WhatsApp`.
-6. Cuando llegue el lote real de HAPPY WOOD, copiarlo, ejecutar build/deploy y repetir el flujo completo para ese evento.
+6. Cuando llegue el lote real de HAPPY WOD, copiarlo, ejecutar build/deploy y repetir el flujo completo para ese evento.
 
 ### P1 — útil, no bloqueante
 
@@ -2084,10 +2084,10 @@ A fecha **18/09/2026**, el MVP está:
 - con SEO básico on-page y técnico;
 - con performance de imágenes optimizada.
 
-El MVP original de producción quedó documentado con Drive como contexto histórico. En la rama feature, Google Drive ya no forma parte del flujo propuesto: HAPPY WOOD apunta a su galería propia.
+El MVP original de producción quedó documentado con Drive como contexto histórico. En la rama feature, Google Drive ya no forma parte del flujo propuesto: HAPPY WOD apunta a su galería propia.
 
 ### Evolución lista en la rama feature
 
-La evolución de galerías propias está operativa con 194 fotos reales de Fogueo Be Fit; su selección, pricing y WhatsApp fueron probados manualmente. HAPPY WOOD conserva su página y galería, pero está actualmente con 0 fotos: las 162 anteriores eran pruebas, fueron retiradas y el lote real queda pendiente para mañana. Esta evolución todavía no debe describirse como desplegada en producción hasta verificar merge y deploy.
+La evolución de galerías propias está operativa con 194 fotos reales de Fogueo Be Fit; su selección, pricing y WhatsApp fueron probados manualmente. HAPPY WOD conserva su página y galería, pero está actualmente con 0 fotos: las 162 anteriores eran pruebas, fueron retiradas y el lote real queda pendiente para mañana. Esta evolución todavía no debe describirse como desplegada en producción hasta verificar merge y deploy.
 
 El siguiente hito es decidir si se publica la feature, hacer merge con autorización y desplegar/probar `dist/`.

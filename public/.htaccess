@@ -1,5 +1,8 @@
 RewriteEngine On
 
+# Preserve compatibility with the legacy event URL.
+RewriteRule ^eventos/happy-wood/?$ https://sheepsport.com/eventos/happy-wod/ [R=301,L,NC]
+
 # Canonicalize HTTP and www requests to HTTPS without www.
 RewriteCond %{HTTPS} !=on [OR]
 RewriteCond %{HTTP_HOST} ^www\.sheepsport\.com$ [NC]

@@ -7,28 +7,28 @@ import BackToTop from "../../components/BackToTop.astro";
 import { buildEventPhotos, type EventImageModule } from "../../utils/eventPhotos";
 
 const eventPhotoModules = import.meta.glob<EventImageModule>(
-  "../../assets/events/happy-wood/*.{webp,jpg,jpeg,png,avif}",
+  "../../assets/events/happy-wod/*.{webp,jpg,jpeg,png,avif}",
   { eager: true },
 );
 
-const EVENT_NAME = "HAPPY WOOD";
+const EVENT_NAME = "HAPPY WOD";
 const photos = buildEventPhotos(eventPhotoModules, EVENT_NAME);
 ---
 
 <Base
-  title="HAPPY WOOD | Black Sheep Sport"
-  description="Galería de fotografías de HAPPY WOOD. Encuentra y selecciona tus fotos del evento."
+  title="HAPPY WOD | Black Sheep Sport"
+  description="Galería de fotografías de HAPPY WOD. Encuentra y selecciona tus fotos del evento."
   robots="noindex, follow"
 >
   <Header />
   <main>
     <EventGallery
-      eventName="HAPPY WOOD"
+      eventName="HAPPY WOD"
       venue="Be Happy"
       date="19 de septiembre de 2026"
       isoDate="2026-09-19"
       photos={photos}
-      storageKey="black-sheep-selection-happy-wood"
+      storageKey="black-sheep-selection-happy-wod"
       whatsappNumber="584247438483"
     />
   </main>
