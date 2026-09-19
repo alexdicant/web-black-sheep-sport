@@ -117,7 +117,7 @@ Astro genera **7 páginas estáticas** en el build de la rama feature. El MVP or
 | Galería seleccionable | `src/components/EventGallery.astro` | Componente reutilizable con estado vacío, selección accesible, localStorage, pricing informativo y WhatsApp dinámico. |
 | Páginas de evento | `src/pages/eventos/*.astro` | Descubren automáticamente las fotos de cada evento mediante `import.meta.glob()`. |
 | Cómo comprar | `src/components/HowToBuy.astro` | Funcional. Semántica `ol` / `li`; proceso real explicado en 3 pasos. |
-| Precios | `src/components/Pricing.astro` | US$4 / US$7 / US$12. Layout móvil corregido y CTA **“Buscar mis fotos”** hacia `/#tu-evento`. |
+| Precios | `src/components/Pricing.astro` | 1 foto: US$4 / 2 fotos: US$7 / Todas tus fotos: US$12 por atleta. Layout móvil corregido y CTA **“Buscar mis fotos”** hacia `/#tu-evento`. |
 | Muestra | `src/components/Gallery.astro` | 6 fotos reales. Variantes optimizadas `widths={[400, 675, 800]}`. |
 | FAQ | `src/components/Faq.astro` | 4 preguntas, visibles sin acordeón. Copy alineado con el proceso real. |
 | CTA final | `src/components/FinalCta.astro` | **“Buscar mis fotos”** hacia `/#tu-evento`; la compra pasa primero por la galería seleccionable. |
@@ -173,7 +173,7 @@ La URL usa `https://wa.me/584247438483?text=...` con el mensaje procesado median
 |---|---:|
 | 1 foto | US$4 |
 | 2 fotos | US$7 |
-| Todas tus fotos | US$12 |
+| Todas tus fotos | US$12 por atleta |
 
 **“Todas tus fotos”** significa todas las fotografías disponibles y utilizables del atleta en la galería. Cada atleta se compra por separado.
 
@@ -687,7 +687,7 @@ Sí están hardcodeados dentro de `EventGallery.astro` y se aplican a todos los 
 
 - `US$4` para una foto;
 - `US$7` para dos fotos;
-- `US$12` para el paquete “Todas tus fotos”;
+- `US$12 por atleta` para el paquete “Todas tus fotos”;
 - umbral informativo de 3 fotos;
 - copy de selección;
 - copy del estado vacío;

@@ -2,13 +2,14 @@
 interface PricingTier {
   label: string;
   price: string;
+  unit?: string;
   isFeatured: boolean;
 }
 
 const tiers: PricingTier[] = [
   { label: "1 foto", price: "US$4", isFeatured: false },
   { label: "2 fotos", price: "US$7", isFeatured: false },
-  { label: "Todas tus fotos", price: "US$12", isFeatured: true },
+  { label: "Todas tus fotos", price: "US$12", unit: "Por atleta", isFeatured: true },
 ];
 ---
 
@@ -23,6 +24,7 @@ const tiers: PricingTier[] = [
             {tier.isFeatured && <span class="pricing__badge">Más elegido</span>}
             <span class="pricing__tier-label">{tier.label}</span>
             <span class="pricing__tier-price">{tier.price}</span>
+            {tier.unit && <span class="pricing__tier-unit">{tier.unit}</span>}
           </div>
         ))
       }
@@ -82,6 +84,13 @@ const tiers: PricingTier[] = [
     font-family: var(--font-family-display);
     font-weight: 800;
     font-size: var(--font-size-2xl);
+    line-height: 1;
+  }
+
+  .pricing__tier-unit {
+    margin-top: var(--space-2);
+    font-size: var(--font-size-sm);
+    font-weight: 700;
     line-height: 1;
   }
 
