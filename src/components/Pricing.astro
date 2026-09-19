@@ -80,6 +80,11 @@ const tiers: PricingTier[] = [
     margin-bottom: var(--space-2);
   }
 
+  .pricing__tier:not(.pricing__tier--featured) .pricing__tier-label {
+    font-size: 1.375rem;
+    line-height: var(--line-height-tight);
+  }
+
   .pricing__tier-price {
     font-family: var(--font-family-display);
     font-weight: 800;

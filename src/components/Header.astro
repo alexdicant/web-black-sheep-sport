@@ -1,6 +1,20 @@
+---
+import { Image } from "astro:assets";
+import logo from "../assets/log.png";
+---
+
 <header class="header">
   <div class="header__inner">
-    <a class="header__wordmark" href="/" aria-label="Black Sheep Sport, inicio">Black Sheep Sport</a>
+    <a class="header__wordmark" href="/">
+      <Image
+        class="header__logo"
+        src={logo}
+        alt="Black Sheep Sport"
+        width={264}
+        loading="eager"
+        fetchpriority="high"
+      />
+    </a>
 
     <div class="header__meta">
       <span class="header__location header__location--short">Mérida</span>
@@ -19,17 +33,20 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: var(--space-5) var(--container-padding);
+    padding: var(--space-3) var(--container-padding);
     max-width: var(--container-max-width);
     margin: 0 auto;
   }
 
   .header__wordmark {
-    font-family: var(--font-family-display);
-    font-weight: 800;
-    font-size: var(--font-size-sm);
-    text-transform: uppercase;
+    display: block;
+    flex: 0 0 auto;
     text-decoration: none;
+  }
+
+  .header__logo {
+    width: 5.5rem;
+    height: auto;
   }
 
   .header__wordmark:active {
@@ -79,15 +96,6 @@
 
   }
 
-  @media (max-width: 899.98px) {
-    .header__wordmark {
-      display: inline-flex;
-      align-items: center;
-      min-height: 44px;
-      margin-block: -11px;
-    }
-  }
-
   @media (min-width: 900px) and (hover: hover) and (pointer: fine) {
     .header__cta:hover {
       background: var(--color-accent);
@@ -97,6 +105,10 @@
   }
 
   @media (min-width: 900px) {
+    .header__logo {
+      width: 6.25rem;
+    }
+
     .header__cta:active {
       transform: translateY(1px);
     }
