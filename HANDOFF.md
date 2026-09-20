@@ -1,9 +1,9 @@
 # Handoff — Black Sheep Sport (landing)
 
-> **Estado actualizado:** 18 de septiembre de 2026  
+> **Estado actualizado:** 20 de septiembre de 2026
 > **Producción:** https://sheepsport.com/  
 > **Rama principal:** `main`
-> **Rama de evolución en curso:** `feature/event-gallery-selection` (5 commits por delante de `main`, todavía sin merge al verificar este documento)
+> **Rama actual de preparación para producción:** `content/happy-wod-photos` (lote real de HAPPY WOD incorporado y validado; todavía sin merge a `main` al verificar este documento)
 >
 > Este documento es la fuente de verdad operativa del proyecto para quien continúe el trabajo sin contexto previo. Resume el producto, el estado real del código, decisiones de diseño, SEO, analítica, despliegue, datos comerciales y pendientes. Si algo cambia posteriormente, **el código y producción mandan sobre este documento**.
 
@@ -44,7 +44,7 @@ QR del evento
 → recibir fotos finales por WhatsApp como archivos
 ```
 
-Este flujo con Google Drive describe el MVP original que sigue siendo el contexto histórico de producción. En la rama `feature/event-gallery-selection` existe una evolución funcional que reemplaza el paso de Drive para HAPPY WOD por una galería propia:
+Este flujo con Google Drive describe el MVP original que sigue siendo el contexto histórico de producción. La evolución funcional desarrollada inicialmente en `feature/event-gallery-selection` y preparada actualmente en `content/happy-wod-photos` reemplaza el paso de Drive para HAPPY WOD por una galería propia:
 
 ```text
 QR del evento
@@ -79,19 +79,21 @@ El MVP está **publicado y probado online** en:
 
 El sitio ya tiene cerrados los bloques visuales, legales, SEO básico, analítica base, Search Console, 404 personalizado, OG social, favicons y flujo hacia WhatsApp.
 
-### Evolución en la rama feature
+### Evolución en la rama de preparación para producción
 
-En `feature/event-gallery-selection`, HAPPY WOD ya no usa un placeholder de Google Drive:
+En `content/happy-wod-photos`, HAPPY WOD ya no usa un placeholder de Google Drive:
 
 - `Events.astro` enlaza a `/eventos/happy-wod/`;
 - existe una página Astro propia para el evento;
 - las 162 fotografías anteriores de HAPPY WOD eran de prueba y fueron retiradas;
-- HAPPY WOD está actualmente en estado vacío y muestra “Próximamente” mientras se espera el lote real;
+- las 365 fotografías reales de HAPPY WOD ya fueron incorporadas y auditadas;
+- el lote contiene 362 verticales de `533×800`, 3 horizontales de `1200×800` y ninguna cuadrada;
+- las 365 imágenes son JPG válidas, ocupan aproximadamente `20,02 MiB` y no presentan duplicados, filenames inválidos ni archivos corruptos;
 - Fogueo Be Fit contiene 194 fotografías reales y su galería propia ya fue probada manualmente;
-- la galería seleccionable, localStorage, pricing orientativo y WhatsApp dinámico funcionan;
+- la galería de HAPPY WOD fue probada físicamente en móvil; selección, localStorage, pricing, WhatsApp y lightbox funcionan;
 - existe un estado vacío reutilizable para crear páginas antes de recibir las fotos.
 
-La galería fue probada físicamente y el flujo funciona. Esta funcionalidad sigue aislada en la rama feature y no debe darse por publicada en `main` hasta hacer merge y deploy con autorización explícita.
+HAPPY WOD está listo para producción y renderiza su galería completa. Esta funcionalidad sigue aislada en la rama de preparación y no debe darse por desplegada en producción hasta hacer merge y deploy con autorización explícita.
 
 ### Rutas públicas
 
@@ -101,11 +103,11 @@ La galería fue probada físicamente y el flujo funciona. Esta funcionalidad sig
 | `/terminos/` | Términos y condiciones |
 | `/privacidad/` | Política de privacidad |
 | `/cookies/` | Política de cookies |
-| `/eventos/happy-wod/` | Galería propia de HAPPY WOD; actualmente con 0 fotos y estado “Próximamente” |
+| `/eventos/happy-wod/` | Galería propia de HAPPY WOD; 365 fotografías reales incorporadas, auditadas y probadas en móvil; lista para producción |
 | `/eventos/fogueo-be-fit/` | Galería propia activa de Fogueo Be Fit; evento pasado con 194 fotografías reales |
 | `404.html` | Página de error personalizada, `noindex, nofollow` |
 
-Astro genera **7 páginas estáticas** en el build de la rama feature. El MVP original de `main` generaba 5 antes de incorporar las rutas de eventos.
+Astro genera **7 páginas estáticas** en el build de la rama actual. El MVP original de `main` generaba 5 antes de incorporar las rutas de eventos.
 
 ### Estado por componente
 
@@ -217,18 +219,22 @@ El primer evento real cargado es:
 
 La tarjeta conserva el badge **“Activo ahora”**.
 
-### Estado en la rama `feature/event-gallery-selection`
+### Estado en la rama `content/happy-wod-photos`
 
 - URL desde Home: `/eventos/happy-wod/`.
 - Página: `src/pages/eventos/happy-wod.astro`.
 - Carpeta: `src/assets/events/happy-wod/`.
-- Fotografías actuales: 0.
+- Fotografías actuales: 365 fotografías reales en formato JPG.
+- Orientación y dimensiones: 362 verticales de `533×800`, 3 horizontales de `1200×800` y 0 cuadradas.
+- Tamaño del lote: aproximadamente `20,02 MiB`.
+- Auditoría del lote: 365/365 imágenes válidas y decodificables; sin duplicados, filenames inválidos ni archivos corruptos.
 - Las 162 fotografías anteriores eran de prueba y fueron retiradas.
-- Estado actual: muestra automáticamente “Próximamente”, sin grid ni controles de selección o compra.
-- Pendiente: recibir y copiar el lote real mañana.
+- Estado actual: galería completa con grid, selección, pricing, WhatsApp y lightbox; ya no muestra el estado vacío.
+- Prueba: flujo probado físicamente en móvil, incluidos selección, persistencia mediante localStorage, pricing, WhatsApp y lightbox.
 - Key de selección: `black-sheep-selection-happy-wod`.
 - WhatsApp de compra: `584247438483`.
-- Estado: página y galería creadas, todavía sin merge a `main`.
+- SEO: `noindex, follow`; el sitemap conserva únicamente Home.
+- Estado: lista para producción, todavía sin merge a `main`.
 
 La referencia anterior a `url: "#"` y a una URL pendiente de Google Drive corresponde al MVP original; ya no describe esta rama. Google Drive no forma parte del flujo comercial propuesto por la feature.
 
@@ -391,6 +397,8 @@ Las previews de selección llegan preparadas antes de copiarse al repositorio:
 
 - ya tienen marca de agua;
 - ya están optimizadas para navegar y seleccionar;
+- el lote real actual de HAPPY WOD contiene 362 verticales de `533×800` y 3 horizontales de `1200×800`;
+- el formato real actual de HAPPY WOD es `.jpg` y su tamaño total aproximado es `20,02 MiB`;
 - el lote real actual de Fogueo Be Fit contiene verticales de `267×400` y horizontales de `600×400`;
 - el formato real actual de Fogueo Be Fit es `.jpg`.
 
@@ -1364,7 +1372,7 @@ hacia `/#tu-evento`. El CTA no abre WhatsApp directamente: primero lleva al clie
 - No volver al experimento anterior de GIF transparente / carga condicional.
 - Hover de zoom únicamente en dispositivos con hover real / pointer fino.
 
-No confundir `Gallery.astro`, que es una muestra editorial de la landing, con `EventGallery.astro`, que contiene las fotos seleccionables de cada evento. Fogueo Be Fit tiene 194 fotos reales y usa lazy loading, códigos por filename y barra de compra. HAPPY WOD está actualmente vacío y muestra “Próximamente”.
+No confundir `Gallery.astro`, que es una muestra editorial de la landing, con `EventGallery.astro`, que contiene las fotos seleccionables de cada evento. Fogueo Be Fit tiene 194 fotos reales y usa lazy loading, códigos por filename y barra de compra. HAPPY WOD tiene 365 fotos reales auditadas y su galería seleccionable está lista para producción.
 
 ### Interacciones móviles
 
@@ -1803,15 +1811,19 @@ https://sheepsport.com/
 
 ### Pruebas de la rama de galería propia
 
-En `feature/event-gallery-selection` se verificaron:
+En la evolución de la galería propia y en `content/happy-wod-photos` se verificaron:
 
 - 194 fotos reales de Fogueo Be Fit;
 - selección, pricing y WhatsApp de Fogueo Be Fit mediante prueba manual de la galería;
-- HAPPY WOD con 0 fotos después de retirar las 162 imágenes de prueba;
-- estado vacío de HAPPY WOD sin fallback, grid ni controles de compra;
+- retirada de las 162 imágenes de prueba anteriores de HAPPY WOD;
+- 365 fotos reales de HAPPY WOD: 362 verticales de `533×800`, 3 horizontales de `1200×800` y 0 cuadradas;
+- lote JPG de HAPPY WOD de aproximadamente `20,02 MiB`, sin duplicados, filenames inválidos ni archivos corruptos;
+- build de HAPPY WOD con exactamente 365 controles de selección y 365 botones de ampliar, en orden natural y sin errores de assets;
+- prueba física en móvil de selección, localStorage, pricing, WhatsApp y lightbox de HAPPY WOD;
+- metadata `noindex, follow`, sitemap limitado a Home y ausencia del estado vacío en HAPPY WOD;
 - build estático de `/eventos/fogueo-be-fit/` y `/eventos/happy-wod/`.
 
-Sigue pendiente una decisión explícita de merge y un deploy de esta feature. Después de desplegarla, repetir en producción el flujo `QR → Home → Fogueo Be Fit → galería propia → selección → WhatsApp`, preferiblemente desde un teléfono con datos móviles. HAPPY WOD deberá probarse de la misma forma cuando se incorpore su lote real.
+HAPPY WOD está listo para producción. Los únicos pasos restantes del lanzamiento son la autorización explícita de merge y el deploy de la funcionalidad. Después de desplegarla, repetir sobre la URL pública el flujo `QR → Home → HAPPY WOD → galería propia → selección → lightbox → WhatsApp`, preferiblemente desde un teléfono con datos móviles; repetir también el smoke test de Fogueo Be Fit sin modificar su contenido.
 
 ---
 
@@ -1859,7 +1871,7 @@ src/
       194 fotos reales incorporadas y probadas
     happy-wod/
       README.md
-      0 fotos; lote real pendiente para mañana
+      365 fotos reales JPG incorporadas, auditadas y probadas en móvil
 
   utils/
     eventPhotos.ts
@@ -2018,7 +2030,9 @@ Descartado. La fotografía debe sentirse como el producto, no como una ilustraci
 
 ### Deshabilitar visualmente los CTA placeholder
 
-Descartado en el MVP original. En la rama feature ya no existe el placeholder `url: "#"` para HAPPY WOD: el CTA apunta a `/eventos/happy-wod/`. Para eventos futuros sin fotos, el CTA puede permanecer operativo y llevar al estado vacío “Próximamente”.
+Descartado en el MVP original. En la rama actual ya no existe el placeholder `url: "#"` para HAPPY WOD: el CTA apunta a `/eventos/happy-wod/`.
+
+Para eventos futuros sin fotos, el CTA puede permanecer operativo y llevar al estado vacío “Próximamente”.
 
 ### Banner de cookies
 
@@ -2032,15 +2046,15 @@ No se implementó en esta primera fase SEO. Puede evaluarse después sin bloquea
 
 ## 20. Pendientes actuales, en orden real de prioridad
 
-### P0 — decisión de publicación de la feature
+### P0 — autorización de merge y despliegue
 
-1. Revisar y aprobar `feature/event-gallery-selection`.
+1. Revisar y aprobar `content/happy-wod-photos`, incluido el lote real ya auditado de HAPPY WOD.
 2. Aprobar la galería propia como el flujo de compra que sustituirá al MVP original.
 3. Hacer merge únicamente con autorización.
 4. Ejecutar build y desplegar el contenido completo de `dist/`.
 5. Probar en producción:
-   `QR → Home → Fogueo Be Fit → galería propia → selección → WhatsApp`.
-6. Cuando llegue el lote real de HAPPY WOD, copiarlo, ejecutar build/deploy y repetir el flujo completo para ese evento.
+   `QR → Home → HAPPY WOD → galería propia → selección → lightbox → WhatsApp`.
+6. Repetir el smoke test de Fogueo Be Fit y confirmar que conserva sus 194 fotografías y su flujo actual.
 
 ### P1 — útil, no bloqueante
 
@@ -2062,7 +2076,7 @@ No se implementó en esta primera fase SEO. Puede evaluarse después sin bloquea
 
 ## 21. Estado de cierre del MVP
 
-A fecha **18/09/2026**, el MVP está:
+A fecha **20/09/2026**, el MVP está:
 
 - diseñado;
 - desarrollado;
@@ -2084,10 +2098,10 @@ A fecha **18/09/2026**, el MVP está:
 - con SEO básico on-page y técnico;
 - con performance de imágenes optimizada.
 
-El MVP original de producción quedó documentado con Drive como contexto histórico. En la rama feature, Google Drive ya no forma parte del flujo propuesto: HAPPY WOD apunta a su galería propia.
+El MVP original de producción quedó documentado con Drive como contexto histórico. En la rama de preparación para producción, Google Drive ya no forma parte del flujo propuesto: HAPPY WOD apunta a su galería propia.
 
-### Evolución lista en la rama feature
+### Evolución lista en la rama de preparación para producción
 
-La evolución de galerías propias está operativa con 194 fotos reales de Fogueo Be Fit; su selección, pricing y WhatsApp fueron probados manualmente. HAPPY WOD conserva su página y galería, pero está actualmente con 0 fotos: las 162 anteriores eran pruebas, fueron retiradas y el lote real queda pendiente para mañana. Esta evolución todavía no debe describirse como desplegada en producción hasta verificar merge y deploy.
+La evolución de galerías propias está operativa con 194 fotos reales de Fogueo Be Fit; su selección, pricing y WhatsApp fueron probados manualmente. Las 162 imágenes anteriores de HAPPY WOD eran pruebas y fueron retiradas; el evento contiene ahora 365 fotografías reales auditadas. Su galería fue probada físicamente en móvil y funcionan selección, localStorage, pricing, WhatsApp y lightbox. HAPPY WOD está listo para producción, conserva `noindex, follow` y no se añadió al sitemap, que sigue incluyendo únicamente Home. Esta evolución todavía no debe describirse como desplegada en producción hasta verificar merge y deploy.
 
-El siguiente hito es decidir si se publica la feature, hacer merge con autorización y desplegar/probar `dist/`.
+El siguiente hito es autorizar el merge, desplegar el contenido completo de `dist/` y repetir el smoke test sobre las URLs públicas.
