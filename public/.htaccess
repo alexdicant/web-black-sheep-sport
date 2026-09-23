@@ -10,3 +10,41 @@ RewriteRule ^ https://sheepsport.com%{REQUEST_URI} [R=301,L]
 
 # Use Astro's custom 404 page for missing resources
 ErrorDocument 404 /404.html
+
+# Mark only versioned Astro assets and font requests for their cache policies.
+RewriteRule ^_astro/ - [E=ASTRO_HASHED_ASSET:1]
+RewriteRule ^fonts/ - [E=ASTRO_FONT_ASSET:1]
+
+<IfModule mod_headers.c>
+  Header onsuccess unset X-Content-Type-Options
+  Header always unset X-Content-Type-Options
+  Header always set X-Content-Type-Options "nosniff"
+
+  Header onsuccess unset Referrer-Policy
+  Header always unset Referrer-Policy
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+
+  Header onsuccess unset X-Frame-Options
+  Header always unset X-Frame-Options
+  Header always set X-Frame-Options "DENY"
+
+  Header onsuccess unset Content-Security-Policy
+  Header always unset Content-Security-Policy
+  Header always set Content-Security-Policy "frame-ancestors 'none'"
+
+  Header onsuccess unset Permissions-Policy
+  Header always unset Permissions-Policy
+  Header always set Permissions-Policy "camera=(), microphone=(), geolocation=()"
+
+  Header onsuccess unset Strict-Transport-Security
+  Header always unset Strict-Transport-Security
+  Header always set Strict-Transport-Security "max-age=86400"
+
+  Header onsuccess unset Cache-Control env=ASTRO_HASHED_ASSET
+  Header always unset Cache-Control env=ASTRO_HASHED_ASSET
+  Header always set Cache-Control "public, max-age=31536000, immutable" env=ASTRO_HASHED_ASSET
+
+  Header onsuccess unset Cache-Control env=ASTRO_FONT_ASSET
+  Header always unset Cache-Control env=ASTRO_FONT_ASSET
+  Header always set Cache-Control "public, max-age=2592000" env=ASTRO_FONT_ASSET
+</IfModule>
