@@ -84,6 +84,15 @@
     transform: translateY(0) scale(0.97);
   }
 
+  @media (max-width: 720px) {
+    :global(html.home-page) .back-to-top {
+      bottom: calc(
+        var(--home-mobile-cta-height, 4.625rem) + env(safe-area-inset-bottom, 0px) +
+          var(--space-4)
+      );
+    }
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .back-to-top,
     .back-to-top[data-visible="true"],

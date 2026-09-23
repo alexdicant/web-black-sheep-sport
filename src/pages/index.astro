@@ -6,26 +6,52 @@ import Events from "../components/Events.astro";
 import HowToBuy from "../components/HowToBuy.astro";
 import Pricing from "../components/Pricing.astro";
 import Gallery from "../components/Gallery.astro";
+import Organizers from "../components/Organizers.astro";
 import Faq from "../components/Faq.astro";
 import FinalCta from "../components/FinalCta.astro";
 import Footer from "../components/Footer.astro";
 import BackToTop from "../components/BackToTop.astro";
+import MobileCta from "../components/MobileCta.astro";
 ---
 
 <Base
   title="Black Sheep Sport | Fotografía deportiva en Mérida"
   description="Fotografía deportiva profesional en Mérida, Venezuela. Encuentra las fotos de tu evento, elige tus favoritas y coordina la compra por WhatsApp."
+  home
 >
-  <Header />
-  <main id="inicio">
+  <a class="home-skip-link" href="#inicio">Saltar al contenido</a>
+  <Header variant="home" />
+  <main id="inicio" tabindex="-1">
     <Hero />
     <Events />
     <HowToBuy />
     <Pricing />
     <Gallery />
+    <Organizers />
     <Faq />
     <FinalCta />
   </main>
   <Footer />
   <BackToTop />
+  <MobileCta />
 </Base>
+
+<style>
+  .home-skip-link {
+    position: fixed;
+    top: 8px;
+    left: 8px;
+    z-index: 100;
+    padding: 10px 14px;
+    background: #fff;
+    color: var(--home-ink);
+    font-size: 0.875rem;
+    font-weight: 700;
+    text-decoration: none;
+    transform: translateY(-160%);
+  }
+
+  .home-skip-link:focus {
+    transform: translateY(0);
+  }
+</style>

@@ -1,0 +1,81 @@
+<aside class="mobile-cta" aria-label="Acceso rápido a eventos">
+  <a class="mobile-cta__link" href="/#tu-evento">Buscar mis fotos</a>
+</aside>
+
+<style>
+  .mobile-cta {
+    display: none;
+  }
+
+  @media (max-width: 720px) {
+    :global(html.home-page) {
+      --home-mobile-cta-height: 4.625rem;
+    }
+
+    :global(html.home-page body) {
+      padding-bottom: calc(
+        var(--home-mobile-cta-height) + env(safe-area-inset-bottom, 0px)
+      );
+    }
+
+    .mobile-cta {
+      position: fixed;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      z-index: 30;
+      display: block;
+      padding: 0.625rem max(1rem, env(safe-area-inset-right, 0px))
+        calc(0.625rem + env(safe-area-inset-bottom, 0px))
+        max(1rem, env(safe-area-inset-left, 0px));
+      background: var(--home-paper, #f4f4f2);
+      border-top: 1px solid #dcdedb;
+    }
+
+    .mobile-cta__link {
+      display: flex;
+      width: 100%;
+      min-height: 3.375rem;
+      align-items: center;
+      justify-content: center;
+      padding: 0.875rem 1.5rem;
+      background: #cdff3a;
+      border: 2px solid var(--home-ink, #0d0f0e);
+      color: var(--home-ink, #0d0f0e);
+      font-family: "Archivo Variable", sans-serif;
+      font-size: 0.875rem;
+      font-stretch: 125%;
+      font-variation-settings: "wdth" 125;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      line-height: 1;
+      text-align: center;
+      text-decoration: none;
+      text-transform: uppercase;
+      touch-action: manipulation;
+      transition: background-color 100ms ease-out, color 100ms ease-out, transform 100ms ease-out;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+    }
+
+    .mobile-cta__link:focus-visible {
+      outline: 3px solid var(--home-ink, #0d0f0e);
+      outline-offset: 3px;
+    }
+
+    .mobile-cta__link:active {
+      background: var(--home-ink, #0d0f0e);
+      color: #cdff3a;
+      transform: scale(0.99);
+    }
+  }
+
+  @media (max-width: 720px) and (hover: hover) and (pointer: fine) {
+    .mobile-cta__link:hover {
+      background: var(--home-ink, #0d0f0e);
+      color: #cdff3a;
+    }
+  }
+</style>

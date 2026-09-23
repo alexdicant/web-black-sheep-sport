@@ -1,0 +1,160 @@
+---
+import { Image } from "astro:assets";
+import organizersPhoto from "../assets/photos/DSC08364.webp";
+
+const whatsappMessage = "Hola, quiero información sobre cobertura fotográfica para un evento deportivo.";
+const whatsappHref = `https://wa.me/584247438483?text=${encodeURIComponent(whatsappMessage)}`;
+---
+
+<section class="organizers" id="organizadores" aria-labelledby="organizers-title">
+  <div class="organizers__inner">
+    <div class="organizers__content">
+      <p class="organizers__eyebrow">PARA ORGANIZADORES Y BOXES</p>
+      <h2 class="organizers__title" id="organizers-title">
+        ¿ORGANIZAS UN<br />EVENTO? LO<br />CUBRIMOS.
+      </h2>
+      <p class="organizers__description">
+        Fotografiamos tu competencia y los atletas compran sus fotos aquí. Tú no gestionas nada.
+      </p>
+      <a
+        class="organizers__button"
+        href={whatsappHref}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        ESCRÍBENOS POR WHATSAPP
+      </a>
+    </div>
+
+    <figure class="organizers__media">
+      <Image
+        class="organizers__image"
+        src={organizersPhoto}
+        alt="Entrenador guiando a una atleta en un ejercicio con polea en el gimnasio"
+        loading="lazy"
+        widths={[304, 448, 600, 800]}
+        sizes="(max-width: 720px) calc(100vw - 32px), (max-width: 900px) calc(100vw - 48px), (max-width: 1288px) calc(50vw - 48px), 596px"
+      />
+    </figure>
+  </div>
+</section>
+
+<style>
+  .organizers {
+    padding-block: 5rem;
+    background: var(--home-ink, var(--color-ink));
+    color: var(--color-ink-inverse);
+  }
+
+  .organizers__inner {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: center;
+    gap: var(--space-7);
+    width: 100%;
+    max-width: var(--container-max-width);
+    padding-inline: var(--container-padding);
+    margin-inline: auto;
+  }
+
+  .organizers__content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-4);
+  }
+
+  .organizers__eyebrow {
+    color: var(--color-accent);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    line-height: 1.3;
+    text-transform: uppercase;
+  }
+
+  .organizers__title {
+    max-width: 18ch;
+    font-family: "Archivo Variable", var(--font-family-display);
+    font-size: clamp(2rem, 3.6vw, 3rem);
+    font-stretch: 125%;
+    font-variation-settings: "wdth" 125;
+    font-weight: 900;
+    letter-spacing: -0.02em;
+    line-height: 0.95;
+    text-transform: uppercase;
+  }
+
+  .organizers__description {
+    max-width: 44ch;
+    color: #d5d8d6;
+    font-size: 1.05rem;
+    line-height: 1.5;
+  }
+
+  .organizers__button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 3.375rem;
+    padding: var(--space-4) var(--space-5);
+    margin-top: var(--space-2);
+    background: var(--color-accent);
+    border: 2px solid var(--home-ink, var(--color-ink));
+    color: var(--color-accent-on);
+    font-family: "Archivo Variable", var(--font-family-display);
+    font-size: 0.875rem;
+    font-stretch: 125%;
+    font-variation-settings: "wdth" 125;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    line-height: 1.2;
+    text-align: center;
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: background-color 160ms ease, color 160ms ease, transform 160ms ease;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
+  }
+
+  .organizers__button:active {
+    transform: translateY(1px);
+  }
+
+  .organizers__media {
+    height: 20rem;
+    overflow: hidden;
+  }
+
+  .organizers__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 40%;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .organizers__button:hover {
+      background: var(--color-surface);
+      color: var(--home-ink, var(--color-ink));
+      transform: translateY(-2px);
+    }
+  }
+
+  @media (max-width: 900px) {
+    .organizers__inner {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 720px) {
+    .organizers {
+      padding-block: 3.5rem;
+    }
+
+    .organizers__media {
+      height: min(125vw, 26.25rem);
+    }
+  }
+</style>
