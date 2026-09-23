@@ -1,9 +1,12 @@
+export type EventStatus = "upcoming" | "past";
+
 export interface EventItem {
   slug: string;
   name: string;
   isoDate: string;
   location: string;
-  isActive: boolean;
+  status: EventStatus;
+  featured: boolean;
 }
 
 export const events: EventItem[] = [
@@ -12,18 +15,38 @@ export const events: EventItem[] = [
     name: "HAPPY WOD",
     isoDate: "2026-09-19",
     location: "Be Happy",
-    isActive: true,
+    status: "past",
+    featured: true,
   },
   {
     slug: "fogueo-be-fit",
     name: "Fogueo Be Fit",
     isoDate: "2025-10-16",
     location: "Be Fit Mérida",
-    isActive: false,
+    status: "past",
+    featured: false,
   },
 ];
 
-export const activeEvent = events.find((event) => event.isActive);
+const compareByDateDescending = (a: EventItem, b: EventItem): number =>
+  b.isoDate.localeCompare(a.isoDate);
+
+export const getFeaturedEvent = (): EventItem => {
+  const featuredEvents = events.filter((event) => event.featured);
+
+  if (featuredEvents.length !== 1) {
+    throw new Error(
+      `Se esperaba exactamente un evento destacado para Home; se encontraron ${featuredEvents.length}.`,
+    );
+  }
+
+  return featuredEvents[0];
+};
+
+export const getPastEvents = (): EventItem[] =>
+  events
+    .filter((event) => event.status === "past" && !event.featured)
+    .sort(compareByDateDescending);
 
 export const getEventBySlug = (slug: string): EventItem => {
   const event = events.find((item) => item.slug === slug);

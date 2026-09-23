@@ -1,7 +1,18 @@
 ---
-import { events, getEventUrl } from "../data/events";
+import { events, getFeaturedEvent, getPastEvents, getEventUrl } from "../data/events";
 
-const orderedEvents = [...events].sort((a, b) => Number(b.isActive) - Number(a.isActive));
+const HOME_EVENT_LIMIT = 5;
+const featuredEvent = getFeaturedEvent();
+
+if (events.length > HOME_EVENT_LIMIT) {
+  throw new Error(
+    `Home solo puede mostrar ${HOME_EVENT_LIMIT} eventos y existen ${events.length}. Implementa la ruta de archivo de eventos antes de publicar más eventos.`,
+  );
+}
+
+const pastEvents = getPastEvents().slice(0, HOME_EVENT_LIMIT - 1);
+const hasSinglePastEvent = pastEvents.length === 1;
+const homeEvents = [featuredEvent, ...pastEvents];
 
 const shortDateFormatter = new Intl.DateTimeFormat("es-VE", {
   day: "numeric",
@@ -24,20 +35,21 @@ const formatShortDate = (isoDate: string) =>
       <p>Entra a la galería de tu evento y elige tus fotos.</p>
     </header>
 
-    <div class="events__grid">
+    <div class:list={["events__grid", hasSinglePastEvent && "events__grid--two-events"]}>
       {
-        orderedEvents.map((event) => {
+        homeEvents.map((event) => {
+          const isFeatured = event.featured;
           const eventId = `event-${event.slug}`;
 
           return (
             <article
               class:list={[
                 "events__card",
-                event.isActive ? "events__card--active" : "events__card--past",
+                isFeatured ? "events__card--featured" : "events__card--past",
               ]}
               aria-labelledby={eventId}
             >
-              {event.isActive ? (
+              {isFeatured ? (
                 <p class="events__status">
                   <span>Black Sheep Sport</span>
                   <span class="events__status-label">
@@ -46,7 +58,9 @@ const formatShortDate = (isoDate: string) =>
                   </span>
                 </p>
               ) : (
-                <p class="events__status events__status--center">Evento anterior</p>
+                <p class="events__status events__status--center">
+                  {event.status === "past" ? "Evento anterior" : "Próximo evento"}
+                </p>
               )}
 
               <div class="events__content">
@@ -59,7 +73,7 @@ const formatShortDate = (isoDate: string) =>
 
               <a class="events__cta" href={getEventUrl(event)}>
                 Ver galería
-                {event.isActive && <span aria-hidden="true">→</span>}
+                {isFeatured && <span aria-hidden="true">→</span>}
               </a>
             </article>
           );
@@ -109,8 +123,20 @@ const formatShortDate = (isoDate: string) =>
 
   .events__grid {
     display: grid;
-    grid-template-columns: minmax(0, 2fr) minmax(17.5rem, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 17.5rem), 1fr));
     gap: var(--space-5);
+  }
+
+  .events__grid--two-events {
+    grid-template-columns: minmax(0, 2fr) minmax(17.5rem, 1fr);
+  }
+
+  .events__card--featured {
+    grid-column: 1 / -1;
+  }
+
+  .events__grid--two-events .events__card--featured {
+    grid-column: auto;
   }
 
   .events__card {
@@ -126,7 +152,7 @@ const formatShortDate = (isoDate: string) =>
     transition: transform 180ms ease;
   }
 
-  .events__card--active {
+  .events__card--featured {
     background: #cdff3a;
   }
 
@@ -212,7 +238,7 @@ const formatShortDate = (isoDate: string) =>
   }
 
   .events__name {
-    max-width: 7ch;
+    max-inline-size: min(100%, 14ch);
     margin: 0;
     font-family: "Archivo Variable", var(--font-family-display);
     font-size: clamp(4.75rem, 9vw, 8rem);
@@ -227,9 +253,9 @@ const formatShortDate = (isoDate: string) =>
   }
 
   .events__card--past .events__name {
-    max-width: 9ch;
-    font-size: clamp(2.25rem, 4vw, 3.25rem);
-    line-height: 0.9;
+    max-inline-size: min(100%, 16ch);
+    font-size: clamp(2rem, 3.4vw, 3.25rem);
+    line-height: 0.95;
   }
 
   .events__metadata {
@@ -293,7 +319,7 @@ const formatShortDate = (isoDate: string) =>
   }
 
   @media (hover: hover) and (pointer: fine) {
-    .events__card--active:hover {
+    .events__card--featured:hover {
       transform: translateY(-0.25rem) rotate(-0.35deg);
     }
 
@@ -301,7 +327,7 @@ const formatShortDate = (isoDate: string) =>
       transform: translateY(-0.25rem) rotate(0.35deg);
     }
 
-    .events__card--active .events__cta:hover {
+    .events__card--featured .events__cta:hover {
       background: var(--color-surface);
       color: var(--color-text);
     }
@@ -317,12 +343,35 @@ const formatShortDate = (isoDate: string) =>
       grid-template-columns: minmax(0, 1fr);
     }
 
+    .events__grid--two-events {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .events__card--featured,
+    .events__grid--two-events .events__card--featured {
+      grid-column: auto;
+    }
+
     .events__card--past {
       min-height: 23.75rem;
     }
 
     .events__name {
       font-size: clamp(3.5rem, 20vw, 6.5rem);
+    }
+  }
+
+  @media (max-width: 45rem) {
+    .events__card {
+      min-height: 25rem;
+    }
+
+    .events__card--past {
+      min-height: 21rem;
+    }
+
+    .events__name {
+      font-size: clamp(3rem, 14vw, 5rem);
     }
   }
 
