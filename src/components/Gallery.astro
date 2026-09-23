@@ -1,88 +1,130 @@
 ---
 import { Image } from "astro:assets";
 import muestra1 from "../assets/photos/DSC00134.webp";
-import muestra2 from "../assets/photos/DSC03575.webp";
-import muestra3 from "../assets/photos/DSC09177.webp";
-import muestra4 from "../assets/photos/DSC08303.webp";
+import muestra2 from "../assets/photos/DSC09177.webp";
+import muestra3 from "../assets/photos/DSC00222.webp";
+import muestra4 from "../assets/photos/DSC09180.webp";
 import muestra5 from "../assets/photos/DSC06183-Mejorado-NR.webp";
-import muestra6 from "../assets/photos/DSC09992.webp";
+import muestra6 from "../assets/photos/DSC08319.webp";
+import muestra7 from "../assets/photos/DSC03575.webp";
+import muestra8 from "../assets/photos/DSC09992.webp";
 
 const photos = [
   { src: muestra1, alt: "Atleta lanzando un golpe con guantes de boxeo" },
-  { src: muestra2, alt: "Atleta sentada en un retrato de estudio, con un cinturón de levantamiento junto a ella" },
-  { src: muestra3, alt: "Atleta dando una patada alta de kickboxing hacia un costal de boxeo" },
-  { src: muestra4, alt: "Atleta en pleno peso muerto con barra cargada" },
-  { src: muestra5, alt: "Espalda de un atleta haciendo dominadas en barra" },
-  { src: muestra6, alt: "Atleta de pie junto a la barra, recuperando el aliento después del levantamiento" },
+  { src: muestra2, alt: "Atleta dando una patada alta de kickboxing a un saco de boxeo" },
+  { src: muestra3, alt: "Atleta con una barra apoyada en los hombros durante un levantamiento" },
+  { src: muestra4, alt: "Atleta entrenando con cuerdas de batalla en el gimnasio" },
+  { src: muestra5, alt: "Atleta visto de espaldas haciendo dominadas en una barra" },
+  { src: muestra6, alt: "Competidora sujetando una barra cargada durante un peso muerto" },
+  { src: muestra7, alt: "Atleta sentada en un retrato con su cinturón de levantamiento" },
+  { src: muestra8, alt: "Atleta recuperando el aliento frente a una barra en el gimnasio" },
 ];
 ---
 
 <section class="gallery" id="muestra" aria-labelledby="gallery-title">
-  <h2 class="gallery__label" id="gallery-title">Muestra</h2>
+  <div class="gallery__inner">
+    <header class="gallery__heading">
+      <h2 class="gallery__title" id="gallery-title">Muestra</h2>
+      <p>Entregamos originales, en alta resolución y sin marca de agua.</p>
+    </header>
 
-  <div class="gallery__grid">
-    {
-      photos.map((photo) => (
-        <div class="gallery__cell">
+    <div class="gallery__grid">
+      {
+        photos.map((photo) => (
           <Image
             class="gallery__image"
             src={photo.src}
             alt={photo.alt}
             loading="lazy"
-            widths={[400, 675, 800]}
-            sizes="(min-width: 900px) 16vw, 50vw"
+            widths={[304, 448, 600, 800]}
+            sizes="(max-width: 480px) calc(100vw - 32px), (max-width: 900px) calc(50vw - 20px), (max-width: 1288px) calc(25vw - 24px), 304px"
           />
-        </div>
-      ))
-    }
+        ))
+      }
+    </div>
   </div>
 </section>
 
 <style>
   .gallery {
-    padding: var(--space-section-block) var(--container-padding);
-    max-width: var(--container-max-width);
-    margin: 0 auto;
+    padding-block: 5rem;
+    background: var(--color-surface);
+    border-block: 1px solid var(--home-line, var(--color-gray-200));
+    color: var(--home-ink, var(--color-ink));
   }
 
-  .gallery__label {
-    font-family: var(--font-family-display);
-    font-weight: 800;
-    font-size: var(--font-size-sm);
-    letter-spacing: 0.09em;
-    color: var(--color-gray-500);
+  .gallery__inner {
+    width: 100%;
+    max-width: var(--container-max-width);
+    padding-inline: var(--container-padding);
+    margin-inline: auto;
+  }
+
+  .gallery__heading {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  .gallery__title {
+    font-family: "Archivo Variable", var(--font-family-display);
+    font-size: clamp(2rem, 3.6vw, 3rem);
+    font-stretch: 125%;
+    font-variation-settings: "wdth" 125;
+    font-weight: 900;
+    letter-spacing: -0.02em;
+    line-height: 0.95;
     text-transform: uppercase;
-    margin-bottom: var(--space-5);
+  }
+
+  .gallery__heading p {
+    color: var(--home-muted, var(--color-gray-500));
+    line-height: 1.5;
   }
 
   .gallery__grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: var(--space-1);
-  }
-
-  .gallery__cell {
-    overflow: hidden;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0.5rem;
   }
 
   .gallery__image {
     width: 100%;
-    height: auto;
-    aspect-ratio: 2 / 3;
+    height: clamp(10.625rem, 22vw, 18.75rem);
     object-fit: cover;
-    transition: transform 0.35s cubic-bezier(0.2, 0.75, 0.2, 1);
   }
 
-  @media (min-width: 900px) {
+  .gallery__image:nth-child(3n + 2) {
+    object-position: center 35%;
+  }
+
+  @media (max-width: 900px) {
     .gallery__grid {
-      grid-template-columns: repeat(6, 1fr);
-      gap: var(--space-2);
+      grid-template-columns: repeat(2, minmax(0, 1fr));
     }
   }
 
-  @media (min-width: 900px) and (hover: hover) and (pointer: fine) {
-    .gallery__cell:hover .gallery__image {
-      transform: scale(1.045);
+  @media (max-width: 720px) {
+    .gallery {
+      padding-block: 3.5rem;
+    }
+
+    .gallery__heading {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .gallery__grid {
+      grid-template-columns: 1fr;
+    }
+
+    .gallery__image {
+      height: 125vw;
+      max-height: 35rem;
     }
   }
 </style>
