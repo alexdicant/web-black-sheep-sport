@@ -1,16 +1,5 @@
 ---
-interface PricingTier {
-  label: string;
-  price: string;
-  unit?: string;
-  isFeatured: boolean;
-}
-
-const tiers: PricingTier[] = [
-  { label: "1 foto", price: "US$4", isFeatured: false },
-  { label: "2 fotos", price: "US$7", isFeatured: false },
-  { label: "Todas tus fotos", price: "US$12", unit: "Por atleta", isFeatured: true },
-];
+import { pricingTiers } from "../data/pricing";
 ---
 
 <section class="pricing" id="precios" aria-labelledby="pricing-title">
@@ -23,7 +12,7 @@ const tiers: PricingTier[] = [
     <div class="pricing__options">
       <div class="pricing__grid">
         {
-          tiers.map((tier) => (
+          pricingTiers.map((tier) => (
             <article class:list={["pricing__tier", tier.isFeatured && "pricing__tier--featured"]}>
               {tier.isFeatured && <p class="pricing__badge">Más elegido</p>}
               <h3>{tier.label}</h3>

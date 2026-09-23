@@ -1,9 +1,10 @@
 ---
 import { Image } from "astro:assets";
 import organizersPhoto from "../assets/photos/DSC08364.webp";
+import { buildWhatsAppUrl } from "../data/site";
 
 const whatsappMessage = "Hola, quiero información sobre cobertura fotográfica para un evento deportivo.";
-const whatsappHref = `https://wa.me/584247438483?text=${encodeURIComponent(whatsappMessage)}`;
+const whatsappHref = buildWhatsAppUrl(whatsappMessage);
 ---
 
 <section class="organizers" id="organizadores" aria-labelledby="organizers-title">

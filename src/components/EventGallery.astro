@@ -14,7 +14,6 @@ interface Props {
   isoDate: string;
   photos: EventPhoto[];
   storageKey: string;
-  whatsappNumber: string;
 }
 
 const {
@@ -24,7 +23,6 @@ const {
   isoDate,
   photos,
   storageKey,
-  whatsappNumber,
 } = Astro.props;
 
 const hasPhotos = photos.length > 0;
@@ -36,7 +34,6 @@ const hasPhotos = photos.length > 0;
   data-event-gallery={hasPhotos ? "" : undefined}
   data-event-name={hasPhotos ? eventName : undefined}
   data-storage-key={hasPhotos ? storageKey : undefined}
-  data-whatsapp-number={hasPhotos ? whatsappNumber : undefined}
   data-has-selection={hasPhotos ? "false" : undefined}
 >
   <header class="event-gallery__header">
@@ -201,6 +198,9 @@ const hasPhotos = photos.length > 0;
 </section>
 
 <script>
+  import { buildWhatsAppUrl } from "../data/site";
+  import { getSelectionPriceLabel, isAllPhotosPackage, pricing } from "../data/pricing";
+
   const gallery = document.querySelector<HTMLElement>("[data-event-gallery]");
 
   if (gallery) {
@@ -225,11 +225,6 @@ const hasPhotos = photos.length > 0;
     const lightboxSelect = gallery.querySelector<HTMLButtonElement>("[data-lightbox-select]");
     const eventName = gallery.dataset.eventName ?? "este evento";
     const storageKey = gallery.dataset.storageKey ?? "black-sheep-selection";
-    const whatsappNumber = gallery.dataset.whatsappNumber ?? "";
-    const SINGLE_PHOTO_PRICE = "US$4";
-    const TWO_PHOTO_PRICE = "US$7";
-    const ALL_PHOTOS_PRICE = "US$12";
-    const PACKAGE_INFO_THRESHOLD = 3;
     const availableCodes = new Set(
       buttons.map((button) => button.dataset.photoCode).filter((code): code is string => Boolean(code)),
     );
@@ -241,15 +236,6 @@ const hasPhotos = photos.length > 0;
       buttons
         .map((button) => button.dataset.photoCode)
         .filter((code): code is string => Boolean(code) && selectedCodes.has(code));
-
-    const getPricingInfoLabel = (count: number) => {
-      if (count === 1) return SINGLE_PHOTO_PRICE;
-      if (count === 2) return TWO_PHOTO_PRICE;
-      if (count >= PACKAGE_INFO_THRESHOLD) {
-        return `Paquete disponible: Todas tus fotos · ${ALL_PHOTOS_PRICE} por atleta`;
-      }
-      return "";
-    };
 
     const saveSelection = () => {
       try {
@@ -304,7 +290,7 @@ const hasPhotos = photos.length > 0;
           count === 1 ? "1 foto seleccionada" : `${count} fotos seleccionadas`;
       }
 
-      if (selectionPrice) selectionPrice.textContent = getPricingInfoLabel(count);
+      if (selectionPrice) selectionPrice.textContent = getSelectionPriceLabel(count);
       if (buyButton) {
         buyButton.textContent =
           count === 1 ? "Comprar seleccionada" : "Comprar seleccionadas";
@@ -437,12 +423,11 @@ const hasPhotos = photos.length > 0;
       if (codes.length === 0) return;
 
       const message =
-        codes.length >= PACKAGE_INFO_THRESHOLD
-          ? `Hola, vi mis fotos de ${eventName} y seleccioné estas fotos: ${codes.join(", ")}. Vi que tienen el paquete Todas tus fotos por ${ALL_PHOTOS_PRICE} por atleta. ¿Me ayudas con la compra?`
+        isAllPhotosPackage(codes.length)
+          ? `Hola, vi mis fotos de ${eventName} y seleccioné estas fotos: ${codes.join(", ")}. Vi que tienen el paquete ${pricing.allPhotos.label} por ${pricing.allPhotos.price} por atleta. ¿Me ayudas con la compra?`
           : `Hola, vi mis fotos de ${eventName} y quiero comprar estas fotos: ${codes.join(", ")}. ¿Me ayudas con el proceso de pago?`;
-      const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
       const link = document.createElement("a");
-      link.href = whatsappUrl;
+      link.href = buildWhatsAppUrl(message);
       link.target = "_blank";
       link.rel = "noopener noreferrer";
       link.click();

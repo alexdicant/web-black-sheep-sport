@@ -1,5 +1,5 @@
 ---
-import { events } from "../data/events";
+import { events, getEventUrl } from "../data/events";
 
 const orderedEvents = [...events].sort((a, b) => Number(b.isActive) - Number(a.isActive));
 
@@ -27,7 +27,7 @@ const formatShortDate = (isoDate: string) =>
     <div class="events__grid">
       {
         orderedEvents.map((event) => {
-          const eventId = `event-${event.url.split("/").filter(Boolean).at(-1)}`;
+          const eventId = `event-${event.slug}`;
 
           return (
             <article
@@ -57,7 +57,7 @@ const formatShortDate = (isoDate: string) =>
                 </p>
               </div>
 
-              <a class="events__cta" href={event.url}>
+              <a class="events__cta" href={getEventUrl(event)}>
                 Ver galería
                 {event.isActive && <span aria-hidden="true">→</span>}
               </a>

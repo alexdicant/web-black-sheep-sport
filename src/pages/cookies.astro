@@ -3,6 +3,7 @@ import Base from "../layouts/Base.astro";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import BackToTop from "../components/BackToTop.astro";
+import { site } from "../data/site";
 ---
 
 <Base title="Política de cookies — Black Sheep Sport" description="Información sobre el uso actual de cookies en Black Sheep Sport." robots="noindex, follow">
@@ -44,7 +45,7 @@ import BackToTop from "../components/BackToTop.astro";
 
         <section>
           <h2>Contacto</h2>
-          <p>Para dudas sobre esta política, escríbenos a <a href="mailto:info@sheepsport.com">info@sheepsport.com</a>.</p>
+          <p>Para dudas sobre esta política, escríbenos a <a href={`mailto:${site.contact.email}`}>{site.contact.email}</a>.</p>
         </section>
 
         <section>

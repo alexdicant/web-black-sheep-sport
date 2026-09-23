@@ -3,6 +3,7 @@ import Base from "../layouts/Base.astro";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import BackToTop from "../components/BackToTop.astro";
+import { buildWhatsAppUrl, site } from "../data/site";
 ---
 
 <Base title="Política de privacidad — Black Sheep Sport" description="Cómo Black Sheep Sport trata la información relacionada con sus fotografías deportivas y el proceso de compra." robots="noindex, follow">
@@ -59,7 +60,7 @@ import BackToTop from "../components/BackToTop.astro";
         <section>
           <h2>Derechos y solicitudes</h2>
           <p>Cuando corresponda, puedes solicitar conocer qué información se mantiene sobre ti, corregir datos, solicitar su eliminación, pedir el retiro de fotografías o plantear dudas sobre privacidad.</p>
-          <p>Canales de contacto: <a href="https://wa.me/584247438483">WhatsApp +58 424-7438483</a> o <a href="mailto:info@sheepsport.com">info@sheepsport.com</a>.</p>
+          <p>Canales de contacto: <a href={buildWhatsAppUrl()}>WhatsApp {site.whatsapp.displayNumber}</a> o <a href={`mailto:${site.contact.email}`}>{site.contact.email}</a>.</p>
         </section>
 
         <section>

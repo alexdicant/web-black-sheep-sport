@@ -1,7 +1,7 @@
 ---
 import { Image } from "astro:assets";
 import heroPhoto from "../assets/photos/DSC06482-Mejorado-NR.webp";
-import { activeEvent } from "../data/events";
+import { activeEvent, getEventUrl } from "../data/events";
 
 if (!activeEvent) {
   throw new Error("El Home necesita un evento activo para el label del hero.");
@@ -27,7 +27,7 @@ if (!activeEvent) {
         sizes="(min-width: 1288px) 600px, (min-width: 721px) calc((100vw - 88px) / 2), calc(100vw - 32px)"
       />
       <figcaption class="hero__label">
-        <a href={activeEvent.url} aria-label={`Ver último evento: ${activeEvent.name}`}>
+        <a href={getEventUrl(activeEvent)} aria-label={`Ver último evento: ${activeEvent.name}`}>
           <span>ÚLTIMO EVENTO</span>
           <strong>{activeEvent.name}</strong>
         </a>

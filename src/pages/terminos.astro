@@ -3,6 +3,8 @@ import Base from "../layouts/Base.astro";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import BackToTop from "../components/BackToTop.astro";
+import { pricing } from "../data/pricing";
+import { site } from "../data/site";
 ---
 
 <Base title="Términos y condiciones — Black Sheep Sport" description="Términos y condiciones para la compra y entrega de fotografías deportivas." robots="noindex, follow">
@@ -21,16 +23,16 @@ import BackToTop from "../components/BackToTop.astro";
         <section>
           <h2>Precios</h2>
           <ul>
-            <li>1 foto: US$4</li>
-            <li>2 fotos: US$7</li>
-            <li>Todas tus fotos: US$12 por atleta</li>
+            <li>{pricing.singlePhoto.label}: {pricing.singlePhoto.price}</li>
+            <li>{pricing.twoPhotos.label}: {pricing.twoPhotos.price}</li>
+            <li>{pricing.allPhotos.label}: {pricing.allPhotos.price} por atleta</li>
           </ul>
           <p>Los precios publicados corresponden a la oferta vigente y pueden actualizarse para eventos futuros.</p>
         </section>
 
         <section>
           <h2>Todas tus fotos</h2>
-          <p>El paquete «Todas tus fotos» tiene un precio de US$12 por atleta e incluye todas las fotografías disponibles y utilizables correspondientes a una sola persona dentro del evento. No implica una cantidad mínima garantizada. Si una compra incluye fotografías de más de un atleta o persona, el paquete se calcula y cobra por separado para cada uno.</p>
+          <p>El paquete «{pricing.allPhotos.label}» tiene un precio de {pricing.allPhotos.price} por atleta e incluye todas las fotografías disponibles y utilizables correspondientes a una sola persona dentro del evento. No implica una cantidad mínima garantizada. Si una compra incluye fotografías de más de un atleta o persona, el paquete se calcula y cobra por separado para cada uno.</p>
         </section>
 
         <section>
@@ -56,7 +58,7 @@ import BackToTop from "../components/BackToTop.astro";
 
         <section>
           <h2>Retiro de fotografías</h2>
-          <p>Si deseas que una fotografía tuya sea retirada de una galería, puedes solicitarlo por WhatsApp o escribiendo a <a href="mailto:info@sheepsport.com">info@sheepsport.com</a>.</p>
+          <p>Si deseas que una fotografía tuya sea retirada de una galería, puedes solicitarlo por WhatsApp o escribiendo a <a href={`mailto:${site.contact.email}`}>{site.contact.email}</a>.</p>
         </section>
 
         <section>

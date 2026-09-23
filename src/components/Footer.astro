@@ -1,3 +1,7 @@
+---
+import { buildWhatsAppUrl, site } from "../data/site";
+---
+
 <footer class="footer">
   <div class="footer__inner">
     <div class="footer__identity">
@@ -5,7 +9,7 @@
       <p class="footer__descriptor">
         Un servicio de <a
           class="footer__studio-link"
-          href="https://www.instagram.com/black_sheep_pro/"
+          href={site.social.studioInstagram}
           target="_blank"
           rel="noopener noreferrer"
         >Black Sheep Studio</a>
@@ -15,7 +19,7 @@
     <nav class="footer__links" aria-label="Enlaces de contacto y legales">
       <a
         class="footer__link footer__link--contact"
-        href="https://wa.me/584247438483"
+        href={buildWhatsAppUrl()}
         target="_blank"
         rel="noopener noreferrer"
       >
