@@ -1,0 +1,67 @@
+---
+import Base from "../../layouts/Base.astro";
+import Header from "../../components/Header.astro";
+import EventGallery from "../../components/EventGallery.astro";
+import Footer from "../../components/Footer.astro";
+import BackToTop from "../../components/BackToTop.astro";
+import { events, formatEventDate, getEventPageDescription, getEventPageTitle, getEventStorageKey } from "../../data/events";
+import { buildEventPhotos, type EventImageModule } from "../../utils/eventPhotos";
+
+export function getStaticPaths() {
+  const photoModulesBySlug: Record<string, Record<string, EventImageModule>> = {
+    "happy-wod": import.meta.glob<EventImageModule>(
+      "../../assets/events/happy-wod/*.{webp,jpg,jpeg,png,avif}",
+      { eager: true },
+    ),
+    "fogueo-be-fit": import.meta.glob<EventImageModule>(
+      "../../assets/events/fogueo-be-fit/*.{webp,jpg,jpeg,png,avif}",
+      { eager: true },
+    ),
+  };
+
+  return events.map((event) => {
+    const photoModules = photoModulesBySlug[event.slug];
+
+    if (!photoModules) {
+      throw new Error(`No hay un patrón de assets configurado para el evento "${event.slug}".`);
+    }
+
+    const photos = buildEventPhotos(photoModules, event.name);
+
+    if (photos.length === 0) {
+      throw new Error(`El evento "${event.slug}" no tiene fotografías en src/assets/events/${event.slug}/.`);
+    }
+
+    if (!event.name || !event.isoDate || !event.location) {
+      throw new Error(`Faltan datos obligatorios para el evento "${event.slug}".`);
+    }
+
+    return {
+      params: { slug: event.slug },
+      props: { event, photos },
+    };
+  });
+}
+
+const { event, photos } = Astro.props;
+---
+
+<Base
+  title={getEventPageTitle(event)}
+  description={getEventPageDescription(event)}
+  robots="noindex, follow"
+>
+  <Header />
+  <main id="main-content" tabindex="-1">
+    <EventGallery
+      eventName={event.name}
+      venue={event.location}
+      date={formatEventDate(event.isoDate)}
+      isoDate={event.isoDate}
+      photos={photos}
+      storageKey={getEventStorageKey(event)}
+    />
+  </main>
+  <Footer />
+  <BackToTop />
+</Base>
