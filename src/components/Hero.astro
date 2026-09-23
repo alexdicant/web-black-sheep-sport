@@ -1,135 +1,172 @@
 ---
 import { Image } from "astro:assets";
 import heroPhoto from "../assets/photos/DSC06482-Mejorado-NR.webp";
+import { activeEvent } from "../data/events";
+
+if (!activeEvent) {
+  throw new Error("El Home necesita un evento activo para el label del hero.");
+}
 ---
 
 <section class="hero" aria-labelledby="hero-title">
-  <div class="hero__frame">
-    <Image
-      class="hero__image"
-      src={heroPhoto}
-      alt="Atleta haciendo remo con barra en un gimnasio al aire libre, con el rostro pintado y expresión de esfuerzo intenso"
-      loading="eager"
-      fetchpriority="high"
-      widths={[375, 750, 1100, 1280]}
-      sizes="(min-width: 900px) 50vw, 100vw"
-    />
-
-    <div class="hero__copy">
-      <span class="hero__kicker">Mérida · fotografía deportiva</span>
-      <h1 class="hero__headline" id="hero-title">ASÍ SE VE<br />DAR TODO</h1>
-      <p class="hero__subtitle">Tus fotos, del día que competiste. Listas para presumir.</p>
+  <div class="hero__inner">
+    <div class="hero__content">
+      <p class="hero__kicker">Fotografía deportiva · Mérida</p>
+      <h1 class="hero__headline" id="hero-title">Así se ve<br />dar todo</h1>
+      <p class="hero__lead">Tus fotos, del día que competiste. Listas para presumir.</p>
     </div>
+
+    <figure class="hero__media">
+      <Image
+        class="hero__image"
+        src={heroPhoto}
+        alt="Atleta haciendo remo con barra en un gimnasio al aire libre, con el rostro pintado y expresión de esfuerzo intenso"
+        loading="eager"
+        fetchpriority="high"
+        widths={[375, 675, 900, 1200]}
+        sizes="(min-width: 1288px) 600px, (min-width: 721px) calc((100vw - 88px) / 2), calc(100vw - 32px)"
+      />
+      <figcaption class="hero__label">
+        <a href={activeEvent.url} aria-label={`Ver último evento: ${activeEvent.name}`}>
+          <span>ÚLTIMO EVENTO</span>
+          <strong>{activeEvent.name}</strong>
+        </a>
+      </figcaption>
+    </figure>
   </div>
 </section>
 
 <style>
-  .hero__frame {
-    position: relative;
-    overflow: hidden;
-    background: var(--color-ink);
-    aspect-ratio: 4 / 5;
+  .hero {
+    padding-block: 40px 64px;
+    background: var(--home-paper);
   }
 
-  .hero__image {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: 40% 55%;
+  .hero__inner {
+    display: flex;
+    width: calc(100% - (2 * var(--home-gutter)));
+    max-width: var(--home-container);
+    align-items: center;
+    gap: 40px;
+    margin-inline: auto;
   }
 
-  .hero__copy {
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
+  .hero__content,
+  .hero__media {
+    flex: 1 1 0;
+    min-width: 0;
+  }
+
+  .hero__content {
     display: flex;
     flex-direction: column;
-    gap: var(--space-3);
-    padding: var(--space-6) var(--space-4) var(--space-7);
-    background: linear-gradient(to top, rgba(13, 15, 12, 0.92), rgba(13, 15, 12, 0));
-    color: var(--color-ink-inverse);
+    align-items: flex-start;
+    gap: 22px;
   }
 
   .hero__kicker {
-    display: inline-block;
-    width: fit-content;
-    background: var(--color-accent);
-    color: var(--color-accent-on);
-    font-family: var(--font-family-display);
-    font-weight: 800;
-    font-size: var(--font-size-xs);
-    letter-spacing: 0.08em;
+    margin: 0;
+    color: var(--home-muted);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
-    padding: var(--space-1) var(--space-2);
   }
 
   .hero__headline {
-    font-size: var(--font-size-3xl);
-    line-height: 0.98;
-    letter-spacing: -0.01em;
+    margin: 0;
+    font-family: "Archivo Variable", sans-serif;
+    font-size: clamp(2.875rem, 6.6vw, 6rem);
+    font-stretch: 125%;
+    font-weight: 900;
+    letter-spacing: -0.03em;
+    line-height: 0.9;
     text-transform: uppercase;
   }
 
-  .hero__subtitle {
-    max-width: 42ch;
-    font-size: var(--font-size-base);
-    line-height: var(--line-height-base);
-    color: var(--color-gray-200);
+  .hero__lead {
+    max-width: 34ch;
+    margin: 0;
+    color: var(--home-ink-soft);
+    font-size: 1.2rem;
+    line-height: 1.45;
   }
 
-  .hero {
-    max-width: var(--container-max-width);
-    margin: 0 auto;
+  .hero__media {
+    position: relative;
+    height: clamp(340px, 40vw, 520px);
+    margin: 0;
+    overflow: hidden;
   }
 
-  @media (min-width: 900px) {
+  .hero__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 34%;
+  }
+
+  .hero__label {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    margin: 0;
+  }
+
+  .hero__label a {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 12px 16px;
+    background: var(--color-accent);
+    color: var(--home-ink);
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: background-color 160ms ease, color 160ms ease;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+  }
+
+  .hero__label span {
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+  }
+
+  .hero__label strong {
+    font-size: 1.25rem;
+    font-stretch: 125%;
+    font-weight: 900;
+  }
+
+  .hero__label a:active {
+    background: var(--home-ink);
+    color: var(--color-accent);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .hero__label a:hover {
+      background: var(--home-ink);
+      color: var(--color-accent);
+    }
+  }
+
+  @media (max-width: 720px) {
     .hero {
-      padding-inline: var(--container-padding);
+      padding-block: 32px 48px;
     }
 
-    .hero__frame {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: var(--container-padding);
-      aspect-ratio: auto;
-      /* Alto fijo deliberado, no token. height:100% en un hijo de grid no
-         resuelve contra el alto de la fila (mismo problema que dio flex
-         antes de pasar a flex-basis explícito). El valor depende del
-         recorte actual de la foto del hero: si se cambia la foto o su
-         proporción, este número hay que revisarlo a mano. Segundo alto
-         fijo del proyecto — el primero es .pricing__row en Pricing.astro. */
-      height: 410px;
-      background: var(--color-surface);
+    .hero__inner {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 32px;
     }
 
-    .hero__image {
-      position: static;
-      order: 2;
+    .hero__media {
+      flex-basis: auto;
       width: 100%;
-      /* Ídem: fijo por la misma razón, tiene que igualar el alto de .hero__frame. */
-      height: 410px;
-      object-position: 40% 35%;
-    }
-
-    .hero__copy {
-      position: static;
-      order: 1;
-      justify-content: center;
-      gap: var(--space-4);
-      padding: 0;
-      background: none;
-      color: var(--color-ink);
-    }
-
-    .hero__subtitle {
-      color: var(--color-gray-500);
-    }
-
-    .hero__kicker {
-      margin-bottom: var(--space-1);
+      height: min(120vw, 520px);
     }
   }
 </style>

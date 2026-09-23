@@ -1,11 +1,22 @@
 ---
 import { Image } from "astro:assets";
 import logo from "../assets/log.png";
+
+interface Props {
+  variant?: "default" | "home";
+}
+
+const { variant = "default" } = Astro.props;
+const isHome = variant === "home";
 ---
 
-<header class="header">
+<header class:list={["header", { "header--home": isHome }]} data-home-header={isHome ? "" : undefined}>
   <div class="header__inner">
-    <a class="header__wordmark" href="/">
+    <a
+      class="header__wordmark"
+      href={isHome ? "#inicio" : "/"}
+      aria-label="Black Sheep Sport, inicio"
+    >
       <Image
         class="header__logo"
         src={logo}
@@ -16,13 +27,78 @@ import logo from "../assets/log.png";
       />
     </a>
 
-    <div class="header__meta">
-      <span class="header__location header__location--short">Mérida</span>
-      <span class="header__location header__location--full">Mérida, Venezuela</span>
-      <a class="header__cta" href="/#tu-evento">Buscar mis fotos</a>
-    </div>
+    {
+      isHome ? (
+        <>
+          <button
+            class="header__menu-button"
+            type="button"
+            aria-expanded="false"
+            aria-controls="home-navigation"
+          >
+            <span class="sr-only">Abrir menú</span>
+            <span aria-hidden="true" />
+            <span aria-hidden="true" />
+            <span aria-hidden="true" />
+          </button>
+
+          <nav id="home-navigation" class="header__nav" aria-label="Navegación principal">
+            <a href="#tu-evento">Eventos</a>
+            <a href="#precios">Precios</a>
+            <a href="#preguntas">Preguntas</a>
+            <a class="header__home-cta" href="#tu-evento">Buscar mis fotos</a>
+          </nav>
+        </>
+      ) : (
+        <div class="header__meta">
+          <span class="header__location header__location--short">Mérida</span>
+          <span class="header__location header__location--full">Mérida, Venezuela</span>
+          <a class="header__cta" href="/#tu-evento">Buscar mis fotos</a>
+        </div>
+      )
+    }
   </div>
 </header>
+
+<script>
+  const homeHeader = document.querySelector<HTMLElement>("[data-home-header]");
+
+  if (homeHeader) {
+    const menuButton = homeHeader.querySelector<HTMLButtonElement>(".header__menu-button");
+    const menuLabel = menuButton?.querySelector<HTMLElement>(".sr-only");
+    const navigation = homeHeader.querySelector<HTMLElement>(".header__nav");
+    const desktopQuery = window.matchMedia("(min-width: 721px)");
+
+    const closeMenu = () => {
+      menuButton?.setAttribute("aria-expanded", "false");
+      if (menuLabel) menuLabel.textContent = "Abrir menú";
+      navigation?.classList.remove("is-open");
+    };
+
+    menuButton?.addEventListener("click", () => {
+      const willOpen = menuButton.getAttribute("aria-expanded") !== "true";
+
+      menuButton.setAttribute("aria-expanded", String(willOpen));
+      if (menuLabel) menuLabel.textContent = willOpen ? "Cerrar menú" : "Abrir menú";
+      navigation?.classList.toggle("is-open", willOpen);
+    });
+
+    navigation?.addEventListener("click", (event) => {
+      if (event.target instanceof Element && event.target.closest("a")) closeMenu();
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && menuButton?.getAttribute("aria-expanded") === "true") {
+        closeMenu();
+        menuButton.focus();
+      }
+    });
+
+    desktopQuery.addEventListener("change", (event) => {
+      if (event.matches) closeMenu();
+    });
+  }
+</script>
 
 <style>
   .header {
@@ -70,6 +146,127 @@ import logo from "../assets/log.png";
     display: none;
   }
 
+  .header--home {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background: rgb(244 244 242 / 94%);
+    border-bottom-color: #dcdedb;
+    backdrop-filter: blur(8px);
+  }
+
+  .header--home .header__inner {
+    width: calc(100% - (2 * var(--home-gutter)));
+    max-width: var(--home-container);
+    min-height: var(--home-header-height);
+    padding: 0;
+    gap: 24px;
+  }
+
+  .header--home .header__logo {
+    width: 5.5rem;
+  }
+
+  .header__nav {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+  }
+
+  .header__nav > a:not(.header__home-cta) {
+    color: var(--home-ink);
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .header__home-cta {
+    display: inline-flex;
+    min-height: 44px;
+    align-items: center;
+    justify-content: center;
+    padding: 11px 18px;
+    background: var(--color-accent);
+    border: 2px solid var(--home-ink);
+    color: var(--home-ink);
+    font-size: 0.8rem;
+    font-stretch: 125%;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: background-color 160ms ease, color 160ms ease, transform 160ms ease;
+  }
+
+  .header__menu-button {
+    display: none;
+    width: 44px;
+    height: 44px;
+    padding: 10px;
+    background: transparent;
+    border: 1px solid var(--home-ink);
+    cursor: pointer;
+  }
+
+  .header__menu-button > span:not(.sr-only) {
+    display: block;
+    height: 2px;
+    margin: 5px 0;
+    background: var(--home-ink);
+    transition: transform 180ms ease, opacity 180ms ease;
+  }
+
+  .header__menu-button[aria-expanded="true"] > span:nth-of-type(2) {
+    transform: translateY(7px) rotate(45deg);
+  }
+
+  .header__menu-button[aria-expanded="true"] > span:nth-of-type(3) {
+    opacity: 0;
+  }
+
+  .header__menu-button[aria-expanded="true"] > span:nth-of-type(4) {
+    transform: translateY(-7px) rotate(-45deg);
+  }
+
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  .header__menu-button,
+  .header__nav a {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+  }
+
+  .header__nav > a:not(.header__home-cta):active {
+    color: var(--home-muted);
+  }
+
+  .header__menu-button:active,
+  .header__home-cta:active {
+    transform: translateY(1px);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .header__nav > a:not(.header__home-cta):hover {
+      color: var(--home-muted);
+    }
+
+    .header__home-cta:hover {
+      background: var(--home-ink);
+      color: var(--color-accent);
+    }
+  }
+
   @media (min-width: 900px) {
     .header__location--short {
       display: none;
@@ -94,6 +291,13 @@ import logo from "../assets/log.png";
       transition: background 0.18s ease, color 0.18s ease, transform 0.18s ease;
     }
 
+    .header__logo {
+      width: 6.25rem;
+    }
+
+    .header__cta:active {
+      transform: translateY(1px);
+    }
   }
 
   @media (min-width: 900px) and (hover: hover) and (pointer: fine) {
@@ -104,13 +308,45 @@ import logo from "../assets/log.png";
     }
   }
 
-  @media (min-width: 900px) {
-    .header__logo {
-      width: 6.25rem;
+  @media (max-width: 720px) {
+    .header--home .header__logo {
+      width: 4.75rem;
     }
 
-    .header__cta:active {
-      transform: translateY(1px);
+    .header__menu-button {
+      display: block;
+    }
+
+    .header__nav {
+      position: fixed;
+      inset: var(--home-header-height) 0 auto;
+      display: none;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0;
+      padding: 16px;
+      background: var(--home-paper);
+      border-bottom: 1px solid var(--home-line);
+    }
+
+    .header__nav.is-open {
+      display: flex;
+    }
+
+    .header__nav > a:not(.header__home-cta) {
+      padding: 15px 4px;
+      border-bottom: 1px solid var(--home-line);
+    }
+
+    .header__home-cta {
+      margin-top: 16px;
+    }
+
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .header__menu-button > span:not(.sr-only) {
+      transition: none;
     }
   }
 </style>
