@@ -13,177 +13,210 @@ const tiers: PricingTier[] = [
 ];
 ---
 
-<section class="pricing" aria-labelledby="pricing-title">
+<section class="pricing" id="precios" aria-labelledby="pricing-title">
   <div class="pricing__inner">
-    <h2 class="pricing__label" id="pricing-title">Precios</h2>
+    <header class="pricing__intro">
+      <h2 class="pricing__title" id="pricing-title">Precios</h2>
+      <p>Pagas por pago móvil o Binance.</p>
+    </header>
 
-    <div class="pricing__row">
-      {
-        tiers.map((tier) => (
-          <div class:list={["pricing__tier", tier.isFeatured && "pricing__tier--featured"]}>
-            {tier.isFeatured && <span class="pricing__badge">Más elegido</span>}
-            <span class="pricing__tier-label">{tier.label}</span>
-            <span class="pricing__tier-price">{tier.price}</span>
-            {tier.unit && <span class="pricing__tier-unit">{tier.unit}</span>}
-          </div>
-        ))
-      }
-    </div>
+    <div class="pricing__options">
+      <div class="pricing__grid">
+        {
+          tiers.map((tier) => (
+            <article class:list={["pricing__tier", tier.isFeatured && "pricing__tier--featured"]}>
+              {tier.isFeatured && <p class="pricing__badge">Más elegido</p>}
+              <h3>{tier.label}</h3>
+              <p class="pricing__tier-price">{tier.price}</p>
+              {tier.unit && <p class="pricing__tier-unit">{tier.unit}</p>}
+            </article>
+          ))
+        }
+      </div>
 
-    <div class="pricing__cta-wrap">
-      <a class="pricing__cta" href="/#tu-evento">Buscar mis fotos</a>
+      <div class="pricing__cta-wrap">
+        <a class="pricing__cta" href="/#tu-evento">Buscar mis fotos</a>
+      </div>
     </div>
   </div>
 </section>
 
 <style>
   .pricing {
-    padding-block: var(--space-section-block);
+    padding-block: 5rem;
+    background: var(--color-gray-100);
+    color: var(--home-ink, var(--color-ink));
   }
 
   .pricing__inner {
-    max-width: var(--container-max-width);
-    margin: 0 auto;
-    padding-inline: var(--container-padding);
-  }
-
-  .pricing__label {
-    font-family: var(--font-family-display);
-    font-weight: 800;
-    font-size: var(--font-size-sm);
-    letter-spacing: 0.09em;
-    color: var(--color-gray-500);
-    text-transform: uppercase;
-    margin-bottom: var(--space-5);
-  }
-
-  .pricing__row {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    align-items: end;
-    gap: var(--space-3);
-    border-bottom: 2px solid var(--color-ink);
+    gap: 3rem;
+    width: 100%;
+    max-width: var(--container-max-width);
+    padding-inline: var(--container-padding);
+    margin-inline: auto;
+  }
+
+  .pricing__title {
+    margin: 0;
+    font-family: "Archivo Variable", var(--font-family-display);
+    font-size: clamp(2rem, 3.6vw, 3rem);
+    font-stretch: 125%;
+    font-variation-settings: "wdth" 125;
+    font-weight: 900;
+    letter-spacing: -0.02em;
+    line-height: 0.95;
+    text-transform: uppercase;
+  }
+
+  .pricing__intro p {
+    max-width: 32ch;
+    margin: 0.875rem 0 0;
+    color: var(--color-gray-500);
+    line-height: 1.5;
+  }
+
+  .pricing__options {
+    min-width: 0;
+  }
+
+  .pricing__grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+    padding-top: 0.75rem;
   }
 
   .pricing__tier {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    padding-bottom: var(--space-3);
+    position: relative;
+    min-width: 0;
+    padding: 1.75rem 1.5rem;
+    background: var(--color-surface);
+    border: 1px solid var(--color-gray-200);
   }
 
-  .pricing__tier-label {
-    font-size: var(--font-size-sm);
+  .pricing__tier h3 {
+    margin: 0 0 0.5rem;
+    font-size: 1.05rem;
     font-weight: 600;
-    margin-bottom: var(--space-2);
-  }
-
-  .pricing__tier:not(.pricing__tier--featured) .pricing__tier-label {
-    font-size: 1.375rem;
-    line-height: var(--line-height-tight);
+    line-height: 1.2;
   }
 
   .pricing__tier-price {
-    font-family: var(--font-family-display);
-    font-weight: 800;
-    font-size: var(--font-size-2xl);
+    margin: 0;
+    font-family: "Archivo Variable", var(--font-family-display);
+    font-size: clamp(2.125rem, 3.2vw, 2.75rem);
+    font-stretch: 125%;
+    font-variation-settings: "wdth" 125;
+    font-weight: 900;
     line-height: 1;
+    white-space: nowrap;
   }
 
   .pricing__tier-unit {
-    margin-top: var(--space-2);
-    font-size: var(--font-size-sm);
-    font-weight: 700;
-    line-height: 1;
+    margin: 0.5rem 0 0;
+    color: var(--color-gray-300);
+    font-size: 0.875rem;
+    line-height: 1.4;
   }
 
   .pricing__tier--featured {
-    grid-column: 1 / -1;
-    height: auto;
-    justify-content: flex-end;
-    background: var(--color-accent);
-    color: var(--color-accent-on);
-    padding: var(--space-4) var(--space-3) var(--space-5);
+    background: var(--color-ink);
+    color: var(--color-ink-inverse);
+    border-color: var(--color-ink);
+  }
+
+  .pricing__tier--featured h3 {
+    font-weight: 700;
   }
 
   .pricing__badge {
-    display: inline-block;
-    width: fit-content;
-    background: var(--color-ink);
-    color: var(--color-accent);
-    font-family: var(--font-family-display);
+    position: absolute;
+    top: -0.8125rem;
+    left: 1.5rem;
+    margin: 0;
+    padding: 0.3125rem 0.5625rem;
+    background: var(--color-accent);
+    color: var(--color-ink);
+    font-family: "Archivo Variable", var(--font-family-display);
+    font-size: 0.68rem;
+    font-stretch: 125%;
+    font-variation-settings: "wdth" 125;
     font-weight: 800;
-    font-size: var(--font-size-xs);
-    letter-spacing: 0.06em;
+    letter-spacing: 0.08em;
+    line-height: 1.2;
     text-transform: uppercase;
-    padding: var(--space-1) var(--space-2);
-    margin-bottom: var(--space-3);
   }
 
   .pricing__tier--featured .pricing__tier-price {
-    font-size: var(--font-size-4xl);
+    color: var(--color-accent);
   }
 
   .pricing__cta-wrap {
     display: flex;
-    justify-content: center;
-    margin-top: var(--space-6);
+    margin-top: 2rem;
   }
 
   .pricing__cta {
-    display: inline-block;
-    padding: var(--space-4) var(--space-5);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 3.375rem;
+    padding: 1rem 1.5rem;
+    border: 2px solid var(--color-ink);
     border-radius: var(--radius-sm);
     background: var(--color-accent);
     color: var(--color-accent-on);
-    font-family: var(--font-family-display);
-    font-size: var(--font-size-sm);
+    font-family: "Archivo Variable", var(--font-family-display);
+    font-size: 0.875rem;
+    font-stretch: 125%;
+    font-variation-settings: "wdth" 125;
     font-weight: 800;
-    letter-spacing: 0.02em;
+    letter-spacing: 0.04em;
     text-decoration: none;
     text-transform: uppercase;
-    transition: background 0.18s ease, transform 0.18s ease;
+    transition: background-color 160ms ease, color 160ms ease;
   }
 
-  .pricing__cta:active {
-    transform: translateY(1px);
+  .pricing__cta:focus-visible {
+    outline: 3px solid #6e8f00;
+    outline-offset: 3px;
   }
 
   @media (hover: hover) and (pointer: fine) {
     .pricing__cta:hover {
       background: var(--color-ink);
       color: var(--color-accent);
-      transform: translateY(-2px);
     }
   }
 
-  @media (min-width: 900px) {
+  @media (min-width: 901px) {
+    .pricing__inner {
+      grid-template-columns: minmax(15rem, 1fr) minmax(0, 2fr);
+    }
+  }
+
+  @media (max-width: 900px) {
+    .pricing__grid {
+      padding-top: 0;
+    }
+  }
+
+  @media (max-width: 720px) {
     .pricing {
-      background: var(--color-gray-100);
+      padding-block: 3.5rem;
     }
 
-    .pricing__row {
-      display: flex;
-      height: 230px;
-      gap: var(--space-6);
-      border-bottom-width: 3px;
-    }
-
-    .pricing__tier {
-      padding-bottom: var(--space-6);
+    .pricing__grid {
+      grid-template-columns: 1fr;
     }
 
     .pricing__tier--featured {
-      grid-column: auto;
-      flex: 1.6;
-      height: 100%;
-      padding: var(--space-6) var(--space-5) var(--space-7);
+      margin-top: 0.625rem;
     }
 
     .pricing__cta {
-      padding-inline: var(--space-6);
+      width: 100%;
     }
   }
 </style>
