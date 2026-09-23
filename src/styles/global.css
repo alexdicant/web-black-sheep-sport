@@ -118,10 +118,12 @@ button {
   font-size: var(--font-size-sm);
   font-weight: 700;
   text-decoration: none;
-  transform: translateY(calc(-100% - var(--space-2)));
+  clip-path: inset(50%);
+  transform: translateY(-200%);
 }
 
-.skip-link:focus {
+.skip-link:focus-visible {
+  clip-path: inset(0);
   transform: translateY(0);
 }
 

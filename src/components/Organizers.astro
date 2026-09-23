@@ -1,6 +1,6 @@
 ---
 import { Image } from "astro:assets";
-import organizersPhoto from "../assets/photos/DSC08364.webp";
+import organizersPhoto from "../assets/photos/DSC09180.webp";
 import { buildWhatsAppUrl } from "../data/site";
 
 const whatsappMessage = "Hola, quiero información sobre cobertura fotográfica para un evento deportivo.";
@@ -31,7 +31,7 @@ const whatsappHref = buildWhatsAppUrl(whatsappMessage);
       <Image
         class="organizers__image"
         src={organizersPhoto}
-        alt="Entrenador guiando a una atleta en un ejercicio con polea en el gimnasio"
+        alt="Atleta realizando un ejercicio con cuerda de batalla en el gimnasio"
         loading="lazy"
         widths={[304, 448, 600, 800]}
         sizes="(max-width: 720px) calc(100vw - 32px), (max-width: 900px) calc(100vw - 48px), (max-width: 1288px) calc(50vw - 48px), 596px"
