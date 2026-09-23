@@ -1,45 +1,108 @@
 <footer class="footer">
-  <p class="footer__text">
-    Un servicio de Black Sheep Studio
-  </p>
-  <nav class="footer__links" aria-label="Enlaces legales">
-    <a class="footer__link" href="/privacidad/">Privacidad</a>
-    <a class="footer__link" href="/cookies/">Cookies</a>
-    <a class="footer__link" href="/terminos/">Términos</a>
-  </nav>
+  <div class="footer__inner">
+    <div class="footer__identity">
+      <strong class="footer__brand">Black Sheep Sport</strong>
+      <p class="footer__descriptor">
+        Un servicio de <a
+          class="footer__studio-link"
+          href="https://www.instagram.com/black_sheep_pro/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >Black Sheep Studio</a>
+      </p>
+    </div>
+
+    <nav class="footer__links" aria-label="Enlaces de contacto y legales">
+      <a
+        class="footer__link footer__link--contact"
+        href="https://wa.me/584247438483"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        WhatsApp
+      </a>
+      <a class="footer__link" href="/privacidad/">Privacidad</a>
+      <a class="footer__link" href="/cookies/">Cookies</a>
+      <a class="footer__link" href="/terminos/">Términos</a>
+    </nav>
+  </div>
 </footer>
 
 <style>
   .footer {
-    padding: var(--space-5) var(--space-4);
-    text-align: center;
+    padding-block: 2.5rem;
+    background: var(--home-ink, var(--color-ink));
+    border-top: 1px solid rgb(242 244 243 / 16%);
+    color: #b9bdba;
+    font-family: "Archivo Variable", var(--font-family-body);
+    font-size: 0.875rem;
   }
 
-  .footer__text {
-    font-size: var(--font-size-xs);
-    color: var(--color-gray-500);
+  .footer__inner {
+    display: flex;
+    width: min(calc(100% - (2 * var(--container-padding))), 77.5rem);
+    margin-inline: auto;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1.5rem;
+  }
+
+  .footer__brand {
+    display: block;
+    color: var(--color-ink-inverse);
+    font-size: 1rem;
+    font-stretch: 125%;
+    font-weight: 900;
+    letter-spacing: -0.01em;
+    line-height: 1.1;
+    text-transform: uppercase;
+  }
+
+  .footer__descriptor {
+    margin-top: 0.5rem;
+    color: #b9bdba;
+    line-height: 1.45;
+  }
+
+  .footer__studio-link {
+    color: inherit;
+    text-decoration-color: rgb(185 189 186 / 54%);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.25em;
+    transition: color 0.18s ease, text-decoration-color 0.18s ease;
+  }
+
+  .footer__studio-link:focus-visible {
+    outline: 3px solid var(--color-accent);
+    outline-offset: 3px;
   }
 
   .footer__links {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    margin-top: var(--space-2);
-    gap: var(--space-1) var(--space-4);
+    align-items: center;
+    gap: 1.25rem;
   }
 
   .footer__link {
-    position: relative;
-    color: inherit;
-    font-size: var(--font-size-xs);
-    text-decoration: underline;
-    transition: color 0.18s ease, opacity 0.18s ease;
+    display: inline-flex;
+    min-height: 2.75rem;
+    align-items: center;
+    color: #b9bdba;
+    line-height: 1.2;
+    text-decoration-line: underline;
+    text-decoration-color: rgb(185 189 186 / 54%);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.25em;
+    transition: color 0.18s ease, opacity 0.18s ease, text-decoration-color 0.18s ease;
   }
 
-  .footer__link::after {
-    position: absolute;
-    inset: -14px -4px;
-    content: '';
+  .footer__link--contact {
+    color: var(--color-ink-inverse);
+  }
+
+  .footer__link:focus-visible {
+    outline: 3px solid var(--color-accent);
+    outline-offset: 3px;
   }
 
   .footer__link:active {
@@ -47,14 +110,30 @@
   }
 
   @media (hover: hover) and (pointer: fine) {
+    .footer__studio-link:hover,
     .footer__link:hover {
-      color: var(--color-ink);
+      color: var(--color-ink-inverse);
+      text-decoration-color: currentColor;
     }
   }
 
-  @media (min-width: 900px) {
+  @media (max-width: 900px) {
     .footer {
-      padding: var(--space-6) var(--container-padding);
+      padding-block: 2.5rem 3rem;
+    }
+
+    .footer__inner,
+    .footer__links {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+
+    .footer__inner {
+      gap: 1.5rem;
+    }
+
+    .footer__links {
+      gap: 0;
     }
   }
 </style>
