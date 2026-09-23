@@ -74,8 +74,8 @@
 
   @media (hover: hover) and (pointer: fine) {
     .back-to-top[data-visible="true"]:hover {
-      background: var(--color-accent);
-      color: var(--color-accent-on);
+      background: var(--color-action);
+      color: var(--color-action-text);
       transform: translateY(-2px);
     }
   }
@@ -90,7 +90,7 @@
     box-shadow: 0 0 0 6px var(--color-ink);
   }
 
-  @media (max-width: 720px) {
+  @media (max-width: 45rem) {
     :global(html.home-page) .back-to-top {
       bottom: calc(
         var(--home-mobile-cta-height, 4.625rem) + env(safe-area-inset-bottom, 0px) +

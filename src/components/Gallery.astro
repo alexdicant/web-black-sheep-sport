@@ -47,16 +47,16 @@ const photos = [
 
 <style>
   .gallery {
-    padding-block: 5rem;
+    padding-block: var(--section-space);
     background: var(--color-surface);
-    border-block: 1px solid var(--home-line, var(--color-gray-200));
-    color: var(--home-ink, var(--color-ink));
+    border-block: 1px solid var(--color-border);
+    color: var(--color-text);
   }
 
   .gallery__inner {
     width: 100%;
-    max-width: var(--container-max-width);
-    padding-inline: var(--container-padding);
+    max-width: var(--content-max);
+    padding-inline: var(--content-gutter);
     margin-inline: auto;
   }
 
@@ -70,7 +70,7 @@ const photos = [
 
   .gallery__title {
     font-family: "Archivo Variable", var(--font-family-display);
-    font-size: clamp(2rem, 3.6vw, 3rem);
+    font-size: var(--text-section-title);
     font-stretch: 125%;
     font-variation-settings: "wdth" 125;
     font-weight: 900;
@@ -80,7 +80,7 @@ const photos = [
   }
 
   .gallery__heading p {
-    color: var(--home-muted, var(--color-gray-500));
+    color: var(--color-text-muted);
     line-height: 1.5;
   }
 
@@ -93,6 +93,7 @@ const photos = [
   .gallery__image {
     width: 100%;
     height: clamp(10.625rem, 22vw, 18.75rem);
+    aspect-ratio: 4 / 3;
     object-fit: cover;
   }
 
@@ -100,16 +101,13 @@ const photos = [
     object-position: center 35%;
   }
 
-  @media (max-width: 900px) {
+  @media (max-width: 56.25rem) {
     .gallery__grid {
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
   }
 
-  @media (max-width: 720px) {
-    .gallery {
-      padding-block: 3.5rem;
-    }
+  @media (max-width: 45rem) {
 
     .gallery__heading {
       align-items: flex-start;
@@ -117,14 +115,15 @@ const photos = [
     }
   }
 
-  @media (max-width: 480px) {
+  @media (max-width: 30rem) {
     .gallery__grid {
       grid-template-columns: 1fr;
     }
 
     .gallery__image {
-      height: 125vw;
+      height: auto;
       max-height: 35rem;
+      aspect-ratio: 8 / 11;
     }
   }
 </style>

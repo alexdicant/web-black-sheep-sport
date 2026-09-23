@@ -71,15 +71,15 @@ const formatShortDate = (isoDate: string) =>
 
 <style>
   .events {
-    padding-block: 5rem;
+    padding-block: var(--section-space);
     background: var(--color-surface);
     border-block: 1px solid #dcdedb;
   }
 
   .events__inner {
     width: 100%;
-    max-width: var(--container-max-width);
-    padding-inline: var(--container-padding);
+    max-width: var(--content-max);
+    padding-inline: var(--content-gutter);
     margin-inline: auto;
   }
 
@@ -92,7 +92,7 @@ const formatShortDate = (isoDate: string) =>
   }
 
   .events__heading h2 {
-    font-size: clamp(2rem, 3.6vw, 3rem);
+    font-size: var(--text-section-title);
     font-stretch: 125%;
     font-variation-settings: "wdth" 125;
     font-weight: 900;
@@ -103,7 +103,7 @@ const formatShortDate = (isoDate: string) =>
 
   .events__heading p {
     margin: 0;
-    color: var(--home-muted, var(--color-gray-500));
+    color: var(--color-text-muted);
     line-height: 1.5;
   }
 
@@ -121,7 +121,7 @@ const formatShortDate = (isoDate: string) =>
     overflow: hidden;
     flex-direction: column;
     background: var(--color-surface);
-    border: 2px solid var(--home-ink, var(--color-ink));
+    border: 2px solid var(--color-text);
     border-radius: 0.75rem;
     transition: transform 180ms ease;
   }
@@ -139,7 +139,7 @@ const formatShortDate = (isoDate: string) =>
     width: 0.875rem;
     height: 0.875rem;
     background: var(--color-surface);
-    border: 2px solid var(--home-ink, var(--color-ink));
+    border: 2px solid var(--color-text);
     border-radius: 50%;
     content: "";
   }
@@ -170,7 +170,7 @@ const formatShortDate = (isoDate: string) =>
     gap: var(--space-3);
     padding: 1rem 2.75rem;
     margin: 0;
-    border-bottom: 2px dashed var(--home-ink, var(--color-ink));
+    border-bottom: 2px dashed var(--color-text);
     font-size: 0.75rem;
     font-stretch: 125%;
     font-variation-settings: "wdth" 125;
@@ -182,7 +182,7 @@ const formatShortDate = (isoDate: string) =>
 
   .events__status--center {
     justify-content: center;
-    color: var(--home-muted, var(--color-gray-500));
+    color: var(--color-text-muted);
   }
 
   .events__status-label {
@@ -195,7 +195,7 @@ const formatShortDate = (isoDate: string) =>
     width: 0.5rem;
     height: 0.5rem;
     flex: 0 0 auto;
-    background: var(--home-ink, var(--color-ink));
+    background: var(--color-text);
     border-radius: 50%;
   }
 
@@ -248,11 +248,11 @@ const formatShortDate = (isoDate: string) =>
   .events__metadata time,
   .events__metadata span {
     padding: 0.3125rem 0.625rem;
-    border: 2px solid var(--home-ink, var(--color-ink));
+    border: 2px solid var(--color-text);
   }
 
   .events__metadata time {
-    background: var(--home-ink, var(--color-ink));
+    background: var(--color-text);
     color: #cdff3a;
   }
 
@@ -262,14 +262,14 @@ const formatShortDate = (isoDate: string) =>
 
   .events__cta {
     display: inline-flex;
-    min-height: 3.375rem;
+    min-height: var(--control-height);
     align-items: center;
     justify-content: center;
     gap: var(--space-2);
     padding: 1rem 1.5rem;
     margin: 0 2.25rem 2.25rem;
-    background: var(--home-ink, var(--color-ink));
-    border: 2px solid var(--home-ink, var(--color-ink));
+    background: var(--color-text);
+    border: 2px solid var(--color-text);
     color: #cdff3a;
     font-size: 0.875rem;
     font-stretch: 125%;
@@ -285,7 +285,7 @@ const formatShortDate = (isoDate: string) =>
 
   .events__card--past .events__cta {
     background: transparent;
-    color: var(--home-ink, var(--color-ink));
+    color: var(--color-text);
   }
 
   .events__cta:active {
@@ -303,11 +303,11 @@ const formatShortDate = (isoDate: string) =>
 
     .events__card--active .events__cta:hover {
       background: var(--color-surface);
-      color: var(--home-ink, var(--color-ink));
+      color: var(--color-text);
     }
 
     .events__card--past .events__cta:hover {
-      background: var(--home-ink, var(--color-ink));
+      background: var(--color-text);
       color: var(--color-surface);
     }
   }
@@ -327,9 +327,6 @@ const formatShortDate = (isoDate: string) =>
   }
 
   @media (max-width: 45rem) {
-    .events {
-      padding-block: 3.5rem;
-    }
 
     .events__heading {
       align-items: flex-start;

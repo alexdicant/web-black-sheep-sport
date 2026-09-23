@@ -35,7 +35,7 @@ import { buildWhatsAppUrl, site } from "../data/site";
 <style>
   .footer {
     padding-block: 2.5rem;
-    background: var(--home-ink, var(--color-ink));
+    background: var(--color-text);
     border-top: 1px solid rgb(242 244 243 / 16%);
     color: #b9bdba;
     font-family: "Archivo Variable", var(--font-family-body);
@@ -44,7 +44,7 @@ import { buildWhatsAppUrl, site } from "../data/site";
 
   .footer__inner {
     display: flex;
-    width: min(calc(100% - (2 * var(--container-padding))), 77.5rem);
+    width: min(calc(100% - (2 * var(--content-gutter))), 77.5rem);
     margin-inline: auto;
     align-items: flex-start;
     justify-content: space-between;
@@ -53,7 +53,7 @@ import { buildWhatsAppUrl, site } from "../data/site";
 
   .footer__brand {
     display: block;
-    color: var(--color-ink-inverse);
+    color: var(--color-text-inverse);
     font-size: 1rem;
     font-stretch: 125%;
     font-weight: 900;
@@ -101,7 +101,7 @@ import { buildWhatsAppUrl, site } from "../data/site";
   }
 
   .footer__link--contact {
-    color: var(--color-ink-inverse);
+    color: var(--color-text-inverse);
   }
 
   .footer__link:focus-visible {
@@ -116,12 +116,12 @@ import { buildWhatsAppUrl, site } from "../data/site";
   @media (hover: hover) and (pointer: fine) {
     .footer__studio-link:hover,
     .footer__link:hover {
-      color: var(--color-ink-inverse);
+      color: var(--color-text-inverse);
       text-decoration-color: currentColor;
     }
   }
 
-  @media (max-width: 900px) {
+  @media (max-width: 56.25rem) {
     .footer {
       padding-block: 2.5rem 3rem;
     }

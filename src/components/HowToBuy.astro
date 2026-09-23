@@ -44,23 +44,23 @@ const steps: Step[] = [
 
 <style>
   .how-to-buy {
-    padding-block: 5rem;
+    padding-block: var(--section-space);
     background: #cdff3a;
-    color: var(--home-ink, var(--color-ink));
+    color: var(--color-text);
   }
 
   .how-to-buy__inner {
     display: grid;
     gap: 3rem;
     width: 100%;
-    max-width: var(--container-max-width);
-    padding-inline: var(--container-padding);
+    max-width: var(--content-max);
+    padding-inline: var(--content-gutter);
     margin-inline: auto;
   }
 
   .how-to-buy__title {
     font-family: "Archivo Variable", var(--font-family-display);
-    font-size: clamp(2rem, 3.6vw, 3rem);
+    font-size: var(--text-section-title);
     font-stretch: 125%;
     font-variation-settings: "wdth" 125;
     font-weight: 900;
@@ -104,16 +104,13 @@ const steps: Step[] = [
     line-height: 1.5;
   }
 
-  @media (min-width: 901px) {
+  @media (min-width: 56.25rem) {
     .how-to-buy__inner {
       grid-template-columns: minmax(15rem, 1fr) minmax(0, 2fr);
     }
   }
 
-  @media (max-width: 720px) {
-    .how-to-buy {
-      padding-block: 3.5rem;
-    }
+  @media (max-width: 45rem) {
 
     .how-to-buy__list {
       grid-template-columns: 1fr;

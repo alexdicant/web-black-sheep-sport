@@ -1,14 +1,11 @@
 html.home-page {
-  --home-paper: #f4f4f2;
-  --home-ink: #0d0f0e;
-  --home-ink-soft: #2b2e2c;
-  --home-muted: #4a4f4c;
-  --home-line: #cfd3d0;
-  --home-container: 1240px;
-  --home-gutter: 24px;
   --home-header-height: 73px;
-  --container-padding: var(--home-gutter);
-  --container-max-width: calc(var(--home-container) + (2 * var(--container-padding)));
+  --content-max: 77.5rem;
+  --content-gutter: 1.5rem;
+  --color-surface-subtle: #f4f4f2;
+  --color-text: #0d0f0e;
+  --color-text-muted: #4a4f4c;
+  --color-border: #cfd3d0;
   --font-family-display: "Archivo Variable", sans-serif;
   --font-family-body: "Archivo Variable", sans-serif;
   scroll-behavior: smooth;
@@ -16,8 +13,8 @@ html.home-page {
 }
 
 html.home-page body {
-  background: var(--home-paper);
-  color: var(--home-ink);
+  background: var(--color-surface-subtle);
+  color: var(--color-text);
   font-family: "Archivo Variable", sans-serif;
   font-stretch: 100%;
   -webkit-font-smoothing: antialiased;
@@ -25,7 +22,7 @@ html.home-page body {
 
 @media (max-width: 720px) {
   html.home-page {
-    --home-gutter: 16px;
+    --content-gutter: 1rem;
     --home-header-height: 65px;
   }
 }

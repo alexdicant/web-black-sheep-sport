@@ -42,9 +42,9 @@ const whatsappHref = buildWhatsAppUrl(whatsappMessage);
 
 <style>
   .organizers {
-    padding-block: 5rem;
-    background: var(--home-ink, var(--color-ink));
-    color: var(--color-ink-inverse);
+    padding-block: var(--section-space);
+    background: var(--color-text);
+    color: var(--color-text-inverse);
   }
 
   .organizers__inner {
@@ -53,8 +53,8 @@ const whatsappHref = buildWhatsAppUrl(whatsappMessage);
     align-items: center;
     gap: var(--space-7);
     width: 100%;
-    max-width: var(--container-max-width);
-    padding-inline: var(--container-padding);
+    max-width: var(--content-max);
+    padding-inline: var(--content-gutter);
     margin-inline: auto;
   }
 
@@ -77,7 +77,7 @@ const whatsappHref = buildWhatsAppUrl(whatsappMessage);
   .organizers__title {
     max-width: 18ch;
     font-family: "Archivo Variable", var(--font-family-display);
-    font-size: clamp(2rem, 3.6vw, 3rem);
+    font-size: var(--text-section-title);
     font-stretch: 125%;
     font-variation-settings: "wdth" 125;
     font-weight: 900;
@@ -97,12 +97,12 @@ const whatsappHref = buildWhatsAppUrl(whatsappMessage);
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    min-height: 3.375rem;
+    min-height: var(--control-height);
     padding: var(--space-4) var(--space-5);
     margin-top: var(--space-2);
-    background: var(--color-accent);
-    border: 2px solid var(--home-ink, var(--color-ink));
-    color: var(--color-accent-on);
+    background: var(--color-action);
+    border: 2px solid var(--color-text);
+    color: var(--color-action-text);
     font-family: "Archivo Variable", var(--font-family-display);
     font-size: 0.875rem;
     font-stretch: 125%;
@@ -138,7 +138,7 @@ const whatsappHref = buildWhatsAppUrl(whatsappMessage);
   @media (hover: hover) and (pointer: fine) {
     .organizers__button:hover {
       background: var(--color-surface);
-      color: var(--home-ink, var(--color-ink));
+      color: var(--color-text);
       transform: translateY(-2px);
     }
   }
@@ -152,19 +152,18 @@ const whatsappHref = buildWhatsAppUrl(whatsappMessage);
     }
   }
 
-  @media (max-width: 900px) {
+  @media (max-width: 56.25rem) {
     .organizers__inner {
       grid-template-columns: 1fr;
     }
   }
 
-  @media (max-width: 720px) {
-    .organizers {
-      padding-block: 3.5rem;
-    }
+  @media (max-width: 45rem) {
 
     .organizers__media {
-      height: min(125vw, 26.25rem);
+      height: auto;
+      max-height: 26.25rem;
+      aspect-ratio: 4 / 5;
     }
   }
 </style>

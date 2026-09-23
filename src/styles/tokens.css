@@ -7,6 +7,13 @@
   --color-ink: #0d0f0c; /* negro tintado frío, no #000 */
   --color-ink-inverse: #f2f4f3; /* texto sobre secciones de fondo oscuro */
   --color-surface: #ffffff;
+  --color-text: var(--color-ink);
+  --color-text-muted: #4a4f4c;
+  --color-text-inverse: var(--color-ink-inverse);
+  --color-surface-subtle: #f2f4f3;
+  --color-border: #cfd3d0;
+  --color-action: var(--color-accent);
+  --color-action-text: var(--color-accent-on);
 
   /* Escala de grises neutros fríos (sin tinte cálido) */
   --color-gray-100: #f2f4f3;
@@ -23,7 +30,6 @@
   --font-size-xl: clamp(1.375rem, 1.2rem + 0.9vw, 1.875rem);
   --font-size-2xl: clamp(1.75rem, 1.4rem + 1.8vw, 2.5rem);
   --font-size-3xl: clamp(2.25rem, 1.7rem + 2.8vw, 3.5rem);
-  --font-size-4xl: clamp(2.625rem, 1.9rem + 3.6vw, 4.5rem);
 
   --font-family-display: "Archivo Expanded", "Archivo", sans-serif;
   --font-family-body: "Instrument Sans", sans-serif;
@@ -43,6 +49,11 @@
   /* Contenedor compartido por todas las secciones — fluido, sin salto en 900px */
   --container-max-width: 1440px;
   --container-padding: clamp(1rem, -0.46rem + 4.7vw, 3.75rem); /* 16px → 60px, tope cerca de 1440 */
+  --content-max: 77.5rem;
+  --content-gutter: clamp(1rem, 1rem + 2.5vw, 1.5rem);
+  --section-space: clamp(3.5rem, 2.75rem + 3.3vw, 5rem);
+  --text-section-title: clamp(2rem, 3.6vw, 3rem);
+  --control-height: 3.375rem;
 
   /* Padding vertical de sección — mismo mín/máx que antes, ahora fluido */
   --space-section-block: clamp(2rem, 0.7rem + 4.2vw, 4rem); /* 32px → 64px */
@@ -59,5 +70,4 @@
   --space-6: 2rem;
   --space-7: 3rem;
   --space-8: 4rem;
-  --space-9: 6rem;
 }
