@@ -28,10 +28,6 @@ export function getStaticPaths() {
 
     const photos = buildEventPhotos(photoModules, event.name);
 
-    if (photos.length === 0) {
-      throw new Error(`El evento "${event.slug}" no tiene fotografías en src/assets/events/${event.slug}/.`);
-    }
-
     if (!event.name || !event.isoDate || !event.location) {
       throw new Error(`Faltan datos obligatorios para el evento "${event.slug}".`);
     }

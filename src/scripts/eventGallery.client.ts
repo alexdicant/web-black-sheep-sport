@@ -55,11 +55,8 @@ if (gallery) {
     const isSelected = selectedCodes.has(code);
     lightboxSelect.dataset.selected = String(isSelected);
     lightboxSelect.setAttribute("aria-pressed", String(isSelected));
-    lightboxSelect.setAttribute(
-      "aria-label",
-      isSelected ? `Quitar foto ${code} de la selección` : `Seleccionar foto ${code}`,
-    );
-    lightboxSelect.textContent = isSelected ? "Seleccionada" : "Seleccionar foto";
+    lightboxSelect.setAttribute("aria-label", `Seleccionar foto ${code}`);
+    lightboxSelect.textContent = "Seleccionar foto";
   };
 
   const updatePhoto = (code: string) => {
@@ -68,10 +65,6 @@ if (gallery) {
     const isSelected = selectedCodes.has(code);
     button.dataset.selected = String(isSelected);
     button.setAttribute("aria-pressed", String(isSelected));
-    button.setAttribute(
-      "aria-label",
-      isSelected ? `Quitar foto ${code} de la selección` : `Seleccionar foto ${code}`,
-    );
   };
 
   const updateSummary = (announce = true) => {
@@ -110,8 +103,16 @@ if (gallery) {
     lightboxCode.textContent = photo.code;
     lightboxImage.alt = photo.image.alt;
     lightboxImage.src = photo.image.getAttribute("src") ?? photo.image.currentSrc;
-    if (lightboxPrevious) lightboxPrevious.disabled = index === 0;
-    if (lightboxNext) lightboxNext.disabled = index === photos.length - 1;
+    const previousWillBeDisabled = index === 0;
+    const nextWillBeDisabled = index === photos.length - 1;
+    if (document.activeElement === lightboxPrevious && previousWillBeDisabled) {
+      (nextWillBeDisabled ? lightboxSelect : lightboxNext)?.focus({ preventScroll: true });
+    }
+    if (document.activeElement === lightboxNext && nextWillBeDisabled) {
+      (previousWillBeDisabled ? lightboxSelect : lightboxPrevious)?.focus({ preventScroll: true });
+    }
+    if (lightboxPrevious) lightboxPrevious.disabled = previousWillBeDisabled;
+    if (lightboxNext) lightboxNext.disabled = nextWillBeDisabled;
     updateLightboxSelection();
   };
 
@@ -170,7 +171,7 @@ if (gallery) {
 
   selectionJump?.addEventListener("click", (event) => {
     event.preventDefault();
-    clearButton?.focus({ preventScroll: true });
+    buyButton?.focus({ preventScroll: true });
   });
 
   lightboxClose?.addEventListener("click", () => lightbox?.close());

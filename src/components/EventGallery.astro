@@ -162,6 +162,7 @@ const hasPhotos = photos.length > 0;
             <button
               class="photo-lightbox__select"
               type="button"
+              aria-label="Seleccionar foto"
               aria-pressed="false"
               data-lightbox-select
             >
@@ -389,7 +390,7 @@ const hasPhotos = photos.length > 0;
   .photo-lightbox__select:focus-visible,
   .selection-bar__clear:focus-visible,
   .selection-bar__buy:focus-visible {
-    outline: 3px solid var(--color-accent);
+    outline: 3px solid var(--color-focus);
     outline-offset: 3px;
     box-shadow: 0 0 0 1px var(--color-ink);
   }
