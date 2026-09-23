@@ -14,7 +14,7 @@ const isHome = variant === "home";
   <div class="header__inner">
     <a
       class="header__wordmark"
-      href={isHome ? "#inicio" : "/"}
+      href={isHome ? "#main-content" : "/"}
       aria-label="Black Sheep Sport, inicio"
     >
       <Image
@@ -149,7 +149,7 @@ const isHome = variant === "home";
   .header--home {
     position: sticky;
     top: 0;
-    z-index: 20;
+    z-index: var(--layer-header);
     background: rgb(244 244 242 / 94%);
     border-bottom-color: #dcdedb;
     backdrop-filter: blur(8px);
@@ -182,7 +182,7 @@ const isHome = variant === "home";
 
   .header__home-cta {
     display: inline-flex;
-    min-height: 44px;
+    min-height: var(--touch-target);
     align-items: center;
     justify-content: center;
     padding: 11px 18px;
@@ -200,8 +200,8 @@ const isHome = variant === "home";
 
   .header__menu-button {
     display: none;
-    width: 44px;
-    height: 44px;
+    width: var(--touch-target);
+    height: var(--touch-target);
     padding: 10px;
     background: transparent;
     border: 1px solid var(--home-ink);
@@ -345,8 +345,16 @@ const isHome = variant === "home";
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .header__menu-button > span:not(.sr-only) {
+    .header__menu-button > span:not(.sr-only),
+    .header__home-cta,
+    .header__home-cta:hover,
+    .header__home-cta:active,
+    .header__menu-button,
+    .header__cta,
+    .header__cta:hover,
+    .header__cta:active {
       transition: none;
+      transform: none;
     }
   }
 </style>

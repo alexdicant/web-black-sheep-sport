@@ -11,7 +11,7 @@ import Footer from "../components/Footer.astro";
   robots="noindex, nofollow"
 >
   <Header />
-  <main class="not-found">
+  <main id="main-content" class="not-found" tabindex="-1">
     <section class="not-found__content" aria-labelledby="not-found-title">
       <p class="not-found__label">Error 404</p>
       <h1 class="not-found__title" id="not-found-title">Página no encontrada</h1>
@@ -81,6 +81,15 @@ import Footer from "../components/Footer.astro";
       background: var(--color-accent);
       color: var(--color-accent-on);
       transform: translateY(-2px);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .not-found__cta,
+    .not-found__cta:hover,
+    .not-found__cta:active {
+      transition: none;
+      transform: none;
     }
   }
 </style>

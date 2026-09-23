@@ -12,6 +12,7 @@ import FinalCta from "../components/FinalCta.astro";
 import Footer from "../components/Footer.astro";
 import BackToTop from "../components/BackToTop.astro";
 import MobileCta from "../components/MobileCta.astro";
+import "../styles/home.css";
 ---
 
 <Base
@@ -19,9 +20,8 @@ import MobileCta from "../components/MobileCta.astro";
   description="Fotografía deportiva profesional en Mérida, Venezuela. Encuentra las fotos de tu evento, elige tus favoritas y coordina la compra por WhatsApp."
   home
 >
-  <a class="home-skip-link" href="#inicio">Saltar al contenido</a>
   <Header variant="home" />
-  <main id="inicio" tabindex="-1">
+  <main id="main-content" tabindex="-1">
     <Hero />
     <Events />
     <HowToBuy />
@@ -35,23 +35,3 @@ import MobileCta from "../components/MobileCta.astro";
   <BackToTop />
   <MobileCta />
 </Base>
-
-<style>
-  .home-skip-link {
-    position: fixed;
-    top: 8px;
-    left: 8px;
-    z-index: 100;
-    padding: 10px 14px;
-    background: #fff;
-    color: var(--home-ink);
-    font-size: 0.875rem;
-    font-weight: 700;
-    text-decoration: none;
-    transform: translateY(-160%);
-  }
-
-  .home-skip-link:focus {
-    transform: translateY(0);
-  }
-</style>

@@ -23,7 +23,7 @@
       right: 0;
       bottom: 0;
       left: 0;
-      z-index: 30;
+      z-index: var(--layer-action);
       display: block;
       padding: 0.625rem max(1rem, env(safe-area-inset-right, 0px))
         calc(0.625rem + env(safe-area-inset-bottom, 0px))
@@ -61,7 +61,7 @@
     }
 
     .mobile-cta__link:focus-visible {
-      outline: 3px solid var(--home-ink, #0d0f0e);
+      outline: 3px solid var(--color-focus);
       outline-offset: 3px;
     }
 
@@ -76,6 +76,15 @@
     .mobile-cta__link:hover {
       background: var(--home-ink, #0d0f0e);
       color: #cdff3a;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .mobile-cta__link,
+    .mobile-cta__link:hover,
+    .mobile-cta__link:active {
+      transition: none;
+      transform: none;
     }
   }
 </style>

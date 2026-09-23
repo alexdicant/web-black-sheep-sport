@@ -152,6 +152,14 @@ if (!activeEvent) {
     }
   }
 
+  @media (prefers-reduced-motion: reduce) {
+    .hero__label a,
+    .hero__label a:hover,
+    .hero__label a:active {
+      transition: none;
+    }
+  }
+
   @media (max-width: 720px) {
     .hero {
       padding-block: 32px 48px;

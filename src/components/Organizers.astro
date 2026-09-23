@@ -142,6 +142,15 @@ const whatsappHref = `https://wa.me/584247438483?text=${encodeURIComponent(whats
     }
   }
 
+  @media (prefers-reduced-motion: reduce) {
+    .organizers__button,
+    .organizers__button:hover,
+    .organizers__button:active {
+      transition: none;
+      transform: none;
+    }
+  }
+
   @media (max-width: 900px) {
     .organizers__inner {
       grid-template-columns: 1fr;

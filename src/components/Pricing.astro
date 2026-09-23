@@ -179,7 +179,7 @@ const tiers: PricingTier[] = [
   }
 
   .pricing__cta:focus-visible {
-    outline: 3px solid #6e8f00;
+    outline: 3px solid var(--color-focus);
     outline-offset: 3px;
   }
 
@@ -187,6 +187,14 @@ const tiers: PricingTier[] = [
     .pricing__cta:hover {
       background: var(--color-ink);
       color: var(--color-accent);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .pricing__cta,
+    .pricing__cta:hover,
+    .pricing__cta:active {
+      transition: none;
     }
   }
 

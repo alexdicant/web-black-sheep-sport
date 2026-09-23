@@ -2,6 +2,7 @@
   /* Color — acento aislado para poder cambiarlo en un solo sitio */
   --color-accent: #cdff3a;
   --color-accent-on: #0d0f0c; /* texto sobre el acento: siempre oscuro */
+  --color-focus: #6e8f00;
 
   --color-ink: #0d0f0c; /* negro tintado frío, no #000 */
   --color-ink-inverse: #f2f4f3; /* texto sobre secciones de fondo oscuro */
@@ -32,6 +33,12 @@
 
   /* Radios */
   --radius-sm: 2px;
+  --touch-target: 44px;
+
+  /* Capas compartidas: estructura fija, acciones y navegación accesible */
+  --layer-header: 20;
+  --layer-action: 30;
+  --layer-skip: 100;
 
   /* Contenedor compartido por todas las secciones — fluido, sin salto en 900px */
   --container-max-width: 1440px;

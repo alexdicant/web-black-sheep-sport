@@ -638,6 +638,18 @@ const hasPhotos = photos.length > 0;
     transform: scale(0.985);
   }
 
+  .photo-choice:focus-visible,
+  .photo-expand:focus-visible,
+  .photo-lightbox__close:focus-visible,
+  .photo-lightbox__nav:focus-visible,
+  .photo-lightbox__select:focus-visible,
+  .selection-bar__clear:focus-visible,
+  .selection-bar__buy:focus-visible {
+    outline: 3px solid var(--color-accent);
+    outline-offset: 3px;
+    box-shadow: 0 0 0 1px var(--color-ink);
+  }
+
   .photo-expand {
     position: absolute;
     z-index: 2;
@@ -968,6 +980,7 @@ const hasPhotos = photos.length > 0;
   @media (prefers-reduced-motion: reduce) {
     .photo-choice,
     .photo-choice__check,
+    .photo-choice__check svg,
     .photo-choice:active,
     .photo-expand:active,
     .photo-lightbox__close:active,
@@ -975,6 +988,7 @@ const hasPhotos = photos.length > 0;
     .photo-lightbox__select:active,
     .selection-bar__clear:active,
     .selection-bar__buy:active {
+      transition: none;
       transform: none;
     }
   }
