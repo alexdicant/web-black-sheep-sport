@@ -14,7 +14,7 @@ Full documentation: https://docs.astro.build
 
 ## Eventos y fotografías
 
-Cuando una tarea implique crear o modificar eventos, cambiar featured/status, cargar fotografías o publicar una galería, leer primero [EVENTOS.md](./EVENTOS.md) y seguirlo como fuente operativa de verdad. No crear páginas individuales de evento ni modificar el flujo descrito allí sin una petición explícita de cambio arquitectónico.
+Para tareas sobre eventos, leer [docs/operations/events.md](./docs/operations/events.md) como contrato. Para crear/modificar registros, usar la skill `manage-event`; para publicar/cambiar fotografías, usar `publish-event-photos`. No crear páginas individuales de evento sin una petición explícita de cambio arquitectónico. Para releases, usar `release-site` y consultar su documentación operativa.
 
 Consult these guides before working on related tasks:
 

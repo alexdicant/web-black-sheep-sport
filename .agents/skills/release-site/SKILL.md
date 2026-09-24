@@ -5,7 +5,7 @@ description: Prepare a Black Sheep Sport release, integrate a branch, deploy or 
 
 # Release the site
 
-Read [MEMORY.md](../../../MEMORY.md), [docs/ARCHITECTURE.md](../../../docs/ARCHITECTURE.md), [README.md](../../../README.md), and `public/.htaccess` before release work. The repository builds a static site into `dist/`; do not assume a provider, credentials, or deploy command that the docs do not establish.
+Read [MEMORY.md](../../../MEMORY.md), [docs/ARCHITECTURE.md](../../../docs/ARCHITECTURE.md), [README.md](../../../README.md), [docs/operations/deployment.md](../../../docs/operations/deployment.md), and `public/.htaccess` before release work. The repository builds a static site into `dist/`; do not assume a provider, credentials, or deploy command that the docs do not establish.
 
 Keep the requested stages distinct. Run pre-release checks for release tasks; perform integration only when explicitly requested; perform post-deploy checks only when there is a real deployed environment to inspect.
 

@@ -30,7 +30,7 @@
 
 ## Restricciones deliberadas
 
-- Los cambios operativos de eventos y fotografías siguen el procedimiento de [EVENTOS.md](./EVENTOS.md).
+- Las reglas del modelo de eventos y fotografías están en [docs/operations/events.md](./docs/operations/events.md); los procedimientos están en las skills `manage-event` y `publish-event-photos`.
 - La galería sin fotos no es un error de build ni una razón para ocultar o borrar el evento.
 
 ## Deuda técnica consciente
@@ -41,7 +41,8 @@
 
 - [AGENTS.md](./AGENTS.md): instrucciones globales del repositorio.
 - Código y configuración actuales: fuente para hechos de implementación.
-- [EVENTOS.md](./EVENTOS.md): operación de eventos y fotografías.
+- [docs/operations/events.md](./docs/operations/events.md): contrato de eventos y fotografías.
+- [docs/operations/deployment.md](./docs/operations/deployment.md): modelo de publicación/hosting; la ejecución del release está en `release-site`.
 - [docs/PRODUCT.md](./docs/PRODUCT.md): definición de producto.
 - [docs/DESIGN.md](./docs/DESIGN.md): decisiones conceptuales de diseño.
 - [docs/ARCHITECTURE.md](./docs/ARCHITECTURE.md): responsabilidades de las piezas técnicas.

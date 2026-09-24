@@ -6,7 +6,7 @@ Landing estática de Black Sheep Sport, división de Black Sheep Studio, para qu
 
 QR → Home → página propia del evento → galería seleccionable → orientación de precio → WhatsApp para coordinar la compra
 
-Para crear eventos, anunciar una galería vacía o cargar fotografías, seguir [EVENTOS.md](./EVENTOS.md), la fuente operativa de verdad.
+El contrato de eventos y fotografías está en [docs/operations/events.md](./docs/operations/events.md); los procedimientos están en las skills `manage-event` y `publish-event-photos`.
 
 ## Stack
 
@@ -52,5 +52,6 @@ Ejecuta `npm run build` y publica el contenido generado en `dist/`. El hosting p
 - [docs/PRODUCT.md](./docs/PRODUCT.md) — producto y principios del MVP.
 - [docs/DESIGN.md](./docs/DESIGN.md) — identidad y principios visuales.
 - [docs/ARCHITECTURE.md](./docs/ARCHITECTURE.md) — arquitectura y responsabilidades técnicas.
-- EVENTOS.md — procedimiento operativo para eventos y fotografías.
-- HANDOFF.md — contexto amplio del proyecto.
+- [docs/operations/events.md](./docs/operations/events.md) — contrato del modelo de eventos y fotografías.
+- [docs/operations/deployment.md](./docs/operations/deployment.md) — modelo de publicación y hosting.
+- [HANDOFF.md](./HANDOFF.md) — contexto amplio del proyecto.

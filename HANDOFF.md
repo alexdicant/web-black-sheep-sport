@@ -257,7 +257,7 @@ Las referencias a url # y a Google Drive en este apartado describen el MVP hist�
 
 ## Crear un nuevo evento con galería seleccionable
 
-Esta sección es el procedimiento operativo para una IA o desarrollador que llegue al repositorio sin contexto. La guía canónica para el procedimiento actual es EVENTOS.md. Este apartado conserva contexto de producto y operación.
+Esta sección es el procedimiento operativo para una IA o desarrollador que llegue al repositorio sin contexto. El contrato actual está en docs/operations/events.md; el procedimiento de alta está en la skill manage-event. Este apartado conserva contexto de producto y operación.
 
 ### Estado y principio operativo
 
@@ -288,7 +288,7 @@ No crear el evento con valores supuestos. Obtener o confirmar este checklist:
 - [ ] status inicial (upcoming o past) y decisión de featured;
 - [ ] carpeta de imágenes que corresponde al slug;
 - [ ] convención real de nombres/códigos de los archivos;
-- [ ] consultar EVENTOS.md si se propone cambiar reglas globales de pricing o WhatsApp;
+- [ ] consultar docs/operations/events.md si se propone cambiar reglas globales de pricing o WhatsApp;
 - [ ] cantidad esperada de fotos, cuando ya exista un export;
 - [ ] decisión SEO expresa si se pretende algo distinto de `noindex`.
 
@@ -478,7 +478,7 @@ En el objeto photoModulesBySlug de esa ruta, añadir una entrada para el slug co
       { eager: true },
     );
 
-Astro/Vite analiza los patrones de import.meta.glob durante el build; no construir este patrón dinámicamente desde una variable. La metadata, URL y fecha visible se derivan del registro. Pricing y WhatsApp son globales; storage key se deriva del slug. El alta completa está en EVENTOS.md.
+Astro/Vite analiza los patrones de import.meta.glob durante el build; no construir este patrón dinámicamente desde una variable. La metadata, URL y fecha visible se derivan del registro. Pricing y WhatsApp son globales; storage key se deriva del slug. El contrato de eventos está en docs/operations/events.md; el procedimiento de alta está en la skill manage-event.
 
 #### Patrón exacto de `import.meta.glob()`
 
@@ -575,7 +575,7 @@ No hardcodear manualmente otro canonical si el comportamiento de `Base` ya produ
 
 ### Paso 3 — Reutilizar `EventGallery.astro`
 
-No duplicar el componente ni copiar su script por evento. La ruta dinámica obtiene nombre, lugar, fecha, photos y storage key desde el registro y el glob. El operador no configura manualmente storageKey, whatsappNumber ni metadata por evento; seguir EVENTOS.md.
+No duplicar el componente ni copiar su script por evento. La ruta dinámica obtiene nombre, lugar, fecha, photos y storage key desde el registro y el glob. El operador no configura manualmente storageKey, whatsappNumber ni metadata por evento; consultar el contrato en docs/operations/events.md y seguir la skill publish-event-photos para publicar fotos.
 
 #### Limitaciones hardcodeadas actuales del componente
 
@@ -729,7 +729,7 @@ No añadir una tarjeta manualmente en Events.astro ni configurar Hero.astro para
 
 Home presenta el destacado y hasta cuatro eventos pasados no destacados. HOME_EVENT_LIMIT limita a cinco registros totales. Al solicitar un sexto evento, detenerse hasta implementar el archivo/ruta de eventos prevista. No borrar ni ocultar eventos para eludir el límite.
 
-Consultar EVENTOS.md para el procedimiento completo y la tabla de estados.
+Consultar docs/operations/events.md para el contrato y la tabla de estados; usar manage-event para ejecutar el alta.
 
 ### Componentes globales obligatorios en la página
 
@@ -834,7 +834,7 @@ git diff --name-only
 git diff --check
 ```
 
-Los archivos esperados son el registro en events.ts, el glob literal de [slug].astro y la carpeta. No se crea página individual ni se edita Events.astro/Hero.astro. Ver EVENTOS.md.
+Los archivos esperados son el registro en events.ts, el glob literal de [slug].astro y la carpeta. No se crea página individual ni se edita Events.astro/Hero.astro. Ver docs/operations/events.md.
 
 Comprobar:
 
@@ -1945,7 +1945,7 @@ A fecha **20/09/2026**, el MVP está:
 - con SEO básico on-page y técnico;
 - con performance de imágenes optimizada.
 
-El MVP original de producción quedó documentado con Drive como contexto histórico. El estado de merge/deploy y los conteos descritos en esta sección son una captura histórica; para operar, consultar EVENTOS.md y el código de la rama actual.
+El MVP original de producción quedó documentado con Drive como contexto histórico. El estado de merge/deploy y los conteos descritos en esta sección son una captura histórica; para operar, consultar docs/operations/events.md y el código de la rama actual.
 
 ### Evolución de la rama de preparación (registro histórico)
 

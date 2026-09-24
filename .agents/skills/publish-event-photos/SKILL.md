@@ -1,11 +1,11 @@
 ---
 name: publish-event-photos
-description: Add, upload, replace, or publish event photographs and update a Black Sheep Sport event gallery. Use for photo batches; follow EVENTOS.md and the existing asset-discovery code.
+description: Add, upload, replace, or publish event photographs and update a Black Sheep Sport event gallery. Use for photo batches; follow docs/operations/events.md and the existing asset-discovery code.
 ---
 
 # Publish event photos
 
-Read [EVENTOS.md](../../../EVENTOS.md) first. Consult [docs/ARCHITECTURE.md](../../../docs/ARCHITECTURE.md) and the referenced implementation before changing assets.
+Read [docs/operations/events.md](../../../docs/operations/events.md) first. Consult [docs/ARCHITECTURE.md](../../../docs/ARCHITECTURE.md) and the referenced implementation before changing assets.
 
 ## Before changing files
 

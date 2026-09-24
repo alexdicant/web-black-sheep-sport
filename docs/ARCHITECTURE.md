@@ -57,7 +57,7 @@ EventGallery
 
 `[slug].astro` mantiene un `import.meta.glob` literal por slug porque el bundler analiza estos patrones durante el build. `src/utils/eventPhotos.ts` deriva el código de cada filename, valida formato/unicidad y ordena las fotos. Con cero fotos, `EventGallery.astro` conserva la página y muestra `PRÓXIMAMENTE`.
 
-El procedimiento de alta y carga está en [EVENTOS.md](../EVENTOS.md).
+El contrato de eventos y fotos está en [operations/events.md](./operations/events.md); los procedimientos están en las skills `manage-event` y `publish-event-photos`.
 
 ## Gallery client behavior
 
@@ -102,7 +102,7 @@ El repositorio configura `site` como `https://sheepsport.com`; el build estátic
 | Datos o estado de un evento | `src/data/events.ts` |
 | Pricing | `src/data/pricing.ts` |
 | Contacto y datos comerciales compartidos | `src/data/site.ts` |
-| Flujo operativo de eventos/fotografías | [EVENTOS.md](../EVENTOS.md) |
+| Contrato de eventos/fotografías | [operations/events.md](./operations/events.md) |
 | Diseño conceptual | [DESIGN.md](./DESIGN.md) |
 | Producto | [PRODUCT.md](./PRODUCT.md) |
 | Responsabilidades técnicas | `docs/ARCHITECTURE.md` |
