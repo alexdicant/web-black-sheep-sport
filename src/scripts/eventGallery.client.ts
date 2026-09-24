@@ -230,9 +230,11 @@ if (gallery) {
   buyButton?.addEventListener("click", () => {
     const codes = getOrderedCodes();
     if (codes.length === 0) return;
-    const message = isAllPhotosPackage(codes.length)
-      ? `Hola, vi mis fotos de ${eventName} y seleccioné estas fotos: ${codes.join(", ")}. Vi que tienen el paquete ${pricing.allPhotos.label} por ${pricing.allPhotos.price} por atleta. ¿Me ayudas con la compra?`
-      : `Hola, vi mis fotos de ${eventName} y quiero comprar estas fotos: ${codes.join(", ")}. ¿Me ayudas con el proceso de pago?`;
+    const message = codes.length === 1
+      ? `Hola, vi mis fotos de ${eventName} y seleccioné esta foto: ${codes[0]}. Vi que una foto cuesta ${pricing.singlePhoto.price} ${pricing.unit}. ¿Me ayudas con la compra?`
+      : codes.length === 2
+        ? `Hola, vi mis fotos de ${eventName} y seleccioné estas fotos: ${codes.join(", ")}. Vi que dos fotos cuestan ${pricing.twoPhotos.price} ${pricing.unit}. ¿Me ayudas con la compra?`
+        : `Hola, vi mis fotos de ${eventName} y seleccioné estas fotos: ${codes.join(", ")}. Vi que tienen el paquete ${pricing.allPhotos.label} por ${pricing.allPhotos.price} ${pricing.unit}. ¿Me ayudas con la compra?`;
     const link = document.createElement("a");
     link.href = buildWhatsAppUrl(message);
     link.target = "_blank";
