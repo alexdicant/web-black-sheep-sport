@@ -23,6 +23,7 @@ if (gallery) {
   const clearButton = gallery.querySelector<HTMLButtonElement>("[data-clear-selection]");
   const buyButton = gallery.querySelector<HTMLButtonElement>("[data-buy-selection]");
   const lightbox = gallery.querySelector<HTMLDialogElement>("[data-photo-lightbox]");
+  const lightboxStage = gallery.querySelector<HTMLElement>(".photo-lightbox__stage");
   const lightboxImage = gallery.querySelector<HTMLImageElement>("[data-lightbox-image]");
   const lightboxCode = gallery.querySelector<HTMLElement>("[data-lightbox-code]");
   const lightboxClose = gallery.querySelector<HTMLButtonElement>("[data-lightbox-close]");
@@ -33,6 +34,7 @@ if (gallery) {
   const storageKey = gallery.dataset.storageKey ?? "black-sheep-selection";
   let currentPhotoIndex = -1;
   let lightboxTrigger: HTMLButtonElement | null = null;
+  let swipeStart: { pointerId: number; x: number; y: number } | null = null;
 
   const getOrderedCodes = () =>
     Array.from(selectedCodes).sort(
@@ -177,6 +179,29 @@ if (gallery) {
   lightboxClose?.addEventListener("click", () => lightbox?.close());
   lightboxPrevious?.addEventListener("click", () => moveLightbox(-1));
   lightboxNext?.addEventListener("click", () => moveLightbox(1));
+  lightboxStage?.addEventListener("pointerdown", (event) => {
+    if (
+      !lightbox?.open ||
+      event.pointerType !== "touch" ||
+      !window.matchMedia("(pointer: coarse)").matches ||
+      !event.isPrimary
+    ) return;
+    swipeStart = { pointerId: event.pointerId, x: event.clientX, y: event.clientY };
+    event.currentTarget instanceof HTMLElement && event.currentTarget.setPointerCapture(event.pointerId);
+  });
+  lightboxStage?.addEventListener("pointerup", (event) => {
+    const start = swipeStart;
+    swipeStart = null;
+    if (!start || start.pointerId !== event.pointerId || !lightbox?.open) return;
+
+    const deltaX = event.clientX - start.x;
+    const deltaY = event.clientY - start.y;
+    if (Math.abs(deltaX) < 50 || Math.abs(deltaX) < Math.abs(deltaY) * 1.3) return;
+    moveLightbox(deltaX < 0 ? 1 : -1);
+  });
+  lightboxStage?.addEventListener("pointercancel", () => {
+    swipeStart = null;
+  });
   lightboxSelect?.addEventListener("click", () => {
     const code = photos[currentPhotoIndex]?.code;
     if (code) toggleSelection(code);
