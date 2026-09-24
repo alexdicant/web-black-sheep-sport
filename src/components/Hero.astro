@@ -4,6 +4,8 @@ import heroPhoto from "../assets/photos/DSC06482-Mejorado-NR.webp";
 import { getFeaturedEvent, getEventUrl } from "../data/events";
 
 const featuredEvent = getFeaturedEvent();
+const featuredStatusLabel = featuredEvent.status === "upcoming" ? "PRÓXIMO EVENTO" : "ÚLTIMO EVENTO";
+const featuredActionLabel = featuredEvent.status === "upcoming" ? "Ver próximo evento" : "Ver último evento";
 ---
 
 <section class="hero" aria-labelledby="hero-title">
@@ -25,8 +27,8 @@ const featuredEvent = getFeaturedEvent();
         sizes="(min-width: 1288px) 600px, (min-width: 721px) calc((100vw - 88px) / 2), calc(100vw - 32px)"
       />
       <figcaption class="hero__label">
-        <a href={getEventUrl(featuredEvent)} aria-label={`Ver último evento: ${featuredEvent.name}`}>
-          <span>ÚLTIMO EVENTO</span>
+        <a href={getEventUrl(featuredEvent)} aria-label={`${featuredActionLabel}: ${featuredEvent.name}`}>
+          <span>{featuredStatusLabel}</span>
           <strong>{featuredEvent.name}</strong>
         </a>
       </figcaption>

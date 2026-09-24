@@ -9,7 +9,7 @@ Black Sheep Sport es un sitio Astro que genera páginas estáticas. La landing p
 - `astro.config.mjs` no configura un adaptador de servidor; Astro genera salida estática en `dist/` durante el build.
 - Astro renderiza el HTML, metadatos, enlaces y contenido de página en build. `astro:assets` procesa las imágenes de la galería.
 - El código cliente específico de galería está en `src/scripts/eventGallery.client.ts` y se carga desde `EventGallery.astro`. En páginas con fotos maneja selección, restauración/guardado en `localStorage`, barra de selección, lightbox y apertura de WhatsApp. Si no hay fotos, la galería renderiza el estado vacío sin esos controles.
-- `Base.astro` también incluye el cargador y la configuración inline de Google Analytics 4. Las páginas, datos y navegación restantes son HTML estático.
+- `Base.astro` también incluye el cargador y la configuración inline de Google Analytics 4. Astro genera el contenido principal estáticamente; otros componentes usan JavaScript pequeño para navegación e interacciones de interfaz.
 
 ## Project structure
 

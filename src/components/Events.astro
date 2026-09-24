@@ -3,6 +3,7 @@ import { events, getFeaturedEvent, getPastEvents, getEventUrl } from "../data/ev
 
 const HOME_EVENT_LIMIT = 5;
 const featuredEvent = getFeaturedEvent();
+const featuredStatusLabel = featuredEvent.status === "upcoming" ? "PRÓXIMO EVENTO" : "ÚLTIMO EVENTO";
 
 if (events.length > HOME_EVENT_LIMIT) {
   throw new Error(
@@ -54,12 +55,12 @@ const formatShortDate = (isoDate: string) =>
                   <span>Black Sheep Sport</span>
                   <span class="events__status-label">
                     <span class="events__status-dot" aria-hidden="true" />
-                    ÚLTIMO EVENTO
+                    {featuredStatusLabel}
                   </span>
                 </p>
               ) : (
                 <p class="events__status events__status--center">
-                  {event.status === "past" ? "Evento anterior" : "Próximo evento"}
+                  Evento anterior
                 </p>
               )}
 

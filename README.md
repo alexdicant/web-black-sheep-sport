@@ -13,7 +13,7 @@ El contrato de eventos y fotografías está en [docs/operations/events.md](./doc
 - Astro
 - CSS propio
 - `astro:assets`
-- JavaScript cliente acotado a selección, galería y compra por WhatsApp
+- JavaScript cliente para interacciones puntuales de UI; la galería concentra selección, persistencia local, lightbox y compra por WhatsApp
 - Fuentes WOFF2 autoalojadas
 - Deploy estático
 

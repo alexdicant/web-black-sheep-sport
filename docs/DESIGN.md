@@ -18,7 +18,7 @@ Usar márgenes generosos entre secciones y escalas fluidas para títulos, conten
 
 Las fotografías reales de deporte son la evidencia y el centro emocional del producto. Mostrarlas con recortes intencionales y resolución adecuada al espacio; en galerías, priorizar la exploración y selección de imágenes sin adornos que distraigan.
 
-Las interacciones son explícitas y breves: enlaces y botones muestran claramente adónde llevan o qué acción realizan. JavaScript en cliente se limita a comportamientos concretos de la galería, como selección, persistencia local, lightbox y apertura de WhatsApp. Los estados de foco son visibles, los objetivos táctiles tienen tamaño suficiente y el movimiento respeta `prefers-reduced-motion`.
+Las interacciones son explícitas y breves: enlaces y botones muestran claramente adónde llevan o qué acción realizan. JavaScript en cliente se usa para interacciones puntuales; la galería concentra selección, persistencia local, lightbox y apertura de WhatsApp. Los estados de foco son visibles, los objetivos táctiles tienen tamaño suficiente y el movimiento respeta `prefers-reduced-motion`.
 
 ## Restricciones visuales
 

@@ -43,7 +43,7 @@ Review `MEMORY.md` when starting substantial work, changing architecture, touchi
 - Run `git diff --check` for versionable changes.
 - Run `npm run build` when changing code or configuration, or when the relevant skill requires it.
 - Do not claim visual, browser, or production QA unless it was actually performed.
-- When starting the Astro dev server, use `astro dev --background`; manage it with `astro dev status`, `astro dev logs`, and `astro dev stop`.
+- When starting the Astro dev server, use the local CLI with `./node_modules/.bin/astro dev --background`; manage it with `./node_modules/.bin/astro dev status`, `./node_modules/.bin/astro dev logs`, and `./node_modules/.bin/astro dev stop`.
 
 ## Git safety
 
