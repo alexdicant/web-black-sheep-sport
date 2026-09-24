@@ -1,6 +1,8 @@
 # Fotografías de Fogueo Be Fit
 
-Copia directamente en esta carpeta las previews finales exportadas desde Lightroom, ya optimizadas y con su marca de agua. No copies fotografías de otros eventos.
+Para crear eventos y consultar el flujo operativo completo, sigue [EVENTOS.md](../../../../EVENTOS.md).
+
+Copia directamente en el primer nivel de esta carpeta, sin subdirectorios, las previews finales exportadas desde Lightroom, ya optimizadas y con su marca de agua. No copies fotografías de otros eventos.
 
 El nombre de cada archivo se convierte automáticamente en el código visible, el identificador de selección y el código enviado a WhatsApp. El punto y la extensión no forman parte del código.
 
@@ -27,7 +29,7 @@ Ejemplos inválidos:
 - `BF#001.jpg` (`#`)
 - `foto(2).jpg` (paréntesis)
 
-Formatos admitidos por la implementación: `.webp`, `.jpg`, `.jpeg`, `.png` y `.avif`, en minúsculas.
+Formatos admitidos por la implementación: `.webp`, `.jpg`, `.jpeg`, `.png` y `.avif`, en minúsculas. Las extensiones deben ir en minúsculas; archivos en subdirectorios no se procesan.
 
 Una carpeta sin fotografías en esos formatos produce automáticamente el estado "Próximamente" y no renderiza controles de selección o compra.
 

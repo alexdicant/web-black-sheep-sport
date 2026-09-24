@@ -1,6 +1,8 @@
 # Fotografías de HAPPY WOD
 
-Copia aquí las previews finales exportadas desde Lightroom, ya optimizadas y con su marca de agua.
+Para crear eventos y consultar el flujo operativo completo, sigue [EVENTOS.md](../../../../EVENTOS.md).
+
+Copia aquí, directamente en esta carpeta y sin subdirectorios, las previews finales exportadas desde Lightroom, ya optimizadas y con su marca de agua.
 
 El nombre de cada archivo se convierte automáticamente en el código visible, el identificador de selección y el código enviado a WhatsApp. El punto y la extensión no forman parte del código.
 
@@ -26,7 +28,7 @@ Ejemplos inválidos:
 - `HW#001.jpg` (`#`)
 - `foto(2).jpg` (paréntesis)
 
-Formatos admitidos por la página: `.webp`, `.jpg`, `.jpeg`, `.png` y `.avif`.
+Formatos admitidos por la página: `.webp`, `.jpg`, `.jpeg`, `.png` y `.avif`. Las extensiones deben ir en minúsculas; archivos en subdirectorios no se procesan.
 
 Si esta carpeta no contiene imágenes en esos formatos, la página del evento muestra el estado "Próximamente" y no renderiza controles de selección o compra.
 

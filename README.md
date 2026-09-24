@@ -4,14 +4,16 @@ Landing estática de Black Sheep Sport, división de Black Sheep Studio, para qu
 
 ## Flujo
 
-QR → landing → evento → galería en Google Drive → selección por códigos → WhatsApp → pago → entrega
+QR → Home → página del evento → galería seleccionable → WhatsApp → pago → entrega
+
+Para crear eventos, anunciar una galería vacía o cargar fotografías, seguir [EVENTOS.md](./EVENTOS.md), la fuente operativa de verdad.
 
 ## Stack
 
 - Astro
 - CSS propio
 - `astro:assets`
-- Cero JavaScript cliente
+- JavaScript cliente acotado a selección, galería y compra por WhatsApp
 - Fuentes WOFF2 autoalojadas
 - Deploy estático
 
@@ -35,7 +37,7 @@ src/
   assets/photos/  # fotografías fuente
   components/     # secciones de la landing
   layouts/        # Base.astro y metadatos globales
-  pages/          # /, /terminos y 404
+  pages/          # páginas estáticas y ruta dinámica de eventos
   styles/         # tokens CSS
 public/           # fuentes, favicon, robots.txt y sitemap.xml
 ```
@@ -44,10 +46,7 @@ public/           # fuentes, favicon, robots.txt y sitemap.xml
 
 Ejecuta `npm run build` y publica el contenido generado en `dist/`. El hosting previsto es SiteGround y el dominio definitivo es `sheepsport.com`.
 
-## Pendiente para lanzamiento
+## Documentación
 
-- URL real de Drive del evento.
-- Número real de WhatsApp.
-- Nombre y fecha definitivos del evento piloto.
-- Confirmación final de fotografías, si sigue pendiente.
-- Imagen OG definitiva (por ahora no se publica `og:image`).
+- EVENTOS.md — procedimiento operativo para eventos y fotografías.
+- HANDOFF.md — contexto amplio del proyecto.
