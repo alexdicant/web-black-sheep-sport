@@ -88,6 +88,8 @@ El repositorio configura `site` como `https://sheepsport.com`; el build estátic
 
 `public/.htaccess` se copia al artefacto y define redirects de HTTP/www a HTTPS, compatibilidad con una URL antigua, documento 404, headers de seguridad y políticas Cache-Control para assets Astro versionados y fuentes. Estas reglas dependen del servidor que las interprete; el repositorio no demuestra que un proveedor las tenga activas.
 
+Las páginas de evento y sus previews son contenido estático accesible mediante URLs públicas. `noindex` afecta la indexación en buscadores; no constituye control de acceso ni autorización. El repositorio no implementa autenticación ni protección privada de las previews.
+
 ## Build-time invariants
 
 - `getFeaturedEvent()` falla si el registro no tiene exactamente un evento destacado.
