@@ -42,6 +42,6 @@
 - [AGENTS.md](./AGENTS.md): instrucciones globales del repositorio.
 - Código y configuración actuales: fuente para hechos de implementación.
 - [EVENTOS.md](./EVENTOS.md): operación de eventos y fotografías.
-- [PRODUCT.md](./PRODUCT.md): definición de producto.
-- [DESIGN.md](./DESIGN.md): decisiones conceptuales de diseño.
+- [docs/PRODUCT.md](./docs/PRODUCT.md): definición de producto.
+- [docs/DESIGN.md](./docs/DESIGN.md): decisiones conceptuales de diseño.
 - [docs/ARCHITECTURE.md](./docs/ARCHITECTURE.md): responsabilidades de las piezas técnicas.

@@ -4,7 +4,7 @@ Landing estática de Black Sheep Sport, división de Black Sheep Studio, para qu
 
 ## Flujo
 
-QR → Home → página del evento → galería seleccionable → WhatsApp → pago → entrega
+QR → Home → página propia del evento → galería seleccionable → orientación de precio → WhatsApp para coordinar la compra
 
 Para crear eventos, anunciar una galería vacía o cargar fotografías, seguir [EVENTOS.md](./EVENTOS.md), la fuente operativa de verdad.
 
@@ -48,5 +48,9 @@ Ejecuta `npm run build` y publica el contenido generado en `dist/`. El hosting p
 
 ## Documentación
 
+- [MEMORY.md](./MEMORY.md) — decisiones durables y restricciones.
+- [docs/PRODUCT.md](./docs/PRODUCT.md) — producto y principios del MVP.
+- [docs/DESIGN.md](./docs/DESIGN.md) — identidad y principios visuales.
+- [docs/ARCHITECTURE.md](./docs/ARCHITECTURE.md) — arquitectura y responsabilidades técnicas.
 - EVENTOS.md — procedimiento operativo para eventos y fotografías.
 - HANDOFF.md — contexto amplio del proyecto.

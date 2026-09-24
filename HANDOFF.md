@@ -67,7 +67,7 @@ El éxito de la landing se mide principalmente por dos acciones:
 
 La fotografía es el producto y la principal prueba visual. El copy se mantiene corto, directo y funcional.
 
-Fuente de producto complementaria: `PRODUCT.md`.
+Fuente de producto complementaria: [`docs/PRODUCT.md`](./docs/PRODUCT.md).
 
 ---
 
@@ -1736,7 +1736,7 @@ public/
 ### Otros documentos relevantes
 
 ```text
-PRODUCT.md
+docs/PRODUCT.md
 README.md
 HANDOFF.md
 CRITIQUE-LANDING.md
@@ -1849,7 +1849,7 @@ También existe una auditoría SEO posterior que detectó y llevó a corregir:
 
 Esos puntos ya están resueltos en el estado actual.
 
-No reejecutar o “corregir” decisiones de diseño cerradas automáticamente sin revisar primero este documento y `PRODUCT.md`.
+No reejecutar o “corregir” decisiones de diseño cerradas automáticamente sin revisar primero este documento y [`docs/PRODUCT.md`](./docs/PRODUCT.md).
 
 ---
 

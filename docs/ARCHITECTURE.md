@@ -70,7 +70,7 @@ El procedimiento de alta y carga está en [EVENTOS.md](../EVENTOS.md).
 - `src/styles/home.css` ajusta la identidad tipográfica y los estilos propios de Home.
 - Los componentes Astro tienen estilos scoped donde corresponde; `EventGallery.astro` incluye sus estilos de galería.
 - Las fuentes WOFF2 relevantes viven en `public/fonts/`: Instrument Sans, Archivo Expanded y Archivo Variable.
-- Para decisiones visuales conceptuales, consultar [DESIGN.md](../DESIGN.md).
+- Para decisiones visuales conceptuales, consultar [DESIGN.md](./DESIGN.md).
 
 ## Assets
 
@@ -103,6 +103,6 @@ El repositorio configura `site` como `https://sheepsport.com`; el build estátic
 | Pricing | `src/data/pricing.ts` |
 | Contacto y datos comerciales compartidos | `src/data/site.ts` |
 | Flujo operativo de eventos/fotografías | [EVENTOS.md](../EVENTOS.md) |
-| Diseño conceptual | [DESIGN.md](../DESIGN.md) |
-| Producto | [PRODUCT.md](../PRODUCT.md) |
+| Diseño conceptual | [DESIGN.md](./DESIGN.md) |
+| Producto | [PRODUCT.md](./PRODUCT.md) |
 | Responsabilidades técnicas | `docs/ARCHITECTURE.md` |
