@@ -2,22 +2,22 @@
 import { Image } from "astro:assets";
 import muestra1 from "../assets/photos/DSC00134.webp";
 import muestra2 from "../assets/photos/DSC09177.webp";
-import muestra3 from "../assets/photos/DSC00222.webp";
-import muestra4 from "../assets/photos/DSC09180.webp";
+import muestra3 from "../assets/photos/DSC07499.webp";
+import muestra4 from "../assets/photos/DSC08270.webp";
 import muestra5 from "../assets/photos/DSC06183-Mejorado-NR.webp";
-import muestra6 from "../assets/photos/DSC08319.webp";
-import muestra7 from "../assets/photos/DSC03575.webp";
+import muestra6 from "../assets/photos/DSC08317.webp";
+import muestra7 from "../assets/photos/DSC08381-2.webp";
 import muestra8 from "../assets/photos/DSC09992.webp";
 
 const photos = [
-  { src: muestra1, alt: "Atleta lanzando un golpe con guantes de boxeo" },
+  { src: muestra7, alt: "Atleta de pie dentro del gimnasio durante un evento deportivo" },
   { src: muestra2, alt: "Atleta dando una patada alta de kickboxing a un saco de boxeo" },
-  { src: muestra3, alt: "Atleta con una barra apoyada en los hombros durante un levantamiento" },
-  { src: muestra4, alt: "Atleta entrenando con cuerdas de batalla en el gimnasio" },
   { src: muestra5, alt: "Atleta visto de espaldas haciendo dominadas en una barra" },
-  { src: muestra6, alt: "Competidora sujetando una barra cargada durante un peso muerto" },
-  { src: muestra7, alt: "Atleta sentada en un retrato con su cinturón de levantamiento" },
+  { src: muestra3, alt: "Atleta sonriendo con una raqueta después de una actividad deportiva" },
+  { src: muestra4, alt: "Atleta con un brazo levantado durante una competencia de entrenamiento funcional" },
   { src: muestra8, alt: "Atleta recuperando el aliento frente a una barra en el gimnasio" },
+  { src: muestra1, alt: "Atleta lanzando un golpe con guantes de boxeo" },
+  { src: muestra6, alt: "Atleta preparándose durante una competencia de entrenamiento funcional" },
 ];
 ---
 
@@ -85,25 +85,22 @@ const photos = [
   }
 
   .gallery__grid {
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 0.5rem;
+    columns: 4;
+    column-gap: 0.5rem;
   }
 
   .gallery__image {
     width: 100%;
-    height: clamp(10.625rem, 22vw, 18.75rem);
-    aspect-ratio: 4 / 3;
+    height: auto;
     object-fit: cover;
-  }
-
-  .gallery__image:nth-child(3n + 2) {
-    object-position: center 35%;
+    display: block;
+    break-inside: avoid;
+    margin-bottom: 0.5rem;
   }
 
   @media (max-width: 56.25rem) {
     .gallery__grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+      columns: 2;
     }
   }
 
@@ -115,11 +112,4 @@ const photos = [
     }
   }
 
-  @media (max-width: 30rem) {
-    .gallery__image {
-      height: auto;
-      max-height: 35rem;
-      aspect-ratio: 8 / 11;
-    }
-  }
 </style>
