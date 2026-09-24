@@ -33,6 +33,7 @@ Una carpeta sin fotos compatibles es válida. Con el evento y glob correctamente
 
 Estas reglas describen el contrato del descubrimiento y validación de archivos:
 
+- Las imágenes publicadas en la galería web son previews y deben llegar preparadas con la marca de agua correspondiente antes de publicarse. La entrega final vendida puede ser el original en alta resolución y sin marca de agua, según el producto actual. La aplicación no genera ni añade la marca de agua automáticamente salvo cambio explícito de arquitectura.
 - Las fotos van directamente en `src/assets/events/<slug>/`; no se procesan subdirectorios.
 - Las extensiones admitidas son `.webp`, `.jpg`, `.jpeg`, `.png` y `.avif`, siempre en minúsculas. Otras extensiones o extensiones en mayúsculas pueden quedar fuera del glob y ser ignoradas.
 - El código se deriva del filename sin extensión y debe cumplir `^[A-Za-z0-9_-]+$`.

@@ -13,6 +13,7 @@ Read [docs/operations/events.md](../../../docs/operations/events.md) first. Cons
 2. Inspect `src/assets/events/<slug>/` and the matching literal glob in `src/pages/eventos/[slug].astro`.
 3. Record the current photo count and the expected final count if supplied. If the event or glob is missing, stop and report the prerequisite; do not register an event implicitly.
 4. Read `src/utils/eventPhotos.ts` for filename validation and `src/components/EventGallery.astro` for the empty-gallery behavior.
+5. Confirm the supplied files are watermarked previews suitable for the web gallery, following `docs/operations/events.md`. If the user supplied unwatermarked final files for a gallery that requires protected previews, stop and report the discrepancy; do not alter the images or add a watermark automatically.
 
 ## Apply the batch
 

@@ -35,6 +35,8 @@ Use the actual deployment URL supplied or documented. Check Home, registered eve
 
 Verify `.htaccess` behavior from real server responses; its presence in Git is not proof the server applies it. Report each check as passed, failed, or inaccessible. If production cannot be reached, state exactly what remains unverified. Never perform an automatic rollback.
 
+When a release changes galleries or photographs and it is possible, test the flow on at least one physical phone: open a gallery, select photos, confirm persistence and price guidance, open WhatsApp, and check relevant mobile controls such as the sticky bar.
+
 ## E. Branch cleanup (only on explicit request)
 
 Delete a branch only when explicitly requested. Before deletion, confirm its required commits are reachable from the permanent branch. Never delete `main` or the branch currently checked out. Identify whether the requested branch is local or remote; do not assume deleting one also authorizes deleting the other.

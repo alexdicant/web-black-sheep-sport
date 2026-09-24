@@ -54,4 +54,3 @@ Ejecuta `npm run build` y publica el contenido generado en `dist/`. El hosting p
 - [docs/ARCHITECTURE.md](./docs/ARCHITECTURE.md) — arquitectura y responsabilidades técnicas.
 - [docs/operations/events.md](./docs/operations/events.md) — contrato del modelo de eventos y fotografías.
 - [docs/operations/deployment.md](./docs/operations/deployment.md) — modelo de publicación y hosting.
-- [HANDOFF.md](./HANDOFF.md) — contexto amplio del proyecto.
