@@ -39,7 +39,7 @@ src/
   layouts/        # Base.astro y metadatos globales
   pages/          # páginas estáticas y ruta dinámica de eventos
   styles/         # tokens CSS
-public/           # fuentes, favicon, robots.txt y sitemap.xml
+public/           # fuentes, favicon y robots.txt
 ```
 
 ## Deploy

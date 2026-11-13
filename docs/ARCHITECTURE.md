@@ -37,6 +37,8 @@ Black Sheep Sport es un sitio Astro que genera páginas estáticas. La landing p
 
 `src/pages/eventos/[slug].astro` exporta `getStaticPaths()`. Recorre `events` y devuelve los parámetros y props que Astro usa para emitir cada página estática. Los datos de la página y la clave de selección derivan del registro.
 
+`src/pages/sitemap.xml.ts` genera el sitemap estático durante el build a partir de Home y de todos los slugs registrados en `src/data/events.ts`. Las páginas legales y 404 se mantienen fuera del sitemap porque llevan `noindex`; las páginas de eventos son indexables y se incluyen automáticamente.
+
 ## Event photo discovery
 
 La relación de build es:
