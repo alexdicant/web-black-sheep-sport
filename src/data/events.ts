@@ -16,6 +16,14 @@ export const events: EventItem[] = [
     isoDate: "2026-09-19",
     location: "Be Happy",
     status: "past",
+    featured: false,
+  },
+  {
+    slug: "befit-flow-2026",
+    name: "Befit Flow",
+    isoDate: "2026-11-14",
+    location: "Contenedores",
+    status: "upcoming",
     featured: true,
   },
   {

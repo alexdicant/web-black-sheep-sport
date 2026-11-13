@@ -124,7 +124,7 @@ const formatShortDate = (isoDate: string) =>
 
   .events__grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 17.5rem), 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: var(--space-5);
   }
 
@@ -132,12 +132,12 @@ const formatShortDate = (isoDate: string) =>
     grid-template-columns: minmax(0, 2fr) minmax(17.5rem, 1fr);
   }
 
-  .events__card--featured {
-    grid-column: 1 / -1;
-  }
-
   .events__grid--two-events .events__card--featured {
     grid-column: auto;
+  }
+
+  .events__card--featured {
+    grid-column: 1 / -1;
   }
 
   .events__card {
@@ -348,7 +348,6 @@ const formatShortDate = (isoDate: string) =>
       grid-template-columns: minmax(0, 1fr);
     }
 
-    .events__card--featured,
     .events__grid--two-events .events__card--featured {
       grid-column: auto;
     }

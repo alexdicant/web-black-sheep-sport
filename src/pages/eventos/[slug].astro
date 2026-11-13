@@ -13,6 +13,10 @@ export function getStaticPaths() {
       "../../assets/events/happy-wod/*.{webp,jpg,jpeg,png,avif}",
       { eager: true },
     ),
+    "befit-flow-2026": import.meta.glob<EventImageModule>(
+      "../../assets/events/befit-flow-2026/*.{webp,jpg,jpeg,png,avif}",
+      { eager: true },
+    ),
     "fogueo-be-fit": import.meta.glob<EventImageModule>(
       "../../assets/events/fogueo-be-fit/*.{webp,jpg,jpeg,png,avif}",
       { eager: true },
