@@ -4,8 +4,8 @@ import heroPhoto from "../assets/photos/DSC06482-Mejorado-NR.webp";
 import { getFeaturedEvent, getEventUrl } from "../data/events";
 
 const featuredEvent = getFeaturedEvent();
-const featuredStatusLabel = featuredEvent.status === "upcoming" ? "PRÓXIMO EVENTO" : "ÚLTIMO EVENTO";
-const featuredActionLabel = featuredEvent.status === "upcoming" ? "Ver próximo evento" : "Ver último evento";
+const featuredStatusLabel = "EVENTO MÁS RECIENTE";
+const featuredActionLabel = "Ver evento más reciente";
 ---
 
 <section class="hero" aria-labelledby="hero-title">

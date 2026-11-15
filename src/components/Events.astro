@@ -3,7 +3,7 @@ import { events, getFeaturedEvent, getPastEvents, getEventUrl } from "../data/ev
 
 const HOME_EVENT_LIMIT = 5;
 const featuredEvent = getFeaturedEvent();
-const featuredStatusLabel = featuredEvent.status === "upcoming" ? "PRÓXIMO EVENTO" : "ÚLTIMO EVENTO";
+const featuredStatusLabel = "EVENTO MÁS RECIENTE";
 
 if (events.length > HOME_EVENT_LIMIT) {
   throw new Error(
