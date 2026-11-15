@@ -21,10 +21,7 @@ export const GET: APIRoute = ({ site }) => {
     throw new Error("Configura `site` en astro.config.mjs para generar el sitemap.");
   }
 
-  const urls = [
-    new URL("/", site),
-    ...events.map((event) => new URL(`/eventos/${event.slug}/`, site)),
-  ];
+  const urls = [new URL("/", site)];
 
   const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">

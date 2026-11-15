@@ -49,6 +49,7 @@ const { event, photos } = Astro.props;
 <Base
   title={getEventPageTitle(event)}
   description={getEventPageDescription(event)}
+  robots="noindex, follow"
 >
   <Header />
   <main id="main-content" tabindex="-1">
